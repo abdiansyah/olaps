@@ -1,0 +1,1 @@
+<input type="hidden" id="tab-scope-assesment-easa" value="<?php echo $auth_scope_assesment_easa['id']; ?>"/>   

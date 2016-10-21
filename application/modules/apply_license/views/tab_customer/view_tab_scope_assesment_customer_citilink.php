@@ -1,0 +1,1 @@
+<input type="hidden" id="tab-scope-assesment-customer-citilink" value="<?php echo $auth_scope_assesment_customer_citilink['id']; ?>"/>   

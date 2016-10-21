@@ -1,0 +1,1 @@
+<input type="hidden" id="tab-scope-assesment-cofc" value="<?php echo $auth_scope_assesment_cofc['id']; ?>"/>

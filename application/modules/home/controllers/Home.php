@@ -1,0 +1,69 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Home extends CI_Controller
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->helper('form');
+        $this->load->model('m_home');
+    }
+
+    public function index()
+    {
+        $user_data                          = $this->session->userdata('users'); 
+        $personnel_number                   = $user_data->PERNR;       
+        $date_request                       = $this->input->post('date_request');
+        @$id_users_group                    = $user_data->id_users_group;                    
+        $data['personnel_number']           = $this->input->post($personnel_number);      
+        $data['request_number_user']        = $this->input->post('request_number_user');
+        $data['date_request']               = $this->input->post('date_request');
+        $data['employee_personnel_number']  = $this->input->post('employee_personnel_number');
+        $data['name_personnel']             = $this->input->post('name_personnel');
+        $data['status']                     = $this->input->post('status');
+        $this->page->view('home/home_index',$data);
+    }
+    
+    public function get_ajax_home(){
+        $user_data = $this->session->userdata('users');                                                                           
+        $sess_employee_group = $user_data->id_employee_group;  
+        $list = $this->m_home->get_value_home();                
+		$data = array();
+		$no = $_POST['start'];
+		
+		foreach ($list as $rc) {			
+			$no++;
+			$row = array();
+			$row[] = $no;
+            if(@$sess_employee_group == '1'){            
+            $row[] = @$rc->name;
+            $row[] = @$rc->personnel_number;
+            }            
+			$row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" title="Edit Data">'.@$rc->request_number.'</a>';
+			$row[] = @$rc->last_update;
+            if(@$rc->current_status == 'Success'){                        
+            $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-success btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
+            }else{
+            $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-warning btn-sm">&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;</a>';
+            }
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" 				=> $_POST['draw'],
+			"recordsTotal" 		=> $this->m_home->count_all(),
+			"recordsFiltered" 	=> $this->m_home->count_filtered(),
+			"data" 				=> $data,
+		);
+		
+		//output to json format
+		echo json_encode($output);
+            
+    }        
+    
+   	
+
+}
+?>
