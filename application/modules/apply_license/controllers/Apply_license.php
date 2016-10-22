@@ -761,9 +761,9 @@ class Apply_license extends CI_Controller
         @$sess_license_cofc = $this->session->userdata('sess_license_cofc');
                if(isset($_POST['savecompletingdata']) || isset($_POST['submitcompletingdata'])){
                        $this->load->library('ftp');                
-                       $ftp_config['hostname'] = '192.168.40.107'; 
-                       $ftp_config['username'] = 'usr-olaps';
-                       $ftp_config['password'] = 'p@ssw0rd';
+                       $ftp_config['hostname'] = '127.0.0.1'; 
+                       $ftp_config['username'] = 'yayas';
+                       $ftp_config['password'] = 'Bismillah';
                        $ftp_config['debug']    = TRUE;                
                        $this->load->library('upload');                                                              
                        $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
@@ -2053,16 +2053,27 @@ class Apply_license extends CI_Controller
             }
             $sess_data_personnel     = $this->session->userdata('sess_data_personnel');
             // Send Notification Email To Atasan  
-            $config                  = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'mail.gmf-aeroasia.co.id',
-                'smtp_port' => 25,
-                'smtp_user' => 'app.notif',
-                'smtp_pass' => 'app.notif',
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE
-            );
+            // $config                  = Array(
+            //     'protocol' => 'smtp',
+            //     'smtp_host' => 'mail.gmf-aeroasia.co.id',
+            //     'smtp_port' => 25,
+            //     'smtp_user' => 'app.notif',
+            //     'smtp_pass' => 'app.notif',
+            //     'mailtype' => 'html',
+            //     'charset' => 'iso-8859-1',
+            //     'wordwrap' => TRUE
+            // );
+
+            $config = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE);
+
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2260,15 +2271,25 @@ class Apply_license extends CI_Controller
         $data_applicant             = $this->m_apply_license->get_data_row_personnel_by($personnel_number_applicant);
         $name_applicant             = $data_applicant['EMPLNAME'];
         $email_applicant            = $data_applicant['EMAIL'];
-        $config                     = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'mail.gmf-aeroasia.co.id',
-            'smtp_port' => 25,
-            'smtp_user' => 'app.notif',
-            'smtp_pass' => 'app.notif',
-            'mailtype' => 'html',
-            'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
+        // $config                     = Array(
+        //     'protocol' => 'smtp',
+        //     'smtp_host' => 'mail.gmf-aeroasia.co.id',
+        //     'smtp_port' => 25,
+        //     'smtp_user' => 'app.notif',
+        //     'smtp_pass' => 'app.notif',
+        //     'mailtype' => 'html',
+        //     'charset' => 'iso-8859-1',
+        //     'wordwrap' => TRUE
+        // );
+        $config = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE
         );
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
