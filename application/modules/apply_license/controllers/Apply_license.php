@@ -2110,8 +2110,7 @@ class Apply_license extends CI_Controller
                         <td> No </td>
                         <td> Authorization </td>
                         <td> Authorization Type </td>
-                        <td> Reason of Type </td>
-                        <td> Authorization Number </td>
+                        <td> Reason of Type </td>                        
                         <td> Scope of AUTHORIZATION </td>                        
                         </tr>';
             $no = 1;
@@ -2136,8 +2135,7 @@ class Apply_license extends CI_Controller
                         break;
                 }
                 $pesan .= '                    
-                        <td> ' . $reason_apply_license . ' </td>                                                
-                        <td>  </td>    
+                        <td> ' . $reason_apply_license . ' </td>                                                                    
                         <td> ' . $row->name_scope . ' </td>                                                
                         </tr>';
             }

@@ -183,16 +183,15 @@ class Quality_control extends MX_Controller
             $data_applicant    = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             $name_applicant    = $data_applicant['EMPLNAME'];
             $email_applicant   = $data_applicant['EMAIL'];
-            $config            = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'mail.gmf-aeroasia.co.id',
-                'smtp_port' => 25,
-                'smtp_user' => 'app.notif',
-                'smtp_pass' => 'app.notif',
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE
-            );
+            $config = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE);
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -506,16 +505,15 @@ class Quality_control extends MX_Controller
             $data_applicant   = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             $name_applicant   = $data_applicant['EMPLNAME'];
             $email_applicant  = $data_applicant['EMAIL'];
-            $config           = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'mail.gmf-aeroasia.co.id',
-                'smtp_port' => 25,
-                'smtp_user' => 'app.notif',
-                'smtp_pass' => 'app.notif',
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE
-            );
+            $config = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE);
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -661,9 +659,9 @@ class Quality_control extends MX_Controller
         
         if (isset($_POST['save_validation_document'])) {
             $this->load->library('ftp');                
-            $ftp_config['hostname'] = '192.168.40.107'; 
-            $ftp_config['username'] = 'usr-olaps';
-            $ftp_config['password'] = 'p@ssw0rd';
+            $ftp_config['hostname'] = '127.0.0.1'; 
+            $ftp_config['username'] = 'yayas';
+            $ftp_config['password'] = 'Bismillah';
             $ftp_config['debug']    = TRUE;                
             $this->load->library('upload');                                                              
             $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
@@ -708,16 +706,15 @@ class Quality_control extends MX_Controller
             }
             $this->ftp->close();
                                     
-            $config              = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'mail.gmf-aeroasia.co.id',
-                'smtp_port' => 25,
-                'smtp_user' => 'app.notif',
-                'smtp_pass' => 'app.notif',
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE
-            );
+            $config = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE);
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -771,15 +768,15 @@ class Quality_control extends MX_Controller
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             $this->email->message($pesan);
-            // if ($this->email->send()) {
+            if ($this->email->send()) {
                 $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
                 redirect(site_url('quality_control/index'));
-                // }
+                }
             }
         
         if (isset($_POST['save_validation_document_tqd'])) {
             $this->load->library('ftp');
-            $ftp_config['hostname'] = '172.16.252.59';
+            $ftp_config['hostname'] = '127.0.0.1';
             $ftp_config['username'] = 'yayas';
             $ftp_config['password'] = 'Bismillah';
             $ftp_config['debug']    = TRUE;

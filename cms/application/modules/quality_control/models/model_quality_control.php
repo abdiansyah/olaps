@@ -517,8 +517,8 @@ class model_quality_control extends CI_Model
     }
     
     public function get_data_requirement($personnel_number){
-    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.personnel_number_fk, tfr.code_file, (maarg.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
-            LEFT JOIN m_auth_additional_req_general AS maarg ON tfr.code_file = maarg.code_t            
+    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.personnel_number_fk, tfr.code_file, (m_req.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
+            LEFT JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t            
             WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by = ''";
     return $this->db->query($query)->result();
     } 
