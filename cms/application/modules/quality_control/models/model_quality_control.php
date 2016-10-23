@@ -645,6 +645,18 @@ class model_quality_control extends CI_Model
                 id_auth_scope_fk = '$id_scope'";
         return $this->db->query($query);
     }
+
+    public function cek_assesment_oral($request_number, $personnel_number, $id_license, $id_type, $id_spect, $id_category, $id_scope){
+        $query = "SELECT * FROM t_assesment WHERE
+                request_number_fk = '$request_number' AND 
+                personnel_number_fk = '$personnel_number' AND 
+                id_auth_license_fk = '$id_license' AND
+                id_auth_type_fk = '$id_type' AND
+                id_auth_spec_fk = '$id_spect' AND
+                id_auth_category_fk = '$id_category' AND
+                id_auth_scope_fk = '$id_scope' AND date_oral != null";
+        return $this->db->query($query);
+    }
     
 
 

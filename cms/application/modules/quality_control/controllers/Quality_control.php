@@ -169,7 +169,7 @@ class Quality_control extends MX_Controller
     {
         $this->form('add', $id);
         $sess_personnel_number = $this->session->userdata('users_quality')->PERNR;
-        $url_apply_license     = 'http://192.168.240.107/app_olds/';
+        $url_apply_license     = $_SERVER['SERVER_ADDR'].'/app_olds/';
         if (isset($_POST['simpan_detail_history'])) {
             $request_number    = $this->input->post('request_number');
             $personnel_number  = $this->input->post('personnel_number');
@@ -612,7 +612,7 @@ class Quality_control extends MX_Controller
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             //die($pesan);        
             $this->email->message($pesan);
-            
+            $this->email->send();
             redirect(site_url('quality_control'));
         }
     }
