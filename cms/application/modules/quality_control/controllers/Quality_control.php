@@ -631,8 +631,9 @@ class Quality_control extends MX_Controller
             $data['data_file_requirement']              = $this->model_quality_control->get_data_requirement($personnel_number);
             $data['data_file_requirement_revision']     = $this->model_quality_control->get_data_requirement_revision($personnel_number);            
             $data['request_number']                     = $request_number;
+            $data['personnel_number']                   = $personnel_number;
             $data['data_file_general_document_quality'] = $this->model_quality_control->get_general_document_quality($request_number);
-            $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number);
+            $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number, $personnel_number);
             $this->page->view('quality_control/form_data_requirement', $data);
         }
     }
@@ -669,7 +670,7 @@ class Quality_control extends MX_Controller
             $request_number          = $this->input->post('request_number');
             $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
             $code_data_requirement_s = $this->input->post('code_data_requirement');
-            @$file_data_requirement = count($_FILES['file_data_requirement']['name']);
+            @$file_data_requirement  = count($_FILES['file_data_requirement']['name']);
             $save_result_expiration_data_requirement = $this->input->post('save_result_expiration_data_requirement');
             $subfolder                               = $personnel_number;
             
@@ -735,6 +736,7 @@ class Quality_control extends MX_Controller
                  </head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $name_personnel . '</p>';
             $pesan .= '<p>1. <b>' . $name_personnel . '</b>/<b>' . $unit . '</b>/<b>' . $personnel_number . ' Jobtitle : (' . $presenttitle . ')</b></p>';
+            $pesan .= '<p>Thus, we can not proceed your application (The request number is discarded), please contact your superior for detailed information.</p>';
             $pesan .= '<p>as detailed below : </p>';
             $pesan .= '<table border="1">
                  <tr>
@@ -766,32 +768,54 @@ class Quality_control extends MX_Controller
             $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
             $pesan .= '<p>PT GMF AeroAsia</p>';
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';
-            $this->email->message($pesan);
-            if ($this->email->send()) {
-                $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
-                redirect(site_url('quality_control/index'));
+            $pesan .= '<p>Fax: +62-21-550 1257</p>';            
+            if(!empty($cek_data_document)){ 
+                    $this->email->message($pesan);
+                    $this->email->send();  
+                    $data = array(
+                        'status_approved_quality' => '2',
+                        'date_approved_quality' => date('Y-m-d H:i:s'),
+                        'personnel_number_quality' => $sess_personnel_number,
+                        'finished' => '1',
+                        'date_finish' => date('Y-m-d H:i:s')
+                    );
+                    $this->db->where('request_number', $request_number);
+                    $this->db->update('t_apply_license', $data);                                             
+                    $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
+                    redirect(site_url('quality_control/index'));                    
+                }else{
+                    $data = array(
+                        'status_approved_quality' => '1',
+                        'date_approved_quality' => date('Y-m-d H:i:s'),
+                        'personnel_number_quality' => $sess_personnel_number,
+                        'finished' => NULL,
+                        'date_finish' => NULL
+                    );
+                    $this->db->where('request_number', $request_number);
+                    $this->db->update('t_apply_license', $data);
+                    $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
+                    redirect(site_url('quality_control/index'));
                 }
             }
+            //endif
         
-        if (isset($_POST['save_validation_document_tqd'])) {
+            if (isset($_POST['save_req_document_tqd'])) {
             $this->load->library('ftp');
             $ftp_config['hostname'] = '127.0.0.1';
             $ftp_config['username'] = 'yayas';
             $ftp_config['password'] = 'Bismillah';
             $ftp_config['debug']    = TRUE;
             $this->load->library('upload');
-            $mainfolder              = 'yayas';
+            $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
             $personnel_number        = $this->input->post('personnel_number');
             $request_number          = $this->input->post('request_number');
             $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
-            $code_data_requirement_s = $this->input->post('code_data_requirement');
-            @$file_data_requirement = count($_FILES['file_data_requirement']['name']);
-            $save_result_expiration_data_requirement = $this->input->post('save_result_expiration_data_requirement');
-            $subfolder                               = $personnel_number;
-            
-            //print_r(date('YmdHis'));
-            //        die();       
+            $code_req_spec_document_quality_s = $this->input->post('code_req_spec_document_quality');
+            @$file_req_spec_document_quality = count($_FILES['file_req_spec_document_quality']['name']);
+            $expiration_date_spec_quality = $this->input->post('expiration_date_spec_quality');
+            $subfolder               = $personnel_number;
+          
+                   
             $this->ftp->connect($ftp_config);
             $this->ftp->close();
             $this->ftp->connect($ftp_config);
@@ -802,27 +826,44 @@ class Quality_control extends MX_Controller
             $this->ftp->connect($ftp_config);
             $this->ftp->changedir('/' . $mainfolder . '/' . $subfolder);
             
-            for ($g = 0; $g < $file_data_requirement; $g++) {
-                if ($_FILES['file_data_requirement']['size'][$g] != 0) {
-                    $code_data_requirement = $code_data_requirement_s[$g];
-                    $fileNameOld           = $_FILES['file_data_requirement']['name'][$g];
-                    @$ext = end(explode('.', $_FILES['file_data_requirement']['name'][$g]));
-                    $fileNameNew    = $personnel_number . '_' . $code_data_requirement . '_' . date('YmdHis') . '.' . $ext;
-                    $sourceFileName = $_FILES['file_data_requirement']['tmp_name'][$g];
+            for ($g = 0; $g < $file_req_spec_document_quality; $g++) {
+                if ($_FILES['file_req_spec_document_quality']['size'][$g] != 0) {
+                    $code_req_spec_document_quality = $code_req_spec_document_quality_s[$g];
+                    $fileNameOld           = $_FILES['file_req_spec_document_quality']['name'][$g];
+                    @$ext = end(explode('.', $_FILES['file_req_spec_document_quality']['name'][$g]));
+                    $fileNameNew    = $personnel_number . '_' . $code_req_spec_document_quality . '_' . date('YmdHis') . '.' . $ext;
+                    $sourceFileName = $_FILES['file_req_spec_document_quality']['tmp_name'][$g];
                     @$destination = $fileNameOld;
                     @$destinationnew = $fileNameNew;
                     $send = $this->ftp->upload($sourceFileName, $destination);
                     $this->ftp->rename($destination, $destinationnew);
                     $data_requirement = array(
                         'personnel_number_fk' => @$personnel_number,
-                        'name_file' => @$fileNameNew,
-                        'code_file' => @$code_data_requirement,
-                        'update_by' => @$sess_personnel_number
+                        'name_file'     => @$fileNameNew,
+                        'code_file'     => @$code_req_spec_document_quality,
+                        'status_valid'  => '1',
+                        'update_by'     => @$sess_personnel_number
                     );
                     $this->db->insert('t_file_requirement', $data_requirement);
+                    if($send){
+                        $this->session->set_flashdata('msg', 'Upload document successfully.');
+                        redirect(site_url('quality_control/index'));                    
+                    }else{
+                        $this->session->set_flashdata('msg', 'Document failed upload, please check network.');
+                        redirect(site_url('quality_control/index'));                    
+                    }
                 }
             }
-            $this->ftp->close();        
+            $this->ftp->close(); 
+                if(!empty($cek_data_document)){ 
+                    $this->email->message($pesan);
+                    $this->email->send();               
+                    $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
+                    redirect(site_url('quality_control/index'));                    
+                }else{
+                    $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
+                    redirect(site_url('quality_control/index'));
+                }       
     }
 }
 
@@ -856,7 +897,7 @@ class Quality_control extends MX_Controller
         
         $data['data_file_requirement']              = $this->model_quality_control->get_data_requirement($personnel_number);
         $data['data_file_general_document_quality'] = $this->model_quality_control->get_general_document_quality($request_number);
-        $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number);
+        $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number,$personnel_number);
         $this->page->view('quality_control/form_data_requirement', $data);
     }
     

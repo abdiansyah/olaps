@@ -532,7 +532,7 @@ class model_quality_control extends CI_Model
     
     public function cek_data_document($personnel_number){
     $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.code_file, (maadrg.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
-            LEFT JOIN m_auth_additional_req_general AS maadrg ON tfr.code_file = maadrg.code_t
+            LEFT JOIN UNION_REQUIREMENT AS maadrg ON tfr.code_file = maadrg.code_t
             WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.status_valid = '2'";
             // status_valid 2 (not_valid)
     return $this->db->query($query)->result();    
@@ -602,8 +602,8 @@ class model_quality_control extends CI_Model
     public function get_spec_document_quality($request_number){
         $query = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                 LEFT JOIN m_auth_additional_req_spec AS maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
-                LEFT JOIN  m_auth_license AS mal ON mgsc.id_auth_license_fk = mal.id
-                LEFT JOIN t_apply_license_dtl AS tald ON tald.id_auth_license_fk = mgsc.id_auth_license_fk 
+                LEFT JOIN m_auth_license AS mal ON mgsc.id_auth_license_fk = mal.id
+                LEFT JOIN t_apply_license_dtl AS tald ON tald.id_auth_license_fk = mgsc.id_auth_license_fk                 
                 AND tald.id_auth_type_fk = mgsc.id_auth_type_fk
                 AND tald.id_auth_spect_fk = mgsc.id_auth_spect_fk
                 AND tald.id_auth_category_fk = mgsc.id_auth_category_fk

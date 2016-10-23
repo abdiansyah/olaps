@@ -2396,7 +2396,7 @@ class Apply_license extends CI_Controller
             (CASE t_apply_license.status_approved_superior WHEN '1' THEN 'Approved Superior' WHEN '2' THEN 'Rejected Superior' END) AS approved_superior,
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105)) AS date_approved_superior, 
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),108)) AS time_approved_superior, 
-            (CASE t_apply_license.status_approved_quality WHEN '1' THEN 'Data Validated' WHEN '2' THEN 'Data Rejected' END) AS approved_quality, 
+            (CASE t_apply_license.status_approved_quality WHEN '1' THEN 'Data Validated' WHEN '2' THEN 'Data Not Valid' END) AS approved_quality, 
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105)) AS date_approved_quality, 
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108)) AS time_approved_quality,
             (CASE t_apply_license.status_assesment WHEN '1' THEN 'Assesment Process' WHEN '2' THEN 'Assesment Process Closed' END) AS status_assesment,

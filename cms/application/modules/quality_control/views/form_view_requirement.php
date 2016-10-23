@@ -1,3 +1,4 @@
+<?php if(@$name_file_ftp) {?>
 <section class="content-header">
     <h1><?php echo $ttl; ?><h3><span class="fa fa-file"></span> <?php echo $name_file;?></h3></h1>  
 </section>
@@ -43,3 +44,9 @@
 <br/>
 <br/>
 </div>
+<?php 
+}else{
+    echo "<form action='.base_url().'.index.php/quality_control/process_document'; method='post'>";
+    echo "<button type='submit' class='btn btn-info btn-md' name='back'>Back</button>";
+};
+?>

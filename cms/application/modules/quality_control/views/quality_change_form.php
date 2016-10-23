@@ -99,7 +99,7 @@ $().ready(function(){
                         <a id="head_nav">Take Authorization</a>
                     </li>
                     <?php
-                    if(!empty($rc[0]->status_take_authorization)){
+                    if(!empty($rc[0]->status_finish)){
                     $class_take_authorization = "active";
                     }else{
                     $class_take_authorization = "disabled";    
@@ -394,10 +394,20 @@ $().ready(function(){
                 </tr> 
                 <tr>
                     <?php if(@$value->status_finish == 'Success'):?>
-                    <td><?php echo $no++ ?></td>
+                    <td><?php echo $no++ ?></td>                    
                     <td><?php echo @$value->date_finish ?></td>
                     <td><?php echo @$value->time_finish ?></td>                       
-                    <td><?php echo @$value->status_finish ?></td>
+                    <?php 
+                    if(@$value->approved_quality =='Data Not Valid'){
+                    ?>
+                        <td>Failed</td>
+                    <?php
+                    }else{
+                    ?>
+                        <td><?php echo @$value->status_finish ?></td>
+                    <?php
+                    }
+                    ?>                    
                     <td></td>
                     <td></td>
                     <td></td>   

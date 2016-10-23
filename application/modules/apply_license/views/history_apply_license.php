@@ -93,7 +93,7 @@ if(@$data_history[0]!=''){
                         <a id="head_nav">Take Authorization</a>
                     </li>
                     <?php
-                    if(!empty($data_history[0]->status_take_authorization)){
+                    if(!empty($data_history[0]->status_finish)){
                     $class_status_finish = "active";
                     }else{
                     $class_status_finish = "disabled";    
@@ -351,7 +351,17 @@ if(@$data_history[0]!=''){
                         <td><?php echo $no++ ?></td>
                         <td><?php echo @$value->date_finish ?></td>
                         <td><?php echo @$value->time_finish ?></td>                       
-                        <td><?php echo @$value->status_finish ?></td>
+                        <?php 
+                        if(@$value->approved_quality =='Data Not Valid'){
+                        ?>
+                            <td>Failed</td>
+                        <?php
+                        }else{
+                        ?>
+                            <td><?php echo @$value->status_finish ?></td>
+                        <?php
+                        }
+                        ?>
                         <?php endif;?>                        
                     </tr>                                     
                     <?php
