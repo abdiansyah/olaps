@@ -13,7 +13,10 @@ class Certifying_staff_license extends MX_Controller {
 	
 	public function index() {
 		$this->page->view('certifying_staff_license_index', array (
-			'add'		=> $this->page->base_url('/add')
+			'add'				=> $this->page->base_url('/add'),
+			'unit'				=> $this->input->post('unit'),
+			'spect'				=> $this->input->post('spect'),
+			'status_license' 	=> $this->input->post('status_license'),
 		
 		));
 	}
@@ -47,61 +50,6 @@ class Certifying_staff_license extends MX_Controller {
 	}
     
 	
-	private function form($action = 'insert', $id = ''){
-		if ($this->agent->referrer() == '') redirect($this->page->base_url());
-		
-		$title = '';
-		if($this->uri->segment(3) == 'add'){ 
-			$title = 'Add';
-		} else {
-			$title = 'Edit';
-		}
-
-		$this->page->view('authorization_form', array (
-			'ttl'		=> $title,
-			'back'		=> $this->agent->referrer(),
-			'action'	=> $this->page->base_url("/{$action}/{$id}"),
-			'rc' 		=> $this->model_authorization->by_id($id),
-			'aksi'		=> $action,
-		));
-	}
-	
-	public function add(){
-		$this->form();
-	}
-	
-	public function edit($id){
-		$this->form('update', $id);
-	}
-	
-	public function insert(){		
-		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')
-		
-		);
-		$this->db->insert('m_auth_license', $data);
-		
-		redirect($this->page->base_url());
-	}
-	
-	public function update($id){		
-		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')			
-		);	
-		$this->db->where('id', $id);
-		$this->db->update('m_auth_license', $data);
-		
-		redirect($this->page->base_url());
-	}
-	
-	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();						
-		$this->db->delete('m_auth_license',array('id'=>$id));		
-		redirect($this->agent->referrer());
-	}
-
 	public function option_unit_gmf(){
 		$m_unit = $this->db->query("SELECT DISTINCT UNIT FROM db_hrm.dbo.TBL_SOE_HEAD");
 		return options($m_unit, 'UNIT', 'UNIT');

@@ -3,7 +3,8 @@ $().ready(function(){
 $('#datatables_blocked_date').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
-        "select"            : true,      
+        "select"            : true,                 
+        "bSort"             : false,     
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
@@ -18,7 +19,7 @@ $('#datatables_blocked_date').dataTable({
 		//Set column definition initialisation properties.
 		"columnDefs" : [
 			{ 
-				"targets"	: [ 0, 1, 2], //first column / numbering column
+				"targets"	: [], //first column / numbering column
 				"orderable"	: false, //set not orderable                            
 			},
 		],

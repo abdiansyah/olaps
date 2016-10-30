@@ -34,6 +34,16 @@ class Apply_license extends CI_Controller
     {
         $this->m_apply_license->get_data_personnel_by_non_gmf($personnel_number);
     }
+
+    function cek_etops($id_spect)
+    {
+        $status = $this->m_apply_license->get_check_etops($id_spect);
+        if($status != ''){
+            die('1');
+        }else{
+            die('0');
+        }
+    }
     public 
     // -- Function Name : index
         
@@ -152,7 +162,8 @@ class Apply_license extends CI_Controller
                     'tab_spec_s' => $this->input->post('tab-spec'),
                     'tab_category_s' => $this->input->post('tab-category'),
                     'tab_scope_s' => $this->input->post('tab-scope'),
-                    'tab_scope_assesment_s' => $this->input->post('tab-scope-assesment'),
+                    'tab_scope_assesment_s'     => $this->input->post('tab-scope-assesment'),
+                    'etops_s'                 => $this->input->post('etops'),
                     'no' => 1
                 );
                 $sess_license_garuda    = array(
@@ -243,24 +254,28 @@ class Apply_license extends CI_Controller
                         <td><label class="label_req_spec">' . $value->name_t . '</label></td>';
                             if ($value->category_continous == 'Non Recurrent') {
                                 @$data_req_specific .= '<td>&nbsp;</td>
-                        <td><input type="text" class="expiration_date_req_spec_certificate" name="expiration_date_req_spec_certificate[]"/></td>';
+                        <td><input type="text" class="expiration_date_req_spec_certificate" name="expiration_date_req_spec_certificate[]"/></td>
+                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             } else if ($value->category_continous == 'Recurrent') {
                                 @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
                         <td><input type="hidden" class="expiration_date_req_spec_certificate" id="expiration_date_req_spec_certificate_' . $no . '" name="expiration_date_req_spec_certificate[]" value="' . $value->age_requirement . '"/>
                         <input type="hidden" class="result_expiration_date_req_spec_certificate" id="result_expiration_date_req_spec_certificate_' . $no . '" name="result_expiration_date_req_spec_certificate[]"/>
                         <input type="text" class="label_result_expiration_date_req_spec_certificate" id="label_result_expiration_date_req_spec_certificate_' . $no . '" disabled/>
-                        </td>';
+                        </td>
+                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             } else if ($value->category_continous == 'New') {
                                 @$data_req_specific .= '<td></td>
-                        <td></td>'; 
+                                <td></td>
+                                <td><input type="file"  id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>'; 
                             } else if ($value->category_continous == '-') {
                                 @$data_req_specific .= '<td></td>
-                        <td></td>';
+                                <td></td>
+                                <td><input type="file" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             }
                             ;
-                            @$data_req_specific .= '<td><input type="hidden" name="code_req_spec_certificate[]" value="' . $value->code_t . '"/>
-                        <input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>
+                            @$data_req_specific .= '                        
                         <td width="20%">
+                        <input type="hidden" name="code_req_spec_certificate[]" value="' . $value->code_t . '"/>
                         <div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">0%</div ></div>                                                                                                     
                         </td>
                         <td><img class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/></td> 
@@ -770,15 +785,22 @@ class Apply_license extends CI_Controller
                        $sess_data_personnel = $this->session->userdata('sess_data_personnel');        
                        $personnel_number = $sess_data_personnel['personnel_number'];                               
                        $subfolder = $sess_data_personnel['personnel_number'];        
-                       $this->ftp->connect($ftp_config);                
-                       $this->ftp->close();
-                       $this->ftp->connect($ftp_config);  
-                       if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder)==''){                
+                       $cd_folder = $this->m_apply_license->get_code_file();
+
+                       
+                        $this->ftp->connect($ftp_config);                
+                        $this->ftp->close();
+                        $this->ftp->connect($ftp_config);  
+                        if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder)==''){                
                            $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder);                
-                       };     
-                       $this->ftp->close();
-                       $this->ftp->connect($ftp_config);                 
-                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder);                                                           
+                            foreach($cd_folder as $code_file){  
+                                  if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder.'/'.$code_file->name)==''){              
+                                    $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder.'/'.$code_file->name);                
+                                  };     
+                              }
+                        };     
+                        $this->ftp->close();                    
+                        $this->ftp->connect($ftp_config);                         
                        // File General Document
                        $code_req_general_document_s    = $this->input->post('code_req_general_document');                                                                             
                        @$file_req_document_general_s   = count($_FILES['file_req_document_general']['name']);
@@ -788,120 +810,122 @@ class Apply_license extends CI_Controller
                        $type                           = $sess_license['type'];
         
                        if(!empty($sess_license_easa['check_easa'])){
-                       $license_easa                   = $sess_license_easa['check_easa'];
-                       $type_easa                      = $sess_license_easa['type_easa'];
+                           $license_easa                   = $sess_license_easa['check_easa'];
+                           $type_easa                      = $sess_license_easa['type_easa'];
                        };
         
                        if(!empty($sess_license_special['check_special'])){                                
-                       $license_special                = $sess_license_special['license'];
-                       $type_special                   = $sess_license_special['check_special'];
+                           $license_special                = $sess_license_special['license'];
+                           $type_special                   = $sess_license_special['check_special'];
                        };
                        
                        if(!empty($sess_with_garuda['check_customer_authorization'])){
-                       $with_license_garuda            = $sess_with_garuda['check_customer_authorization'];
-                       $with_type_garuda               = $sess_with_garuda['type_customer'];
+                           $with_license_garuda            = $sess_with_garuda['check_customer_authorization'];
+                           $with_type_garuda               = $sess_with_garuda['type_customer'];
                        };
         
                        if(!empty($sess_with_citilink['check_customer_authorization'])){
-                       $with_license_citilink          = $sess_with_citilink['check_customer_authorization'];
-                       $with_type_citilink             = $sess_with_citilink['type_customer'];
+                           $with_license_citilink          = $sess_with_citilink['check_customer_authorization'];
+                           $with_type_citilink             = $sess_with_citilink['type_customer'];
                        };
         
                        if(!empty($sess_with_sriwijaya['check_customer_authorization'])){
-                       $with_license_sriwijaya         = $sess_with_sriwijaya['check_customer_authorization'];
-                       $with_type_sriwijaya            = $sess_with_sriwijaya['type_customer']; 
+                           $with_license_sriwijaya         = $sess_with_sriwijaya['check_customer_authorization'];
+                           $with_type_sriwijaya            = $sess_with_sriwijaya['type_customer']; 
                        };
 
                        if(!empty($sess_with_cofc['check_cofc'])){
-                       $with_license_cofc         = $sess_with_cofc['check_cofc'];
-                       $with_type_cofc            = $sess_with_cofc['type_cofc']; 
+                           $with_license_cofc         = $sess_with_cofc['check_cofc'];
+                           $with_type_cofc            = $sess_with_cofc['type_cofc']; 
                        };
                                                                                  
                        for($a = 0; $a<$file_req_document_general_s; $a++){                 
-                       if($_FILES['file_req_document_general']['size'][$a] != 0){                
-                       $code_req_general_document = $code_req_general_document_s[$a];                                
-                       $fileNameOld = $_FILES['file_req_document_general']['name'][$a];                                                    
-                       @$ext = end(explode('.',$_FILES['file_req_document_general']['name'][$a]));                          
-                       $fileNameNew = $personnel_number.'_'.$code_req_general_document_s[$a].'.'.$ext;                                                                                                                  
-                       $sourceFileName = $_FILES['file_req_document_general']['tmp_name'][$a];                  
-                                                                                                                                                                      
-                       @$destination = $fileNameOld;                                   
-                       @$destinationnew = $fileNameNew;                                                           
-                       $send = $this->ftp->upload($sourceFileName,$destination);                               
-                       $this->ftp->rename($destination,$destinationnew);
+                       if($_FILES['file_req_document_general']['size'][$a] != 0){                             
+                            $code_req_general_document = $code_req_general_document_s[$a];  
+                           @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_general_document);                       
+                           $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);                              
+                           $fileNameOld = $_FILES['file_req_document_general']['name'][$a];                                                    
+                           @$ext = end(explode('.',$_FILES['file_req_document_general']['name'][$a]));                          
+                           $fileNameNew = $personnel_number.'_'.$code_req_general_document_s[$a].'.'.$ext;                                                                                                                  
+                           $sourceFileName = $_FILES['file_req_document_general']['tmp_name'][$a];                  
+                                                                                                                                                                          
+                           @$destination = $fileNameOld;                                   
+                           @$destinationnew = $fileNameNew;                                                           
+                           $send = $this->ftp->upload($sourceFileName,$destination);                               
+                           $this->ftp->rename($destination,$destinationnew);
                                                                                                                                                                                    
-                       $data_license = array(
-                       'personnel_number_fk'     => $personnel_number,                
-                       'name_file'               => $fileNameNew,
-                       'code_file'               => $code_req_general_document,
-                       'id_auth_license_fk'      => $license,
-                       'id_auth_type_fk'         => $type,
-                       'status_license'          => $status_license
-                       );                                                     
-                       $this->db->insert('t_file_requirement',$data_license);                  
-                       if(!empty($sess_license_easa['check_easa'])){
-                       $data_easa = array(
-                       'id_auth_license_easa_fk'      => @$license_easa,
-                       'id_auth_type_easa_fk'         => @$type_easa                                
-                        );                                
-                                       
-                        $this->db->where('personnel_number_fk',$personnel_number);
-                        $this->db->where('code_file',$code_req_general_document);                                                   
-                        $this->db->update('t_file_requirement',$data_easa);
-                        }
+                           $data_license = array(
+                               'personnel_number_fk'     => $personnel_number,                
+                               'name_file'               => $fileNameNew,
+                               'code_file'               => $code_req_general_document,
+                               'id_auth_license_fk'      => $license,
+                               'id_auth_type_fk'         => $type,
+                               'status_license'          => $status_license
+                           );                                                     
+                           $this->db->insert('t_file_requirement',$data_license);                  
+                               if(!empty($sess_license_easa['check_easa'])){
+                                   $data_easa = array(
+                                       'id_auth_license_easa_fk'      => @$license_easa,
+                                       'id_auth_type_easa_fk'         => @$type_easa                                
+                                    );                                
+                                                   
+                                    $this->db->where('personnel_number_fk',$personnel_number);
+                                    $this->db->where('code_file',$code_req_general_document);                                         
+                                    $this->db->update('t_file_requirement',$data_easa);
+                                }
                        
-                       if(!empty($sess_license_special['check_special'])){
-                       $data_special = array(
-                       'id_auth_license_special_fk'   => @$license_special,
-                       'id_auth_type_special_fk'      => @$type_special                                
-                       );
-                                                        
-                       $this->db->where('personnel_number_fk',$personnel_number);
-                       $this->db->where('code_file',$code_req_general_document);  
-                       $this->db->update('t_file_requirement',$data_special);
-                       }
+                               if(!empty($sess_license_special['check_special'])){
+                                   $data_special = array(
+                                       'id_auth_license_special_fk'   => @$license_special,
+                                       'id_auth_type_special_fk'      => @$type_special                                
+                                   );
+                                                                
+                                   $this->db->where('personnel_number_fk',$personnel_number);
+                                   $this->db->where('code_file',$code_req_general_document);  
+                                   $this->db->update('t_file_requirement',$data_special);
+                               }
 
 
-                       if(!empty($sess_with_garuda['check_customer_authorization'])){                
-                       $data_garuda = array(
-                       'id_auth_license_garuda_fk'    => @$with_license_garuda,
-                       'id_auth_type_garuda_fk'       => @$with_type_garuda                                
-                       );
-                       
-                       $this->db->where('personnel_number_fk',$personnel_number);
-                       $this->db->where('code_file',$code_req_general_document);  
-                       $this->db->update('t_file_requirement',$data_garuda);
-                        }
+                               if(!empty($sess_with_garuda['check_customer_authorization'])){                
+                                   $data_garuda = array(
+                                       'id_auth_license_garuda_fk'    => @$with_license_garuda,
+                                       'id_auth_type_garuda_fk'       => @$with_type_garuda                                
+                                   );
+                               
+                                   $this->db->where('personnel_number_fk',$personnel_number);
+                                   $this->db->where('code_file',$code_req_general_document);  
+                                   $this->db->update('t_file_requirement',$data_garuda);
+                                }
 
-                       if(!empty($sess_with_citilink['check_customer_authorization'])){
-                       $data_citilink = array(
-                       'id_auth_license_citilink_fk'  => @$with_license_citilink,
-                       'id_auth_type_citilink_fk'     => @$with_type_citilink                                
-                       );
-                       $this->db->where('personnel_number_fk',$personnel_number);
-                       $this->db->where('code_file',$code_req_general_document);
-                       $this->db->update('t_file_requirement',$data_citilink);
-                       }
-                       if(!empty($sess_with_sriwijaya['check_customer_authorization'])){
-                        $data_sriwijaya = array(
-                       'id_auth_license_sriwijaya_fk' => @$with_license_sriwijaya,
-                       'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya                                
-                       );
-                       $this->db->where('personnel_number_fk',$personnel_number);
-                       $this->db->where('code_file',$code_req_general_document);
-                       $this->db->update('t_file_requirement',$data_sriwijaya);
-                       }
+                               if(!empty($sess_with_citilink['check_customer_authorization'])){
+                                   $data_citilink = array(
+                                       'id_auth_license_citilink_fk'  => @$with_license_citilink,
+                                       'id_auth_type_citilink_fk'     => @$with_type_citilink                                
+                                   );
+                                       $this->db->where('personnel_number_fk',$personnel_number);
+                                       $this->db->where('code_file',$code_req_general_document);
+                                       $this->db->update('t_file_requirement',$data_citilink);
+                               }
+                               if(!empty($sess_with_sriwijaya['check_customer_authorization'])){
+                                    $data_sriwijaya = array(
+                                       'id_auth_license_sriwijaya_fk' => @$with_license_sriwijaya,
+                                       'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya                                
+                                    );
+                                   $this->db->where('personnel_number_fk',$personnel_number);
+                                   $this->db->where('code_file',$code_req_general_document);
+                                   $this->db->update('t_file_requirement',$data_sriwijaya);
+                                }
 
-                       if(!empty($sess_with_cofc['check_cofc'])){
-                       $data_cofc = array(
-                       'id_auth_license_cofc_fk'      => @$with_license_cofc,
-                       'id_auth_type_cofc_fk'         => @$with_type_cofc                                
-                       );
-                       $this->db->where('personnel_number_fk',$personnel_number);
-                       $this->db->where('code_file',$code_req_general_document); 
-                       $this->db->update('t_file_requirement',$data_cofc);
-                       }                                                               
-                       }                   
+                               if(!empty($sess_with_cofc['check_cofc'])){
+                                   $data_cofc = array(
+                                       'id_auth_license_cofc_fk'      => @$with_license_cofc,
+                                       'id_auth_type_cofc_fk'         => @$with_type_cofc                                
+                                   );
+                                   $this->db->where('personnel_number_fk',$personnel_number);
+                                   $this->db->where('code_file',$code_req_general_document); 
+                                   $this->db->update('t_file_requirement',$data_cofc);
+                               }                                                               
+                           }                   
                        }
                        
                        // File General Certificate                
@@ -910,36 +934,38 @@ class Apply_license extends CI_Controller
                        $date_training_req_general_certificate_s                = $this->input->post('date_training_req_general_certificate');
                        $save_result_expiration_date_req_general_certificate_s  = $this->input->post('save_result_expiration_date_req_general_certificate');                                         
                        for($b = 0; $b<$file_req_document_certificate_s; $b++){                
-                       if($_FILES['file_req_document_certificate']['size'][$b] != 0){                                               
-                       $code_req_document_certificate = $code_req_document_certificate_s[$b];                 
-                       $date_training_req_general_certificate                  = $date_training_req_general_certificate_s[$b];               
-                       $save_result_expiration_date_req_general_certificate    = $save_result_expiration_date_req_general_certificate_s[$b];                                                       
-                       $fileNameOld                                            = $_FILES['file_req_document_certificate']['name'][$b];                                                    
-                       @$ext                                                   = end(explode('.',$_FILES['file_req_document_certificate']['name'][$b]));                          
-                       $fileNameNew                                            = $personnel_number.'_'.$code_req_document_certificate_s[$b].'.'.$ext;                                                                                   
-                       $sourceFileName                                         = $_FILES['file_req_document_certificate']['tmp_name'][$b];                                                                                                                                                              
-                       @$destination                                           = $fileNameOld;                                   
-                       @$destinationnew                                        = $fileNameNew;                                                          
-                       $send                                                   = $this->ftp->upload($sourceFileName,$destination);                               
-                       $this->ftp->rename($destination,$destinationnew);
+                       if($_FILES['file_req_document_certificate']['size'][$b] != 0){  
+                           $code_req_document_certificate = $code_req_document_certificate_s[$b];                 
+                           $date_training_req_general_certificate                  = $date_training_req_general_certificate_s[$b];               
+                           $save_result_expiration_date_req_general_certificate    = $save_result_expiration_date_req_general_certificate_s[$b];
+                           @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_document_certificate);                       
+                           $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
+                            $fileNameOld  = $_FILES['file_req_document_certificate']['name'][$b];
+                            @$ext         = end(explode('.',$_FILES['file_req_document_certificate']['name'][$b]));                          
+                            $fileNameNew  = $personnel_number.'_'.$code_req_document_certificate_s[$b].'.'.$ext;
+                            $sourceFileName      = $_FILES['file_req_document_certificate']['tmp_name'][$b];                     
+                            @$destination        = $fileNameOld;                                   
+                            @$destinationnew     = $fileNameNew;                                                          
+                            $send = $this->ftp->upload($sourceFileName,$destination);                               
+                            $this->ftp->rename($destination,$destinationnew);
         
                        $data_general_certificate = array(
-                       'personnel_number_fk'     => $personnel_number,                
-                       'date_training'           => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
-                       'expiration_date'         => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b])),                                
-                       'code_file'               => $code_req_document_certificate_s[$b],                
-                       'name_file'               => $fileNameNew,
-                       'id_auth_license_fk'      => $license,
-                       'id_auth_type_fk'         => $type                
+                       'personnel_number_fk'  => $personnel_number,                
+                       'date_training'        => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
+                       'expiration_date'      => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b])),                                
+                       'code_file'            => $code_req_document_certificate_s[$b],                
+                       'name_file'            => $fileNameNew,
+                       'id_auth_license_fk'   => $license,
+                       'id_auth_type_fk'      => $type                
                        );
         
                        $this->db->insert('t_file_requirement',$data_general_certificate);
         
                        $data_easa = array(
-                       'id_auth_license_easa_fk'      => @$license_easa,
-                       'id_auth_type_easa_fk'         => @$type_easa,
-                       'date_training_easa'                => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
-                       'expiration_date_easa'              => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b]))                                
+                       'id_auth_license_easa_fk'  => @$license_easa,
+                       'id_auth_type_easa_fk'     => @$type_easa,
+                       'date_training_easa'       => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
+                       'expiration_date_easa'     => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b]))                                
                        );                                
                                        
                        $this->db->where('personnel_number_fk',$personnel_number);
@@ -1008,9 +1034,12 @@ class Apply_license extends CI_Controller
                        $save_result_expiration_date_req_spec_certificate_s = $this->input->post('save_result_expiration_date_req_spec_certificate');                                                                          
                        for($c = 0; $c<$file_req_spec_certificate_s; $c++){                 
                        if($_FILES['file_req_spec_certificate']['size'][$c] != 0){                                               
-                       $code_req_spec_certificate                          = $code_req_spec_certificate_s[$c]; 
-                       $date_training_req_spec_certificate                 = $date_training_req_spec_certificate_s[$c];
-                       $save_result_expiration_date_req_spec_certificate   = $save_result_expiration_date_req_spec_certificate_s[$c];                                                       
+                            $code_req_spec_certificate                          = $code_req_spec_certificate_s[$c]; 
+                            @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate);                       
+                            $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
+                            
+                            $date_training_req_spec_certificate                 = $date_training_req_spec_certificate_s[$c];
+                            $save_result_expiration_date_req_spec_certificate   = $save_result_expiration_date_req_spec_certificate_s[$c];                                                       
                        $fileNameOld                                        = $_FILES['file_req_spec_certificate']['name'][$c];                                                    
                        @$ext                                               = end(explode('.',$_FILES['file_req_spec_certificate']['name'][$c]));                          
                        $fileNameNew                                        = $personnel_number.'_'.$code_req_spec_certificate_s[$c].'.'.$ext;                                                                                                                  
@@ -1094,6 +1123,8 @@ class Apply_license extends CI_Controller
                        for($d = 0; $d<$file_req_spec_certificate_license_garuda_s; $d++){                 
                        if($_FILES['file_req_spec_certificate_license_garuda']['size'][$d] != 0){                                               
                        $code_req_spec_certificate_license_garuda                          = $code_req_spec_certificate_license_garuda_s[$d]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_license_garuda);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_license_garuda                 = $date_training_req_spec_certificate_license_garuda_s[$d];
                        $save_result_expiration_date_req_spec_certificate_license_garuda   = $save_result_expiration_date_req_spec_certificate_license_garuda_s[$d];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_license_garuda']['name'][$d];                                                    
@@ -1176,6 +1207,8 @@ class Apply_license extends CI_Controller
                        for($e = 0; $e<$file_req_spec_certificate_license_citilink_s; $e++){                 
                        if($_FILES['file_req_spec_certificate_license_citilink']['size'][$e] != 0){                                               
                        $code_req_spec_certificate_license_citilink                          = $code_req_spec_certificate_license_citilink_s[$e]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_license_citilink);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_license_citilink                 = $date_training_req_spec_certificate_license_citilink_s[$e];
                        $save_result_expiration_date_req_spec_certificate_license_citilink   = $save_result_expiration_date_req_spec_certificate_license_citilink_s[$e];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_license_citilink']['name'][$e];                                                    
@@ -1259,6 +1292,8 @@ class Apply_license extends CI_Controller
                        for($f = 0; $f<$file_req_spec_certificate_license_sriwijaya_s; $f++){                 
                        if($_FILES['file_req_spec_certificate_license_sriwijaya']['size'][$f] != 0){                                               
                        $code_req_spec_certificate_license_sriwijaya                          = $code_req_spec_certificate_license_sriwijaya_s[$f]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_license_sriwijaya);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_license_sriwijaya                 = $date_training_req_spec_certificate_license_sriwijaya_s[$f];
                        $save_result_expiration_date_req_spec_certificate_license_sriwijaya   = $save_result_expiration_date_req_spec_certificate_license_sriwijaya_s[$f];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_license_sriwijaya']['name'][$f];                                                    
@@ -1341,8 +1376,10 @@ class Apply_license extends CI_Controller
                        for($g = 0; $g<$file_req_spec_certificate_easa_s; $g++){                 
                        if($_FILES['file_req_spec_certificate_easa']['size'][$g] != 0){                                               
                        $code_req_spec_certificate_easa                          = $code_req_spec_certificate_easa_s[$g]; 
+                       @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_easa);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_easa                 = $date_training_req_spec_certificate_easa_s[$g];
-                       $save_result_expiration_date_req_spec_certificate_easa   = $save_result_expiration_date_req_spec_certificate_easa_s[$g];                                                       
+                       $save_result_expiration_date_req_spec_certificate_easa   = $save_result_expiration_date_req_spec_certificate_easa_s[$g];
                        $fileNameOld = $_FILES['file_req_spec_certificate_easa']['name'][$g];                                                    
                        @$ext = end(explode('.',$_FILES['file_req_spec_certificate_easa']['name'][$g]));                          
                        $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_easa_s[$g].'.'.$ext;                                                                                                                  
@@ -1375,6 +1412,8 @@ class Apply_license extends CI_Controller
                        for($h = 0; $h<$file_req_spec_certificate_special_s; $h++){                 
                        if($_FILES['file_req_spec_certificate_special']['size'][$g] != 0){                                               
                        $code_req_spec_certificate_special                          = $code_req_spec_certificate_special_s[$h]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_special);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_special                 = $date_training_req_spec_certificate_special_s[$h];
                        $save_result_expiration_date_req_spec_certificate_special   = $save_result_expiration_date_req_spec_certificate_special_s[$h];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_special']['name'][$h];                                                    
@@ -1407,7 +1446,9 @@ class Apply_license extends CI_Controller
                        $save_result_expiration_date_req_spec_certificate_garuda_s = $this->input->post('save_result_expiration_date_req_spec_certificate_garuda');                                                                          
                        for($i = 0; $i<$file_req_spec_certificate_garuda_s; $i++){                 
                        if($_FILES['file_req_spec_certificate_garuda']['size'][$i] != 0){                                               
-                       $code_req_spec_certificate_garuda                          = $code_req_spec_certificate_garuda_s[$i]; 
+                        $code_req_spec_certificate_garuda                          = $code_req_spec_certificate_garuda_s[$i]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_garuda);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_garuda                 = $date_training_req_spec_certificate_garuda_s[$i];
                        $save_result_expiration_date_req_spec_certificate_garuda   = $save_result_expiration_date_req_spec_certificate_garuda_s[$i];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_garuda']['name'][$i];                                                    
@@ -1441,6 +1482,8 @@ class Apply_license extends CI_Controller
                        for($j = 0; $j<$file_req_spec_certificate_citilink_s; $j++){                 
                        if($_FILES['file_req_spec_certificate_citilink']['size'][$j] != 0){                                               
                        $code_req_spec_certificate_citilink                          = $code_req_spec_certificate_citilink_s[$j]; 
+                       @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_citilink);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_citilink                 = $date_training_req_spec_certificate_citilink_s[$j];
                        $save_result_expiration_date_req_spec_certificate_citilink   = $save_result_expiration_date_req_spec_certificate_citilink_s[$j];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_citilink']['name'][$j];                                                    
@@ -1473,6 +1516,8 @@ class Apply_license extends CI_Controller
                        for($k = 0; $k<$file_req_spec_certificate_sriwijaya_s; $k++){                 
                        if($_FILES['file_req_spec_certificate_sriwijaya']['size'][$g] != 0){                                               
                        $code_req_spec_certificate_sriwijaya                          = $code_req_spec_certificate_sriwijaya_s[$k]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_sriwijaya);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_sriwijaya                 = $date_training_req_spec_certificate_sriwijaya_s[$k];
                        $save_result_expiration_date_req_spec_certificate_sriwijaya   = $save_result_expiration_date_req_spec_certificate_sriwijaya_s[$k];                                                       
                        $fileNameOld = $_FILES['file_req_spec_certificate_sriwijaya']['name'][$k];                                                    
@@ -1503,9 +1548,11 @@ class Apply_license extends CI_Controller
                        $save_result_expiration_date_req_spec_certificate_cofc_s = $this->input->post('save_result_expiration_date_req_spec_certificate_cofc');                                                                          
                        for($l = 0; $l<$file_req_spec_certificate_cofc_s; $l++){                 
                        if($_FILES['file_req_spec_certificate_cofc']['size'][$l] != 0){                                               
-                       $code_req_spec_certificate_cofc                          = $code_req_spec_certificate_cofc_s[$l]; 
+                        $code_req_spec_certificate_cofc                          = $code_req_spec_certificate_cofc_s[$l]; 
+                        @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_cofc);                       
+                       $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                        $date_training_req_spec_certificate_cofc                 = $date_training_req_spec_certificate_cofc_s[$l];
-                       $save_result_expiration_date_req_spec_certificate_cofc   = $save_result_expiration_date_req_spec_certificate_cofc_s[$l];                                                       
+                       $save_result_expiration_date_req_spec_certificate_cofc   = $save_result_expiration_date_req_spec_certificate_cofc_s[$l];                                                    
                        $fileNameOld = $_FILES['file_req_spec_certificate_cofc']['name'][$l];                                                    
                        @$ext = end(explode('.',$_FILES['file_req_spec_certificate_cofc']['name'][$l]));                          
                        $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_cofc_s[$l].'.'.$ext;                                                                                                                  
@@ -1527,12 +1574,11 @@ class Apply_license extends CI_Controller
                        );                 
                        $this->db->insert('t_file_requirement',$data_cofc);                                                                            
                        }                
-                       }                                                  
-                       $this->ftp->close();
-                               
-                   if(isset($_POST['savecompletingdata'])){
-                   redirect(site_url('apply_license/index'));
-                   };
+                       }                                                                         
+                   $this->ftp->close();            
+       if(isset($_POST['savecompletingdata'])){
+       redirect(site_url('apply_license/index'));
+       };
         if (isset($_POST['submitcompletingdata'])) {
             $sess_completing_data = array(
                 'submitcompletingdata' => $this->input->post('submitcompletingdata')
@@ -1543,11 +1589,11 @@ class Apply_license extends CI_Controller
             if ($this->m_apply_license->get_all_data_personnel($personnel_number) == 1) {
             } else if ($this->m_apply_license->get_all_data_personnel_non($personnel_number) == 0) {
                 $data = array(
-                    'personnel_number' => $sess_data_personnel['personnel_number'],
-                    'name' => $sess_data_personnel['name'],
-                    'presenttitle' => $sess_data_personnel['presenttitle'],
-                    'departement' => $sess_data_personnel['departement'],
-                    'email' => $sess_data_personnel['email'],
+                    'personnel_number'      => $sess_data_personnel['personnel_number'],
+                    'name'                  => $sess_data_personnel['name'],
+                    'presenttitle'          => $sess_data_personnel['presenttitle'],
+                    'departement'           => $sess_data_personnel['departement'],
+                    'email'                 => $sess_data_personnel['email'],
                     'dateofbirth' => date('Y-m-d', strtotime($sess_data_personnel['dateofbirth'])),
                     'dateofemployee' => date('Y-m-d', strtotime($sess_data_personnel['dateofemployee'])),
                     'formaleducation' => $sess_data_personnel['formaleducation'],
@@ -1864,16 +1910,18 @@ class Apply_license extends CI_Controller
             $tab_category_s        = $sess_license['tab_category_s'];
             $tab_scope_s           = $sess_license['tab_scope_s'];
             $tab_scope_assesment_s = $sess_license['tab_scope_assesment_s'];
+            $etops_s               = $sess_license['etops_s'];
             if (is_array($tab_scope_s) || is_object($tab_scope_s)) {
                 foreach ($tab_scope_s as $key => $value) {
                     $data_license = array(
-                        'request_number_fk' => $request_number,
-                        'id_auth_license_fk' => $sess_license['license'],
-                        'id_auth_type_fk' => $sess_license['type'],
-                        'id_auth_spect_fk' => $tab_spec_s[$key],
-                        'id_auth_category_fk' => $tab_category_s[$key],
-                        'id_auth_scope_fk' => $tab_scope_s[$key],
-                        'id_assesment_scope_fk' => $tab_scope_assesment_s[$key]
+                        'request_number_fk'     => $request_number,
+                        'id_auth_license_fk'    => $sess_license['license'],
+                        'id_auth_type_fk'       => $sess_license['type'],
+                        'id_auth_spect_fk'      => $tab_spec_s[$key],
+                        'id_auth_category_fk'   => $tab_category_s[$key],
+                        'id_auth_scope_fk'      => $tab_scope_s[$key],
+                        'id_assesment_scope_fk' => $tab_scope_assesment_s[$key],
+                        'is_etops'              => $etops_s[$key],
                     );
                     $this->db->insert('t_apply_license_dtl', $data_license);
                 }
@@ -1885,13 +1933,13 @@ class Apply_license extends CI_Controller
             $tab_scope_assesment_license_garuda_s = $sess_license_garuda['tab_scope_assesment_license_garuda_s'];
             if (is_array($tab_scope_license_garuda_s) || is_object($tab_scope_license_garuda_s)) {
                 foreach ($tab_scope_license_garuda_s as $key => $value_license_garuda) {
-                    $data_license_garuda = array(
-                        'request_number_fk' => $request_number,
-                        'id_auth_license_fk' => $sess_license_garuda['license'],
-                        'id_auth_type_fk' => $sess_license_garuda['type_check_23'],
-                        'id_auth_spect_fk' => $tab_spec_license_garuda_s[$key],
-                        'id_auth_category_fk' => $tab_category_license_garuda_s[$key],
-                        'id_auth_scope_fk' => $tab_scope_license_garuda_s[$key],
+                    $data_license_garuda        = array(
+                        'request_number_fk'     => $request_number,
+                        'id_auth_license_fk'    => $sess_license_garuda['license'],
+                        'id_auth_type_fk'       => $sess_license_garuda['type_check_23'],
+                        'id_auth_spect_fk'      => $tab_spec_license_garuda_s[$key],
+                        'id_auth_category_fk'   => $tab_category_license_garuda_s[$key],
+                        'id_auth_scope_fk'      => $tab_scope_license_garuda_s[$key],
                         'id_assesment_scope_fk' => $tab_scope_assesment_license_garuda_s[$key]
                     );
                     $this->db->insert('t_apply_license_dtl', $data_license_garuda);
@@ -1905,13 +1953,13 @@ class Apply_license extends CI_Controller
             if (is_array($tab_scope_license_citilink_s) || is_object($tab_scope_license_citilink_s)) {
                 foreach ($tab_scope_license_citilink_s as $key => $value_license_citilink) {
                     $data_license_citilink = array(
-                        'request_number_fk' => $request_number,
-                        'id_auth_license_fk' => $sess_license_citilink['license'],
-                        'id_auth_type_fk' => $sess_license_citilink['type_check_24'],
-                        'id_auth_spect_fk' => $tab_spec_license_citilink_s[$key],
-                        'id_auth_category_fk' => $tab_category_license_citilink_s[$key],
-                        'id_auth_scope_fk' => $tab_scope_license_citilink_s[$key],
-                        'id_assesment_scope_fk' => $tab_scope_assesment_license_citilink_s[$key]
+                        'request_number_fk'         => $request_number,
+                        'id_auth_license_fk'        => $sess_license_citilink['license'],
+                        'id_auth_type_fk'           => $sess_license_citilink['type_check_24'],
+                        'id_auth_spect_fk'          => $tab_spec_license_citilink_s[$key],
+                        'id_auth_category_fk'       => $tab_category_license_citilink_s[$key],
+                        'id_auth_scope_fk'          => $tab_scope_license_citilink_s[$key],
+                        'id_assesment_scope_fk'     => $tab_scope_assesment_license_citilink_s[$key]
                     );
                     $this->db->insert('t_apply_license_dtl', $data_license_citilink);
                 }
@@ -2053,27 +2101,15 @@ class Apply_license extends CI_Controller
             }
             $sess_data_personnel     = $this->session->userdata('sess_data_personnel');
             // Send Notification Email To Atasan  
-            // $config                  = Array(
-            //     'protocol' => 'smtp',
-            //     'smtp_host' => 'mail.gmf-aeroasia.co.id',
-            //     'smtp_port' => 25,
-            //     'smtp_user' => 'app.notif',
-            //     'smtp_pass' => 'app.notif',
-            //     'mailtype' => 'html',
-            //     'charset' => 'iso-8859-1',
-            //     'wordwrap' => TRUE
-            // );
-
             $config = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
-            'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE);
-
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE);  
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2111,7 +2147,7 @@ class Apply_license extends CI_Controller
                         <td> Authorization </td>
                         <td> Authorization Type </td>
                         <td> Reason of Type </td>                        
-                        <td> Scope of AUTHORIZATION </td>                        
+                        <td> Scope of Authorization </td>                        
                         </tr>';
             $no = 1;
             foreach ($cekdataemail as $row) {
@@ -2134,21 +2170,30 @@ class Apply_license extends CI_Controller
                         $reason_apply_license = 'Rating Change/ Upgrade';
                         break;
                 }
+                $c_etops = $row->is_etops;
+                
+                switch ($c_etops) {
+                    case 0:
+                        $etops = '';
+                        break;
+                    case 1:
+                        $etops = '+ ETOPS';
+                        break;
+                    }
                 $pesan .= '                    
-                        <td> ' . $reason_apply_license . ' </td>                                                                    
-                        <td> ' . $row->name_scope . ' </td>                                                
+                        <td> ' . $reason_apply_license . ' </td>                                                
+                        <td> ' . $row->name_scope . ' ' . $etops .' </td>                                                
                         </tr>';
-            }
+                    }
             $pesan .= '</table>';
             $pesan .= '<p>Application(s) has been successfully submitted and currently need your confirmation and 
                         approval to be proceed into the next phase by Personnel Qualification and Quality System Documentation Department.</p>';
             $pesan .= '<p>To APPROVE or DISAPPROVE the License application, please click the link below : </p>';
-            if (date('Y-m-d', strtotime($date_validity)) >= date('Y-m-d', strtotime($date_now))) {
-                $pesan .= '<p><a href=' . $url_cek_approved_atasan . '> ' . $url_cek_approved_atasan . '</a></p>';
-            } else if (date('Y-m-d', strtotime($date_validity)) < date('Y-m-d', strtotime($date_now))) {
-                $pesan .= '<p><a href="#">Link Not Valid</a></p>';
-            }
-            ;
+                if (date('Y-m-d', strtotime($date_validity)) >= date('Y-m-d', strtotime($date_now))) {
+                    $pesan .= '<p><a href=' . $url_cek_approved_atasan . '> ' . $url_cek_approved_atasan . '</a></p>';
+                } else if (date('Y-m-d', strtotime($date_validity)) < date('Y-m-d', strtotime($date_now))) {
+                    $pesan .= '<p><a href="#">Link Not Valid</a></p>';
+                };
             $pesan .= '<b>Note :</b>';
             $pesan .= '<p>-  If the link above is disabled, copy and paste it into your internet browser address bar.</p>';
             $pesan .= '<p>- Link above is only valid for the next 30 days, after the time period has expired,
@@ -2160,7 +2205,7 @@ class Apply_license extends CI_Controller
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             //        die($pesan);                
             $this->email->message($pesan);
-            if ($this->email->send()) {
+            if ($this->email->send()) {                
                 redirect(base_url());
                 $this->session->unset_userdata('sess_license');
                 $this->session->unset_userdata('sess_license_easa');
@@ -2168,7 +2213,7 @@ class Apply_license extends CI_Controller
                 $this->session->unset_userdata('sess_license_garuda');
                 $this->session->unset_userdata('sess_license_citilink');
                 $this->session->unset_userdata('sess_license_sriwijaya');
-            } else {
+            } else {                
                 redirect(base_url());
                 $this->session->unset_userdata('sess_license');
                 $this->session->unset_userdata('sess_license_easa');
@@ -2225,12 +2270,7 @@ class Apply_license extends CI_Controller
                                 }
                             
                         @$get_data_apply_personnel_by = $this->m_apply_license->get_data_apply_personnel_by($personnel_number);
-                        @$get_request_apply_personnel_by = $this->m_apply_license->get_request_apply_personnel_by($cek_validate_req_number, $personnel_number);
-                        $send_email=array(
-                            'send_email' => 1,    
-                            );
-                        $this->db->where('t_apply_license.request_number', $cek_validate_req_number);
-                        $this->db->update('t_apply_license',$send_email);            
+                        @$get_request_apply_personnel_by = $this->m_apply_license->get_request_apply_personnel_by($cek_validate_req_number, $personnel_number);                                
                         $data['data_cek_approved_atasan']       = @$data_cek_approved_atasan;
                         $data['get_data_apply_personnel_by']    = @$get_data_apply_personnel_by;
                         $data['get_request_apply_personnel_by'] = @$get_request_apply_personnel_by;
@@ -2269,26 +2309,15 @@ class Apply_license extends CI_Controller
         $data_applicant             = $this->m_apply_license->get_data_row_personnel_by($personnel_number_applicant);
         $name_applicant             = $data_applicant['EMPLNAME'];
         $email_applicant            = $data_applicant['EMAIL'];
-        // $config                     = Array(
-        //     'protocol' => 'smtp',
-        //     'smtp_host' => 'mail.gmf-aeroasia.co.id',
-        //     'smtp_port' => 25,
-        //     'smtp_user' => 'app.notif',
-        //     'smtp_pass' => 'app.notif',
-        //     'mailtype' => 'html',
-        //     'charset' => 'iso-8859-1',
-        //     'wordwrap' => TRUE
-        // );
         $config = Array(
-            'protocol'  => 'smtp',
+            'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
-            'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE
-        );
+            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE);  
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
@@ -2346,6 +2375,11 @@ class Apply_license extends CI_Controller
         ;
         //Send Notification Email To Atasan                                 
         if ($this->email->send()) {
+            $send_email=array(
+                'send_email' => 1,    
+                );
+            $this->db->where('t_apply_license.request_number', $request_number);
+            $this->db->update('t_apply_license',$send_email); 
             redirect(base_url());
         } else {
             redirect(base_url());
@@ -2389,7 +2423,7 @@ class Apply_license extends CI_Controller
             $where .= " AND TSH.name LIKE '%$name_personnel%' ";
         }
         ;
-        $data_query               = "SELECT TOP 1  TSH.name, TSH.personnel_number, TSH.departement, TSH.presenttitle, TSH.mobilephone, TSH.businessphone, t_apply_license.request_number, 
+        $data_query               = "SELECT TOP 1  TSH.name, TSH.personnel_number, TSH.departement, TSH.presenttitle, TSH.mobilephone, TSH.businessphone, t_apply_license.request_number, t_apply_license.status_assesment AS check_assesment,
             (CASE t_apply_license.status_submit WHEN '1' THEN 'Data Submited' END) AS submited, 
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105)) AS date_submited,
             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108)) AS time_submited, 

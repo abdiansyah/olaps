@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){	  
-	$('#datatables').dataTable({
+	$('#datatables_users').dataTable({
 		"scrollY"			: "342px",
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
@@ -33,13 +33,13 @@ $(document).ready(function(){
 </div>
 
 <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
-	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables">
+	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_users">
 		<thead>
 			<tr>
-				<th width="3%">no</th>
-				<th width="70%">Employee name</th>				
+				<th width="3%">No</th>
+				<th width="60%">Employee name</th>				
 				<th width="22%">Group</th>				
-				<th width="5%">Action</th>
+				<th width="15%">Action</th>
 			</tr>
 		</thead>
 	</table>

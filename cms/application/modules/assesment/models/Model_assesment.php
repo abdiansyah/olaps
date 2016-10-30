@@ -8,7 +8,10 @@ class Model_assesment extends CI_Model {
 	private $order 			= array('personnel_number' => 'asc'); 
 			
 	public function _get_query() {
- 	  $this->db->select('TSH.name, TAS.id_assesment_scope_fk, TAS.personnel_number_fk, masc.name_t, TAS.date_written_assesment, TAS.request_number_fk, (masses.name_t) AS name_sesi, mr.name_room, TAS.score, TAS.result, TAS.score_oral, TAS.result_oral');	   	   
+        $subQuery_pic_written = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_written')->get_compiled_select();
+
+        $subQuery_pic_oral = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_oral')->get_compiled_select();
+ 	  $this->db->select("TSH.name, TAS.id_assesment_scope_fk, TAS.personnel_number_fk, masc.name_t, TAS.date_written_assesment, TAS.date_oral_assesment, TAS.request_number_fk, (masses.name_t) AS name_sesi, mr.name_room, TAS.score_written, TAS.result_written, TAS.score_oral, TAS.result_oral, (" . $subQuery_pic_written . ") AS pic_written, (" . $subQuery_pic_oral . ") AS pic_oral");	   	   
 		$this->db->from('t_assesment AS TAS ');                
 		$this->db->join('UNION_EMP AS TSH', 'TSH.personnel_number = TAS.personnel_number_fk', 'left');
         $this->db->join('m_assesment_scope AS masc','TAS.id_assesment_scope_fk = masc.id','left');
@@ -24,7 +27,7 @@ class Model_assesment extends CI_Model {
 		}
 	}
 	
-	public function get_value_assesment() {		
+	public function get_written_assesment() {		
         $request_number_written        = $this->input->post('request_number_written');                
         $personnel_number_written      = $this->input->post('personnel_number_written');
         $status_assesment_written      = $this->input->post('status_assesment_written');
@@ -60,11 +63,11 @@ class Model_assesment extends CI_Model {
         }
         
         if(!empty($score_written)){
-           $this->db->where('score', $score_written);    
+           $this->db->where('score_written', $score_written);    
         }
         
         if(!empty($result_written)){
-           $this->db->where('result', $result_written);    
+           $this->db->where('result_written', $result_written);    
         }
         
         $this->db->where('id_written_sesi!=',null);
@@ -123,11 +126,11 @@ class Model_assesment extends CI_Model {
         }
         
         if(!empty($score_oral)){
-           $this->db->where('score', $score_oral);    
+           $this->db->where('score_oral', $score_oral);    
         }
         
         if(!empty($result_oral)){
-           $this->db->where('result', $result_oral);    
+           $this->db->where('result_oral', $result_oral);    
         }
         $this->db->where('id_oral_sesi !=',null);		
 		if($_POST['length'] != -1)
@@ -155,11 +158,21 @@ class Model_assesment extends CI_Model {
 	}
     
     public function by_request_number($id='', $id_scope=''){
-		$datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.score, TAS.result, TAS.score_oral, TAS.result_oral FROM t_assesment AS TAS
+        $subQuery_pic_written = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_written')->get_compiled_select();
+
+		$datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.score_written, TAS.result_written, TAS.score_oral, TAS.result_oral, (" . $subQuery_pic_written . ") AS pic_written FROM t_assesment AS TAS
                     LEFT JOIN UNION_EMP AS TSH ON TSH.personnel_number = TAS.personnel_number_fk
                     LEFT JOIN m_assesment_scope AS masc ON TAS.id_assesment_scope_fk = masc.id WHERE request_number_fk = '$id' AND id_assesment_scope_fk = '$id_scope'";
 		return $this->db->query($datasrc)->num_rows() > 0 ? $this->db->query($datasrc)->row() : $this;
 	}
+
+    public function by_request_number_oral($id='', $id_scope=''){
+        $subQuery_pic_oral = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_oral')->get_compiled_select();
+        $datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.score_written, TAS.result_written, TAS.score_oral, TAS.result_oral, (" . $subQuery_pic_oral . ") AS pic_oral FROM t_assesment AS TAS
+                    LEFT JOIN UNION_EMP AS TSH ON TSH.personnel_number = TAS.personnel_number_fk
+                    LEFT JOIN m_assesment_scope AS masc ON TAS.id_assesment_scope_fk = masc.id WHERE request_number_fk = '$id' AND id_assesment_scope_fk = '$id_scope'";
+        return $this->db->query($datasrc)->num_rows() > 0 ? $this->db->query($datasrc)->row() : $this;
+    }
     
     public function show_ajax_scope_assesment($personnel_number){
 		$query = "SELECT personnel_number_fk,

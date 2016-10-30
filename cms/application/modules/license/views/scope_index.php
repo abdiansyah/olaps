@@ -4,7 +4,8 @@ $('#datatables_scope').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
         "select"            : true,      
-        "scrollCollapse"	: true,
+        "scrollCollapse"	: true,                
+        "bSort"             : false,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
 		"order" 	 		: [], //Initial no order.                
@@ -36,8 +37,7 @@ $('#datatables_scope').dataTable({
 
 <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped tabel_bootstrap" id="datatables_scope">
-		<thead>
-			<tr><h3>&nbsp;scope</h3></tr>
+		<thead>			
             <tr>				
 				<th width="15%">Name scope</th>                
                 <th width="15%">Keterangan</th>

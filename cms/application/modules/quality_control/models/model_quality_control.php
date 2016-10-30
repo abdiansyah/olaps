@@ -38,15 +38,17 @@ class model_quality_control extends CI_Model
                         WHEN t_apply_license.status_approved_quality IS NULL then                         
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))                             
                         WHEN t_apply_license.status_assesment IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))                 
+                        WHEN t_apply_license.date_status_assesment IS NULL then
+                        (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),105)) FROM t_assesment AS TA WHERE (TA.request_number_fk=t_apply_license.request_number))
                         WHEN t_apply_license.status_issue_authorization IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))                                                                                                                                            
-                        WHEN t_apply_license.referral_authorization IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),105))
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))
                         WHEN t_apply_license.take_authorization IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),105))
-                        WHEN t_apply_license.take_authorization IS NOT NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))                        
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),105))
+                        WHEN t_apply_license.finished IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))
+                        WHEN t_apply_license.finished IS NOT NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_finish,120),105))
                         END) as last_update,
                         (CASE WHEN t_apply_license.status_approved_superior IS NULL then 
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108))                               
@@ -398,33 +400,58 @@ class model_quality_control extends CI_Model
         };
         
         $datasrc = $this->db->query("SELECT TOP 1  TSH.name, TSH.personnel_number, TSH.departement, TSH.presenttitle, TSH.mobilephone, TSH.businessphone, t_apply_license.request_number,
-                    t_apply_license.id_disposition_user_fk, t_apply_license.id_location_user_fk, t_apply_license.priority,t_apply_license.datetime_priority,
+                    t_apply_license.id_disposition_user_fk, t_apply_license.id_location_user_fk, t_apply_license.priority,t_apply_license.datetime_priority, t_apply_license.status_assesment AS check_assesment,
                     (" . $subQuery_name_disposition . ") AS name_disposition, (" . $subQuery_name_location . ") AS name_location,
                     (" . $subQuery_name_quality . ") AS name_quality,
                     (" . $subQuery_name_assesment . ") AS name_assesment, (" . $subQuery_name_issue_authorization . ") AS name_issue_authorization,     
                     (" . $subQuery_name_ref_auth . ") AS name_ref_auth, (" . $subQuery_name_take_auth . ") AS name_take_auth,     
                     (" . $subQuery_name_finish . ") AS name_finish,
                     t_apply_license.remark,
-                    (CASE WHEN t_apply_license.finished = '1' THEN 'Finish'
-                    WHEN t_apply_license.take_authorization = '1' THEN 'Take Authorization'
-                    WHEN t_apply_license.referral_authorization = '1' THEN 'Referral Authorization'
-                    WHEN t_apply_license.status_issue_authorization = '2' THEN 'Issue Authorization Finished'
-                    WHEN t_apply_license.status_issue_authorization = '1' THEN 'Issue Authorization Process'
-                    WHEN t_apply_license.status_assesment = '2' THEN 'Assesment Process Closed' 
-                    WHEN t_apply_license.status_assesment = '1' THEN 'Assesment Process' 
-                    WHEN t_apply_license.status_approved_quality = '1' THEN 'Data Validated' 
-                    WHEN t_apply_license.status_approved_quality = '2' THEN 'Data Not Valid'
-                    WHEN t_apply_license.status_approved_superior = '2' THEN 'Rejected Superior'
-                    WHEN t_apply_license.status_approved_superior = '1' THEN 'Approved Superior' 
-                    WHEN t_apply_license.status_submit = '1' THEN 'Data Submited'
-                    END) as current_status,
-                    (CASE WHEN t_apply_license.status_approved_superior IS NULL then
-                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105))                                                 
-                    WHEN t_apply_license.status_approved_quality IS NULL then                         
-                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))                             
-                    WHEN t_apply_license.status_assesment IS NULL then
-                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))                                                                                               
-                    END) as last_update, 
+                    (CASE WHEN t_apply_license.finished = '1' THEN 'Success'
+                        WHEN t_apply_license.take_authorization = '1' THEN 'Take Authorization'
+                        WHEN t_apply_license.referral_authorization = '1' THEN 'Referral Authorization'                        
+                        WHEN t_apply_license.status_issue_authorization = '2' THEN 'Issue Authorization Finished'
+                        WHEN t_apply_license.status_issue_authorization = '1' THEN 'Issue Authorization Process'
+                        WHEN t_apply_license.status_assesment = '2' THEN 'Assesment Process Closed' 
+                        WHEN t_apply_license.status_assesment = '1' THEN 'Assesment Process' 
+                        WHEN t_apply_license.status_approved_quality = '1' THEN 'Data Validated' 
+                        WHEN t_apply_license.status_approved_quality = '2' THEN 'Data Rejected'
+                        WHEN t_apply_license.status_approved_superior = '2' THEN 'Rejected Superior'
+                        WHEN t_apply_license.status_approved_superior = '1' THEN 'Approved Superior' 
+                        WHEN t_apply_license.status_submit = '1' THEN 'Data Submited'
+                        END) as current_status,
+                        (CASE WHEN t_apply_license.status_approved_superior IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105))                                                 
+                        WHEN t_apply_license.status_approved_quality IS NULL then                         
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))                             
+                        WHEN t_apply_license.status_assesment IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))                 
+                        WHEN t_apply_license.date_status_assesment IS NULL then
+                        (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),105)) FROM t_assesment AS TA WHERE (TA.request_number_fk=t_apply_license.request_number))
+                        WHEN t_apply_license.status_issue_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))
+                        WHEN t_apply_license.take_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),105))
+                        WHEN t_apply_license.finished IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))
+                        WHEN t_apply_license.finished IS NOT NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_finish,120),105))
+                        END) as last_update,
+                        (CASE WHEN t_apply_license.status_approved_superior IS NULL then 
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108))                               
+                        WHEN t_apply_license.status_approved_quality IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),108))                               
+                        WHEN t_apply_license.status_assesment IS NULL then 
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108))
+                        WHEN t_apply_license.status_issue_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))                                                                                                                                          
+                        WHEN t_apply_license.referral_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),108))
+                        WHEN t_apply_license.take_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),108))
+                        WHEN t_apply_license.take_authorization IS NOT NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),108))                                                                                                             
+                        END) as time,
                     (CASE t_apply_license.status_submit WHEN '1' THEN 'Data Submited' END) AS submited, 
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105)) AS date_submited,
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108)) AS time_submited, 
@@ -603,7 +630,7 @@ class model_quality_control extends CI_Model
         $query = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                 LEFT JOIN m_auth_additional_req_spec AS maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                 LEFT JOIN m_auth_license AS mal ON mgsc.id_auth_license_fk = mal.id
-                LEFT JOIN t_apply_license_dtl AS tald ON tald.id_auth_license_fk = mgsc.id_auth_license_fk                 
+                LEFT JOIN t_apply_license_dtl AS tald ON tald.id_auth_license_fk = mgsc.id_auth_license_fk 
                 AND tald.id_auth_type_fk = mgsc.id_auth_type_fk
                 AND tald.id_auth_spect_fk = mgsc.id_auth_spect_fk
                 AND tald.id_auth_category_fk = mgsc.id_auth_category_fk
@@ -620,15 +647,49 @@ class model_quality_control extends CI_Model
         $data_room_json = json_encode($data_room);
         die($data_room_json);                
     }
+
+     public function get_room_oral($id_room){
+        $query = "SELECT mr.id_room AS ir, mr.name_room AS nr            
+                FROM m_room AS mr WHERE mr.id_room = '$id_room'";
+        $data_room = $this->db->query($query)->row();
+        $data_room_json = json_encode($data_room);
+        die($data_room_json);                
+    }
     
     public function get_room_by($id_sesi){
-        $query = "SELECT DISTINCT tasm.id, mr.quota, tasm.date_written_test, mr.id_room AS ir, mr.name_room AS nr            
+        $query = "SELECT DISTINCT tasm.id, mr.quota, tasm.date_written_assesment, mr.id_room AS ir, mr.name_room AS nr            
                 FROM t_assesment AS tasm
                 LEFT JOIN t_apply_license_dtl AS tald ON tald.request_number_fk = tasm.request_number_fk
                 LEFT JOIN t_apply_license AS tal ON tal.request_number = tald.request_number_fk
                 LEFT JOIN m_assesment_scope AS masmc ON tald.id_assesment_scope_fk = masmc.id
-                LEFT JOIN m_room AS mr ON tasm.id_room_fk = mr.id_room
-                WHERE tasm.id_sesi = '$id_sesi'";
+                LEFT JOIN m_room AS mr ON tasm.id_written_room_fk = mr.id_room
+                WHERE tasm.id_written_sesi = '$id_sesi'";
+        $data_room = $this->db->query($query)->row();
+        $data_room_json = json_encode($data_room);
+        die($data_room_json);                
+    }
+
+    public function get_room_oral_by($date_oral_assesment, $id_sesi, $id_room){
+        $date_oral_assesment = date('Y-m-d',strtotime($date_oral_assesment));
+        $query = "SELECT DISTINCT COUNT(tasm.id) AS kuota         
+                FROM t_assesment AS tasm                
+                LEFT JOIN m_room AS mr ON tasm.id_oral_room_fk = mr.id_room
+                WHERE tasm.id_oral_sesi = '$id_sesi' AND tasm.date_oral_assesment = '$date_oral_assesment'
+                AND tasm.id_oral_room_fk = '$id_room'
+                ";
+        $data_room = $this->db->query($query)->row();
+        $data_room_json = json_encode($data_room);
+        die($data_room_json);                
+    }
+
+    public function get_room_written_by($date_written_assesment, $id_sesi, $id_room){
+        $date_written_assesment = date('Y-m-d',strtotime($date_written_assesment));
+        $query = "SELECT DISTINCT COUNT(tasm.id) AS kuota         
+                FROM t_assesment AS tasm                
+                LEFT JOIN m_room AS mr ON tasm.id_written_room_fk = mr.id_room
+                WHERE tasm.id_written_sesi = '$id_sesi' AND tasm.date_written_assesment = '$date_written_assesment'
+                AND tasm.id_written_room_fk = '$id_room'
+                ";
         $data_room = $this->db->query($query)->row();
         $data_room_json = json_encode($data_room);
         die($data_room_json);                
@@ -646,17 +707,12 @@ class model_quality_control extends CI_Model
         return $this->db->query($query);
     }
 
-    public function cek_assesment_oral($request_number, $personnel_number, $id_license, $id_type, $id_spect, $id_category, $id_scope){
-        $query = "SELECT * FROM t_assesment WHERE
-                request_number_fk = '$request_number' AND 
-                personnel_number_fk = '$personnel_number' AND 
-                id_auth_license_fk = '$id_license' AND
-                id_auth_type_fk = '$id_type' AND
-                id_auth_spec_fk = '$id_spect' AND
-                id_auth_category_fk = '$id_category' AND
-                id_auth_scope_fk = '$id_scope' AND date_oral != null";
-        return $this->db->query($query);
-    }
+    public function get_code_file_by($code=''){
+        $querycode = "SELECT mdr.name FROM m_dir_requirement AS mdr
+                        LEFT JOIN UNION_REQUIREMENT AS UR ON mdr.code = UR.code_folder
+                        WHERE code_t = '$code'"; 
+        return $this->db->query($querycode)->row();          
+    } 
     
 
 

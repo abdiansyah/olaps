@@ -53,11 +53,12 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
-                                <th style="text-align: center;">&nbsp;</th>                                
-    				        </tr>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
+                                <th style="text-align: center;">&nbsp;</th>
+                            </tr>
                         </thead>
                         <div class="form-group">
                        	<tbody class="data-authorization">
@@ -78,7 +79,10 @@
                                     </select>
                                     <a id="scope-assesment">
                                     </a>                                       
-                                </td>                   
+                                </td> 
+                                <td>
+                                <input type="checkbox" style="text-align: center;width:50px" id="etops"/>
+                                </td>                  
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-authorization">1</span></td>
                             </tr>
                         </tbody>
@@ -94,10 +98,11 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
-                                <th style="text-align: center;">&nbsp;</th>                                
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
+                                <th style="text-align: center;">&nbsp;</th>                               
     				        </tr>
                         </thead>
                         <div class="form-group">
@@ -120,7 +125,10 @@
                                     <a id="scope-assesment-license-garuda">
                                     
                                     </a>      
-                                </td> 
+                                </td>
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_license_garuda"/>
+                                </td>  
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-license-garuda">1</span></td>
                             </tr>
                         </tbody>
@@ -134,10 +142,11 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
-                                <th style="text-align: center;">&nbsp;</th>                                
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
+                                <th style="text-align: center;">&nbsp;</th>                              
     				        </tr>
                         </thead>
                         <div class="form-group">
@@ -160,6 +169,9 @@
                                     <a id="scope-assesment-license-citilink">
                                     
                                     </a>    
+                                </td>
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_license_citilink"/>
                                 </td> 
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-license-citilink">1</span></td>
                             </tr>
@@ -174,10 +186,11 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
-                                <th style="text-align: center;">&nbsp;</th>                                
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
+                                <th style="text-align: center;">&nbsp;</th>                               
     				        </tr>
                         </thead>
                         <div class="form-group">
@@ -201,6 +214,9 @@
                                     
                                     </a>    
                                 </td> 
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_license_sriwijaya"/>
+                                </td> 
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-license-sriwijaya">1</span></td>
                             </tr>
                         </tbody>
@@ -213,16 +229,16 @@
             <div class="panel panel-body panel-info" name="tab-add-authorization">  
                 <div class="col-md-12">
                     <div class="col-md-3" name="col-easa">
-                    <input type="checkbox" class="check_add_license" name="check_easa" value="4" checked="checked"/> EASA Authorization
+                    <input type="checkbox" class="check_add_license" name="check_easa" value="4" /> EASA Authorization
                     </div>
                     <div class="col-md-3" name="col-special">
-                    <input type="checkbox" class="check_add_license" name="check_special" value="7" checked="checked"/> Special Authorization
+                    <input type="checkbox" class="check_add_license" name="check_special" value="7" /> Special Authorization
                     </div>    
                     <div class="col-md-3" name="col-cust-auth">
-                    <input type="checkbox" class="check_add_license" name="check_customer_authorization" value="5" checked="checked"/> Customer Authorization
+                    <input type="checkbox" class="check_add_license" name="check_customer_authorization" value="5" /> Customer Authorization
                     </div> 
                     <div class="col-md-3" name="col-cofc">
-                    <input type="checkbox" class="check_add_license" name="check_c_of_c" value="3" checked="checked"/> Certificate of Competency 
+                    <input type="checkbox" class="check_add_license" name="check_c_of_c" value="3" /> Certificate of Competency 
                     </div>                     
                 </div> 
             </div> 
@@ -245,9 +261,10 @@
                     <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                    <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                    <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
+                                    <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                    <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                    <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                    <th style="width:10px">ETOPS</th>                                
                                     <th style="text-align: center;">&nbsp;</th>                                
                                 </tr>
                             </thead>
@@ -271,7 +288,10 @@
                                         <a id="scope-assesment-easa">
                                         
                                         </a>                    
-                                    </td> 
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" style="text-align: center;width:50px" id="etops_easa"/>
+                                    </td>  
                                     <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-easa"></span></td>
                                 </tr>
                             </tbody>
@@ -285,9 +305,10 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
                                 <th style="text-align: center;">&nbsp;</th>                                
     				        </tr>
                         </thead>
@@ -311,7 +332,10 @@
                                     <a id="scope-assesment-special">
                                     
                                     </a>                        
-                                </td>                                    
+                                </td> 
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_special"/>
+                                </td>                                   
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-special"></span></td>
                             </tr>
                         </tbody>
@@ -333,9 +357,10 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
                                 <th style="text-align: center;">&nbsp;</th>                                
     				        </tr>
                         </thead>
@@ -359,6 +384,9 @@
                                     <a id="scope-assesment-garuda">
                                     
                                     </a>    
+                                </td>
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_garuda"/>
                                 </td>                                    
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-garuda"></span></td>
                             </tr>
@@ -373,9 +401,10 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
                                 <th style="text-align: center;">&nbsp;</th>                                
     				        </tr>
                         </thead>
@@ -383,22 +412,25 @@
                        	<tbody class="data-citilink-authorization">
                       		<tr class="text-citilink-authorization">
                                 <td>
-                                    <select id="tab-spec-citilink" name="tab-spec-citilink[]" class="col-md-12 form-control">
+                                    <select id="tab-spec-citilink" class="col-md-12 form-control">
                   
                                     </select>                   
                                 </td>  
                                 <td>
-                                    <select id="tab-category-citilink" name="tab-category-citilink[]" class="col-md-12 form-control">
+                                    <select id="tab-category-citilink" class="col-md-12 form-control">
                   
                                     </select> 
                                 </td>  
                                 <td>
-                                    <select id="tab-scope-citilink" name="tab-scope-citilink[]" class="col-md-12 form-control"> 
+                                    <select id="tab-scope-citilink" class="col-md-12 form-control"> 
                                     
                                     </select> 
                                     <a id="scope-assesment-citilink">
                                     
                                     </a>  
+                                </td>
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_citilink"/>
                                 </td> 
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-citilink"></span></td>
                             </tr>
@@ -413,10 +445,11 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
-                                <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
-                                <th style="text-align: center;">&nbsp;</th>                                
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-8">Category</label></th>
+                                <th style="text-align: center;width:250px"><label class="col-md-9">Scope</label></th>
+                                <th style="width:10px">ETOPS</th>                                
+                                <th style="text-align: center;">&nbsp;</th>                               
     				        </tr>
                         </thead>
                         <div class="form-group">
@@ -440,6 +473,9 @@
                                     
                                     </a>  
                                 </td> 
+                                <td>
+                                    <input type="checkbox" style="text-align: center;width:50px" id="etops_sriwijaya"/>
+                                </td> 
                                 <td style="text-align: center; width: 10px;"><span style="display:none;" class="box-number-data-sriwijaya"></span></td>
                             </tr>
                         </tbody>
@@ -460,7 +496,7 @@
                 <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;width:300px"><label class="col-md-9">Ratting/ Spec</label></th>
+                                <th style="text-align: center;width:300px"><label class="col-md-9">Rating/ Spec</label></th>
                                 <th style="text-align: center;width:300px"><label class="col-md-8">Category</label></th>                                
                                 <th style="text-align: center;width:300px"><label class="col-md-9">Scope</label></th>                                                               
                                 <th style="text-align: center;">&nbsp;</th>                                
@@ -470,17 +506,17 @@
                        	<tbody class="data-cofc-authorization">
                       		<tr class="text-cofc-authorization">
                                 <td>
-                                    <select id="tab-spec-cofc" name="tab-spec-cofc[]" class="col-md-12 form-control">
+                                    <select id="tab-spec-cofc" class="col-md-12 form-control">
                   
                                     </select>                   
                                 </td>  
                                 <td>
-                                    <select id="tab-category-cofc" name="tab-category-cofc[]" class="col-md-12 form-control">
+                                    <select id="tab-category-cofc" class="col-md-12 form-control">
                   
                                     </select> 
                                 </td>  
                                 <td>
-                                    <select id="tab-scope-cofc" name="tab-scope-cofc[]" class="col-md-12 form-control"> 
+                                    <select id="tab-scope-cofc" class="col-md-12 form-control"> 
                                     
                                     </select>
                                     <a id="scope-assesment-cofc">
@@ -512,7 +548,7 @@
 }
 ?>
 <script type="text/javascript">
-    $('.hidden-page').hide();
+    $('.hidden-page, #etops').hide();
     $('div[name=tab-type]').hide();    
         $('div[name=tab-authorization]').hide();
         $('div[name=tab-customer-authorization],div[name=tab-authorization-garuda],div[name=tab-authorization-citilink],div[name=tab-authorization-sriwijaya]').hide();
@@ -700,7 +736,7 @@
         };        
     });           
          
-            $('.tab-authorization .add-box').click(function(){ 
+        $('.tab-authorization .add-box').click(function(){             
             var n_authorization     = $('.box-number-data-authorization').length + 1; 
             var tab_spec            = $('#tab-spec :selected').val();
             var tab_spec_text       = $('#tab-spec :selected').text();        
@@ -708,12 +744,20 @@
             var tab_category_text   = $('#tab-category :selected').text();        
             var tab_scope           = $('#tab-scope :selected').val();
             var tab_scope_text      = $('#tab-scope :selected').text();
-            var tab_scope_assesment = $('input#tab-scope-assesment').val();  
+            var tab_scope_assesment = $('input#tab-scope-assesment').val();
+                if($('#etops').is(':checked')){
+                        var etops  = '1';
+                        var check_etops = 'checked';
+                    }else if(!$('#etops').is(':checked')){
+                        var etops  = '';
+                        var check_etops = '';
+                    }  
               
                 var box_html_authorization = $('<tr class="text-authorization" id="field-data-authorization">' +
                                     '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_text + '" readonly/><input name="tab-spec[]" type="hidden" value="' + tab_spec + '"/></td>' +
                                     '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_text + '" readonly/><input name="tab-category[]" type="hidden" value="' + tab_category + '"/></td>' +
-                                    '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_text + '" readonly/><input name="tab-scope[]" type="hidden" value="' + tab_scope + '"/><input name="tab-scope-assesment[]" type="hidden" value="' + tab_scope_assesment + '"/></td>' +                                                                                                   
+                                    '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_text + '" readonly/><input name="tab-scope[]" type="hidden" value="' + tab_scope + '"/><input name="tab-scope-assesment[]" type="hidden" value="' + tab_scope_assesment + '"/></td>' +  
+                                    '<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops +' disabled/><input type="hidden" name="etops[]" '+ check_etops +' value="' + etops + '"/></td>' +                                                                                                   
                                     '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-data-authorization">' + n_authorization + 
                                     '</span><a class="remove-box btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                                     '</tr>');
@@ -724,7 +768,9 @@
                 $('#tab-category').empty();
                 $('#tab-scope').empty();  
                 box_html_authorization.fadeIn('slow');
-                return true;       
+                $('#etops').attr('checked',false);
+                return true; 
+
             });
             $('.tab-authorization').on('click', '.remove-box', function(){
                 $(this).parent().parent().css( 'background-color', '#FF6C6C' );
@@ -745,12 +791,20 @@
  		var tab_category_easa_text  = $('#tab-category-easa :selected').text();        
         var tab_scope_easa          = $('#tab-scope-easa :selected').val();
  		var tab_scope_easa_text     = $('#tab-scope-easa :selected').text();
-        var tab_scope_assesment_easa= $('input#tab-scope-assesment-easa').val();        
+        var tab_scope_assesment_easa= $('input#tab-scope-assesment-easa').val(); 
+        if($('#etops_easa').is(':checked')){
+                        var etops_easa  = '1';
+                        var check_etops_easa = 'checked';
+                    }else if(!$('#etops_easa').is(':checked')){
+                        var etops_easa  = '';
+                        var check_etops_easa = '';
+                    }         
             
             var box_html_authorization_easa = $('<tr class="text-easa-authorization" id="field-data-easa">' +
                                 '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_easa_text + '" readonly/><input name="tab-spec-easa[]" type="hidden" value="' + tab_spec_easa + '"/></td>' +
                                 '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_easa_text + '" readonly/><input name="tab-category-easa[]" type="hidden" value="' + tab_category_easa + '"/></td>' +
-                                '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_easa_text + '" readonly/><input name="tab-scope-easa[]" type="hidden" value="' + tab_scope_easa + '"/><input name="tab-scope-assesment-easa[]" type="hidden" value="' + tab_scope_assesment_easa + '"/></td>' +                                                                
+                                '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_easa_text + '" readonly/><input name="tab-scope-easa[]" type="hidden" value="' + tab_scope_easa + '"/><input name="tab-scope-assesment-easa[]" type="hidden" value="' + tab_scope_assesment_easa + '"/></td>' +  
+                                    '<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_easa +' disabled/><input type="hidden" name="etops-easa[]" '+ check_etops_easa +' value="' + etops_easa + '"/></td>' +                                                                 
                                 '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-easa">' + n_easa_authorization + 
                                 '</span><a class="remove-box-easa btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                                 '</tr>');
@@ -784,12 +838,20 @@
         var tab_scope_special       = $('#tab-scope-special :selected').val();
  		var tab_scope_special_text  = $('#tab-scope-special :selected').text();
         var tab_scope_assesment_special  = $('input#tab-scope-assesment-special').val(); 
+        if($('#etops_special').is(':checked')){
+                        var etops_special  = '1';
+                        var check_etops_special = 'checked';
+                    }else if(!$('#etops_special').is(':checked')){
+                        var etops_special  = '';
+                        var check_etops_special = '';
+                    }    
         
             
         var box_html_authorization_special = $('<tr class="text-special-authorization" id="field-data-special">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_special_text + '" readonly/><input name="tab-spec-special[]" type="hidden" value="' + tab_spec_special + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_special_text + '" readonly/><input name="tab-category-special[]" type="hidden" value="' + tab_category_special + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_special_text + '" readonly/><input name="tab-scope-special[]" type="hidden" value="' + tab_scope_special + '"/><input name="tab-scope-assesment-special[]" type="hidden" value="' + tab_scope_assesment_special + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_special_text + '" readonly/><input name="tab-scope-special[]" type="hidden" value="' + tab_scope_special + '"/><input name="tab-scope-assesment-special[]" type="hidden" value="' + tab_scope_assesment_special + '"/></td>' +  
+                                    '<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_special +' disabled/><input type="hidden" name="etops-special[]" '+ check_etops_special +' value="' + etops_special + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-special">' + n_special_authorization + 
                             '</span><a class="remove-box-special btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
@@ -816,20 +878,27 @@
     
      // Garuda Specification
         $('.tab-authorization-garuda .add-license-garuda-box').click(function(){ 
-        var n_license_garuda_authorization = $('.box-number-data-license-garuda').length + 1; 
- 		var tab_spec_license_garuda        = $('#tab-spec-license-garuda :selected').val();
- 		var tab_spec_license_garuda_text   = $('#tab-spec-license-garuda :selected').text();        
+        var n_license_garuda_authorization   = $('.box-number-data-license-garuda').length + 1; 
+ 		var tab_spec_license_garuda          = $('#tab-spec-license-garuda :selected').val();
+ 		var tab_spec_license_garuda_text     = $('#tab-spec-license-garuda :selected').text();        
         var tab_category_license_garuda      = $('#tab-category-license-garuda :selected').val();
- 		var tab_category_license_garuda_text  = $('#tab-category-license-garuda :selected').text();        
-        var tab_scope_license_garuda       = $('#tab-scope-license-garuda :selected').val();
- 		var tab_scope_license_garuda_text  = $('#tab-scope-license-garuda :selected').text(); 
-        var tab_scope_assesment_license_garuda = $('input#tab-scope-assesment-customer-garuda').val();                 
+ 		var tab_category_license_garuda_text = $('#tab-category-license-garuda :selected').text();        
+        var tab_scope_license_garuda         = $('#tab-scope-license-garuda :selected').val();
+ 		var tab_scope_license_garuda_text    = $('#tab-scope-license-garuda :selected').text(); 
+        var tab_scope_assesment_license_garuda = $('input#tab-scope-assesment-customer-garuda').val();
+            if($('#etops_license_garuda').is(':checked')){
+                    var etops_license_garuda  = '1';
+                    var check_etops_license_garuda = 'checked';
+                }else if(!$('#etops_license_garuda').is(':checked')){
+                    var etops_license_garuda  = '';
+                    var check_etops_license_garuda = '';
+                }                  
        
             
         var box_html_authorization_license_garuda = $('<tr class="text-license-garuda" id="field-data-license-garuda">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_license_garuda_text + '" readonly/><input name="tab-spec-license-garuda[]" type="hidden" value="' + tab_spec_license_garuda + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_license_garuda_text + '" readonly/><input name="tab-category-license-garuda[]" type="hidden" value="' + tab_category_license_garuda + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_garuda_text + '" readonly/><input name="tab-scope-license-garuda[]" type="hidden" value="' + tab_scope_license_garuda + '"/><input name="tab-scope-assesment-license-garuda[]" type="hidden" value="' + tab_scope_assesment_license_garuda + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_garuda_text + '" readonly/><input name="tab-scope-license-garuda[]" type="hidden" value="' + tab_scope_license_garuda + '"/><input name="tab-scope-assesment-license-garuda[]" type="hidden" value="' + tab_scope_assesment_license_garuda + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_license_garuda +' disabled/><input type="hidden" name="etops-license-garuda[]" '+ check_etops_license_garuda +' value="' + etops_license_garuda + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-license-garuda">' + n_license_garuda_authorization + 
                             '</span><a class="remove-box-license-garuda btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
@@ -864,18 +933,24 @@
         var tab_scope_license_citilink       = $('#tab-scope-license-citilink :selected').val();
  		var tab_scope_license_citilink_text  = $('#tab-scope-license-citilink :selected').text();
         var tab_scope_assesment_license_citilink = $('input#tab-scope-assesment-customer-citilink').val(); 
+            if($('#etops_license_citilink').is(':checked')){
+                    var etops_license_citilink  = '1';
+                    var check_etops_license_citilink = 'checked';
+                }else if(!$('#etops_license_citilink').is(':checked')){
+                    var etops_license_citilink  = '';
+                    var check_etops_license_citilink = '';
+                }
        
             
         var box_html_authorization_license_citilink = $('<tr class="text-licens-citilink" id="field-data-license-citilink">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_license_citilink_text + '" readonly/><input name="tab-spec-license-citilink[]" type="hidden" value="' + tab_spec_license_citilink + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_license_citilink_text + '" readonly/><input name="tab-category-license-citilink[]" type="hidden" value="' + tab_category_license_citilink + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_citilink_text + '" readonly/><input name="tab-scope-license-citilink[]" type="hidden" value="' + tab_scope_license_citilink + '"/><input name="tab-scope-assesment-license-citilink[]" type="hidden" value="' + tab_scope_assesment_license_citilink + '"/></td>' +                                                                
-                            '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-data-license-citilink">' + n_license_citilink_authorization + 
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_citilink_text + '" readonly/><input name="tab-scope-license-citilink[]" type="hidden" value="' + tab_scope_license_citilink + '"/><input name="tab-scope-assesment-license-citilink[]" type="hidden" value="' + tab_scope_assesment_license_citilink + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_license_citilink +' disabled/><input type="hidden" name="etops-license-citilink[]" '+ check_etops_license_citilink +' value="' + etops_license_citilink + '"/></td>' + '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-data-license-citilink">' + n_license_citilink_authorization + 
                             '</span><a class="remove-box-license-citilink btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_license_citilink.hide();
-        $('.tab-authorization-citilink tr.text-license-citilink:last').before(box_html_authorization_license_citilink);  			            
+        $('.tab-authorization-citilink tr.text-license-citilink:last').before(box_html_authorization_license_citilink);  		            
         $('#tab-spec-license-citilink')[0].selectedIndex = 0;
         $('#tab-category-license-citilink').empty();
         $('#tab-scope-license-citilink').empty(); 
@@ -905,12 +980,18 @@
         var tab_scope_license_sriwijaya       = $('#tab-scope-license-sriwijaya :selected').val();
  		var tab_scope_license_sriwijaya_text  = $('#tab-scope-license-sriwijaya :selected').text(); 
         var tab_scope_assesment_license_sriwijaya = $('input#tab-scope-assesment-customer-sriwijaya').val();
+            if($('#etops_license_sriwijaya').is(':checked')){
+                        var etops_license_sriwijaya  = '1';
+                        var check_etops_license_sriwijaya = 'checked';
+                    }else if(!$('#etops_license_sriwijaya').is(':checked')){
+                        var etops_license_sriwijaya  = '';
+                        var check_etops_license_sriwijaya = '';
+                    }
             
         var box_html_authorization_license_sriwijaya = $('<tr class="text-license-sriwijaya" id="field-data-license-sriwijaya">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_license_sriwijaya_text + '" readonly/><input name="tab-spec-license-sriwijaya[]" type="hidden" value="' + tab_spec_license_sriwijaya + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_license_sriwijaya_text + '" readonly/><input name="tab-category-license-sriwijaya[]" type="hidden" value="' + tab_category_license_sriwijaya + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_sriwijaya_text + '" readonly/><input name="tab-scope-license-sriwijaya[]" type="hidden" value="' + tab_scope_license_sriwijaya + '"/><input name="tab-scope-assesment-license-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_license_sriwijaya + '"/></td>' +                                                                
-                            '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-data-license-sriwijaya">' + n_license_sriwijaya_authorization + 
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_license_sriwijaya_text + '" readonly/><input name="tab-scope-license-sriwijaya[]" type="hidden" value="' + tab_scope_license_sriwijaya + '"/><input name="tab-scope-assesment-license-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_license_sriwijaya + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_license_sriwijaya +' disabled/><input type="hidden" name="etops-license-sriwijaya[]" '+ check_etops_license_sriwijaya +' value="' + etops_license_sriwijaya + '"/></td>' + '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-data-license-sriwijaya">' + n_license_sriwijaya_authorization + 
                             '</span><a class="remove-box-license-sriwijaya btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
                                                                                                                                                                      
@@ -945,12 +1026,19 @@
         var tab_scope_garuda       = $('#tab-scope-garuda :selected').val();
  		var tab_scope_garuda_text  = $('#tab-scope-garuda :selected').text(); 
         var tab_scope_assesment_garuda  = $('input#tab-scope-assesment-customer-garuda').val();
+        if($('#etops_garuda').is(':checked')){
+                        var etops_garuda  = '1';
+                        var check_etops_garuda = 'checked';
+                    }else if(!$('#etops_citilink').is(':checked')){
+                        var etops_garuda  = '';
+                        var check_garuda = '';
+                    }
        
             
         var box_html_authorization_garuda = $('<tr class="text-garuda-authorization" id="field-data-garuda">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_garuda_text + '" readonly/><input name="tab-spec-garuda[]" type="hidden" value="' + tab_spec_garuda + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_garuda_text + '" readonly/><input  name="tab-category-garuda[]" type="hidden" value="' + tab_category_garuda + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_garuda_text + '" readonly/><input name="tab-scope-garuda[]" type="hidden" value="' + tab_scope_garuda + '"/><input name="tab-scope-assesment-garuda[]" type="hidden" value="' + tab_scope_assesment_garuda + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_garuda_text + '" readonly/><input name="tab-scope-garuda[]" type="hidden" value="' + tab_scope_garuda + '"/><input name="tab-scope-assesment-garuda[]" type="hidden" value="' + tab_scope_assesment_garuda + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_garuda +' disabled/><input type="hidden" name="etops-garuda[]" '+ check_etops_garuda +' value="' + etops_garuda + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-garuda">' + n_garuda_authorization + 
                             '</span><a class="remove-box-garuda btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
@@ -985,11 +1073,18 @@
         var tab_scope_citilink       = $('#tab-scope-citilink :selected').val();
  		var tab_scope_citilink_text  = $('#tab-scope-citilink :selected').text(); 
        var tab_scope_assesment_citilink  = $('input#tab-scope-assesment-customer-citilink').val();
+       if($('#etops_citilink').is(':checked')){
+                        var etops_citilink  = '1';
+                        var check_etops_citilink = 'checked';
+                    }else if(!$('#etops_citilink').is(':checked')){
+                        var etops_citilink  = '';
+                        var check_etops_citilink = '';
+                    }
             
         var box_html_authorization_citilink = $('<tr class="text-citilink-authorization" id="field-data-citilink">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_citilink_text + '" readonly/><input name="tab-spec-citilink[]" type="hidden" value="' + tab_spec_citilink + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_citilink_text + '" readonly/><input name="tab-category-citilink[]" type="hidden" value="' + tab_category_citilink + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_citilink_text + '" readonly/><input name="tab-scope-citilink[]" type="hidden" value="' + tab_scope_citilink + '"/><input name="tab-scope-assesment-citilink[]" type="hidden" value="' + tab_scope_assesment_citilink + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_citilink_text + '" readonly/><input name="tab-scope-citilink[]" type="hidden" value="' + tab_scope_citilink + '"/><input name="tab-scope-assesment-citilink[]" type="hidden" value="' + tab_scope_assesment_citilink + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_citilink +' disabled/><input type="hidden" name="etops-citilink[]" '+ check_etops_citilink +' value="' + etops_citilink + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-citilink">' + n_citilink_authorization + 
                             '</span><a class="remove-box-citilink btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
@@ -1025,11 +1120,18 @@
         var tab_scope_sriwijaya       = $('#tab-scope-sriwijaya :selected').val();
  		var tab_scope_sriwijaya_text  = $('#tab-scope-sriwijaya :selected').text(); 
        var tab_scope_assesment_sriwijaya  = $('input#tab-scope-assesment-customer-sriwijaya').val();
+       if($('#etops_sriwijaya').is(':checked')){
+                        var etops_sriwijaya  = '1';
+                        var check_etops_sriwijaya = 'checked';
+                    }else if(!$('#etops_sriwijaya').is(':checked')){
+                        var etops_sriwijaya  = '';
+                        var check_etops_sriwijaya = '';
+                    }
             
         var box_html_authorization_sriwijaya = $('<tr class="text-sriwijaya-authorization" id="field-data-sriwijaya">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_sriwijaya_text + '" readonly/><input name="tab-spec-sriwijaya[]" type="hidden" value="' + tab_spec_sriwijaya + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_sriwijaya_text + '" readonly/><input name="tab-category-sriwijaya[]" type="hidden" value="' + tab_category_sriwijaya + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_sriwijaya_text + '" readonly/><input name="tab-scope-sriwijaya[]" type="hidden" value="' + tab_scope_sriwijaya + '"/><input name="tab-scope-assesment-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_sriwijaya + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_sriwijaya_text + '" readonly/><input name="tab-scope-sriwijaya[]" type="hidden" value="' + tab_scope_sriwijaya + '"/><input name="tab-scope-assesment-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_sriwijaya + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_sriwijaya +' disabled/><input type="hidden" name="etops-license-sriwijaya[]" '+ check_etops_sriwijaya +' value="' + etops_sriwijaya + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-sriwijaya">' + n_sriwijaya_authorization + 
                             '</span><a class="remove-box-sriwijaya btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');

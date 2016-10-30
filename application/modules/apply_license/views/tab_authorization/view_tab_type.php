@@ -147,7 +147,7 @@
                 $('.hidden-page').hide('slow');                 
             }                                                       
             $.get("<?php echo base_url();?>index.php/apply_license/get_type/" + type , function(data, status){                 
-              $("#tab-spec").html(data);          
+              $("#tab-spec").html(data);              
             });                        
         });                 
      </script>       

@@ -3,23 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_users extends CI_Model {
 
-	private $table 			= 'm_employee_group';
-	private $column_order 	= array(null,'name_group');
-	private $column_search 	= array('name_group');  
-	private $order 			= array('id_group' => 'asc'); 
-	
-	public	$username  	  	= '';
-	public	$password  	  	= '';
-	public	$name_users	  	= '';
-	public	$photo 	  	  	= '';
-	public	$blockage 	  	= '';
-	public  $id_group	    = '';
-	public  $name_group		= '';
+	private $table 			= 'm_employee_group AS megr';
+	private $column_order 	= array(null);  
+	private $column_search 	= array('name','name_group');  
+	private $order 			= array('name' => 'asc'); 
+		
 	
 	private function _get_query() {
+		$this->db->select('TSH.name, mgr.name_group, mgr.id_group, TSH.personnel_number');
 		$this->db->from($this->table);
-		$this->db->join('m_group', 'm_group.id_group = m_employee_group.id_group_fk', 'left');
-        $this->db->join('UNION_EMP', 'UNION_EMP.personnel_number = m_employee_group.personnel_number_fk', 'left');		
+		$this->db->join('m_group AS mgr', 'mgr.id_group = megr.id_group_fk', 'left');
+        $this->db->join('UNION_EMP AS TSH', 'TSH.personnel_number = megr.personnel_number_fk', 'left');		
 
 		$i = 0;
 		foreach ($this->column_search as $item) {
@@ -68,7 +62,12 @@ class Model_users extends CI_Model {
 	}
 	
 	public function by_id_users($id){
-		$datasrc = $this->db->get_where('UNION_EMP', array('(CONVERT(VARCHAR(10),personnel_number))' => $id));
+		$datasrc = $this->db->select('TSH.name, mgr.name_group, mgr.id_group, TSH.personnel_number')
+		->from($this->table)
+		->join('m_group AS mgr', 'mgr.id_group = megr.id_group_fk', 'left')
+        ->join('UNION_EMP AS TSH', 'TSH.personnel_number = megr.personnel_number_fk', 'left')
+        ->where('personnel_number_fk',$id)->get();
+
 		return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
 	}
 	
@@ -83,18 +82,7 @@ class Model_users extends CI_Model {
 		$datasrc = $this->db->get_where('m_group', array('id_group' => $id));
 		return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
 	}
-	
-	public function update_pwd($current, $new, $retype){
-		if ($new != $retype) return 'unmatch';
-		
-		$users = $this->session->userdata('users_quality');
-		if (password($current) != $users->password) return 'wrong';
-		
-		$this->db->update('users', array('password' => password($new)), array('id' => $users->id));
-		return 'ok';
-	}
-	
-	public function get_menu($id = '') {
+		public function get_menu($id = '') {
 		$query = "
 			SELECT m.*, 
 				ma.id_menu_akses 
@@ -119,7 +107,7 @@ class Model_users extends CI_Model {
 		";
 		return $this->db->query($query);
 	}
-	
+
 }
 /* End of file Model_users.php */
 /* Location: ./application/modules/back_office/models/Model_users.php */

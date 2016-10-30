@@ -5,13 +5,13 @@ $cek_name_user_akses = $users->EMPLNAME;
 ?>
 <script type="text/javascript">
 $().ready(function(){
-	$('[name=name_location],[name=name_disposition]').select2({width : '100%'});
+    $('[name=name_location],[name=name_disposition]').select2({width : '100%'});
 });
 </script>
 <section class="content-header">
-	<h1>History Applicant</h1>    
+    <h1>History Applicant</h1>    
 </section>
-	<div class="box-body">
+    <div class="box-body">
             <?php             
             if($aksi == "view"){?>
             <div class="col-md-12">
@@ -60,7 +60,7 @@ $().ready(function(){
                         <a id="head_nav">Data Validated</a>
                     </li>
                     <?php
-                    if(!empty($rc[0]->verification_assesment)){
+                    if($rc[0]->check_assesment == '2'){
                     $class_approved_assesment = "active";
                     }else{
                     $class_approved_assesment = "disabled";    
@@ -116,7 +116,7 @@ $().ready(function(){
             </div>
             </div>  
             <div class="col-md-9">           
-				<div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive no-padding">
                     <h4><b>Personnel information</b> :</h4>                    
                     <table id="" class="table table_bootstrap">   
                     <tr> 
@@ -127,24 +127,24 @@ $().ready(function(){
                     <th width="20%"> Request number </th>
                     <th width="20%"> Date request </th>                                                                 
                     </tr>
-                    <tbody>	                    
-					<tr>                        						                        
-						<td><input type="hidden" name="name_applicant" value="<?php echo @$rc[0]->name;?>"/><?php echo @$rc[0]->name;?></td>                        										                        
-						<td><input type="hidden" name="personnel_number_applicant" value="<?php echo @$rc[0]->personnel_number;?>"/><?php echo @$rc[0]->personnel_number;?></td>                        								                       
-						<td><?php echo @$rc[0]->departement;?></td>                        						      
-						<td><?php echo @$rc[0]->presenttitle;?></td>                        						
+                    <tbody>                     
+                    <tr>                                                                        
+                        <td><input type="hidden" name="name_applicant" value="<?php echo @$rc[0]->name;?>"/><?php echo @$rc[0]->name;?></td>                                                                                        
+                        <td><input type="hidden" name="personnel_number_applicant" value="<?php echo @$rc[0]->personnel_number;?>"/><?php echo @$rc[0]->personnel_number;?></td>                                                                               
+                        <td><?php echo @$rc[0]->departement;?></td>                                                   
+                        <td><?php echo @$rc[0]->presenttitle;?></td>                                                
                         <td><input type="hidden" name="request_number_applicant" value="
                         <?php 
                         $request_number = @$rc[0]->request_number; 
                         echo @$request_number?>"/><?php echo @$request_number;?>
-                        </td>                        						                    
-						<td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$rc[0]->date_submited));?></td>                        						
-					</tr>                                                                                               
+                        </td>                                                                   
+                        <td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$rc[0]->date_submited));?></td>                                              
+                    </tr>                                                                                               
                     </tbody>                     
-					</table>
+                    </table>
                     <br/>
-				</div>
-			</div>
+                </div>
+            </div>
             <div class="col-md-3">
                     <div class="panel panel-info"> <!-- div type panel -->
                        <div class="panel-heading text-center"> <!-- div head panel -->
@@ -217,21 +217,21 @@ $().ready(function(){
         </table>
         </div>
         </div>                  
-		<div class="col-md-12" id="dtl_to_atasan">           
-			<div class="box-body table-responsive no-padding">
+        <div class="col-md-12" id="dtl_to_atasan">           
+            <div class="box-body table-responsive no-padding">
                 <br/>                
                 <h4><b>Applicant Status</b> :</h4>                                                         
                 <table id="" class="table table-bootstrap">                    
                 <thead>
                 <tr>                        
-					<th width="5%">No</th>                        
-					<th width="10%">Date</th>                        
+                    <th width="5%">No</th>                        
+                    <th width="10%">Date</th>                        
                     <th width="10%">Time</th>
                     <th width="20%">Activity</th>
                     <th width="20%">Disposition</th>
                     <th width="20%">Location</th>
                     <th width="20%">Update By</th>                           
-				</tr>    
+                </tr>    
                 </thead>
                 <tbody>                    
                 <?php
@@ -415,10 +415,10 @@ $().ready(function(){
                 </tr>                                   
                 <?php
                 endforeach;
-                ?>                    					                                     
+                ?>                                                                           
                 </tbody>                     
-				</table>
-			</div>
+                </table>
+            </div>
             <br/>
             <a href="<?php echo site_url('quality_control/add/'.$rc[0]->request_number);?>"><button class="btn btn-info">Update Current Status</button></a>&nbsp;&nbsp;
             <a href="<?php echo $back_home_quality; ?>"><button class="btn btn-warning">Back</button></a>
@@ -614,8 +614,8 @@ $().ready(function(){
             </div>                                       
             <div class="form-group">
             <div class="col-sm-offset-2 col-sm-6">
-            	<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm" name="simpan_detail_history"><span class="fa fa-save"></span> &nbsp;Save </button>            	
-            	<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Back</a>
+                <button type="submit" class="btn btn-flat btn-primary color-palette btn-sm" name="simpan_detail_history"><span class="fa fa-save"></span> &nbsp;Save </button>              
+                <a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Back</a>
             </div>
             </div>
             <?php echo form_close(); ?>                    

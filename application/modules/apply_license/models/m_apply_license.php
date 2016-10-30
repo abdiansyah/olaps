@@ -167,7 +167,7 @@ class M_apply_license extends CI_Model {
     }
     
     public function get_type($param){
-        $query ="SELECT b.name_t, b.id FROM m_group_spect_type a
+        $query ="SELECT b.name_t, b.id, b.etops FROM m_group_spect_type a
                 LEFT JOIN m_auth_spect b ON a.id_auth_spect_fk = b.id
                 WHERE a.id_auth_type_fk = '$param'";                     
     return $this->db->query($query)->result();
@@ -272,8 +272,8 @@ class M_apply_license extends CI_Model {
     return $this->db->query($query_license_special);
     }    
 
-    public function cek_approved_atasan($cek_validate_req_number='', $personnel_number){                          
-        $cek_query_validate = "SELECT mal.name_t AS name_license, tal.reason_apply_license AS reason_apply_license, tal.personnel_number, tal.request_number AS request_number, mat.name_t AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope, tal.date_request FROM t_apply_license tal
+    public function cek_approved_atasan($cek_validate_req_number, $personnel_number){                          
+        $cek_query_validate = "SELECT mal.name_t AS name_license, tal.reason_apply_license AS reason_apply_license, tal.personnel_number, tal.request_number AS request_number, mat.name_t AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope, tal.date_request, tald.is_etops FROM t_apply_license tal
                              LEFT JOIN t_apply_license_dtl AS tald ON tal.request_number = tald.request_number_fk
                              LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id  
                              LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id 
@@ -303,13 +303,30 @@ class M_apply_license extends CI_Model {
         return $this->db->query($query)->row_array();
     }    
     
-    public function cek_akses($personnel_number){
+    public function cek_akses($personnel_number) {
     $querycekakses = "SELECT * FROM m_employee_group
                     WHERE personnel_number_fk = '$personnel_number'"; 
     return $this->db->query($querycekakses)->row();     
     }         
 
-	
+	public function get_code_file(){
+        $querycodefile = "SELECT * FROM m_dir_requirement"; 
+        return $this->db->query($querycodefile)->result();       
+    }  
+
+    public function get_code_file_by($code='') {
+        $querycode = "SELECT mdr.name FROM m_dir_requirement AS mdr
+                        LEFT JOIN UNION_REQUIREMENT AS UR ON mdr.code = UR.code_folder
+                        WHERE code_t = '$code'"; 
+        return $this->db->query($querycode)->row();          
+    }
+
+    public function get_check_etops($id_spect) {
+        $querycode = "SELECT * FROM m_auth_spect AS mas                        
+                        WHERE id = '$id_spect' AND etops!=''"; 
+        return $this->db->query($querycode)->row(); 
+    }
+    
 }
 	
 

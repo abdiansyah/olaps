@@ -52,76 +52,20 @@ class Ame_license extends MX_Controller {
 	}
     
 	
-	private function form($action = 'insert', $id = ''){
-		if ($this->agent->referrer() == '') redirect($this->page->base_url());
-		
-		$title = '';
-		if($this->uri->segment(3) == 'add'){ 
-			$title = 'Add';
-		} else {
-			$title = 'Edit';
-		}
-
-		$this->page->view('authorization_form', array (
-			'ttl'		=> $title,
-			'back'		=> $this->agent->referrer(),
-			'action'	=> $this->page->base_url("/{$action}/{$id}"),
-			'rc' 		=> $this->model_authorization->by_id($id),
-			'aksi'		=> $action,
-		));
-	}
-	
-	public function add(){
-		$this->form();
-	}
-	
-	public function edit($id){
-		$this->form('update', $id);
-	}
-	
-	public function insert(){		
-		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')
-		
-		);
-		$this->db->insert('m_auth_license', $data);
-		
-		redirect($this->page->base_url());
-	}
-	
-	public function update($id){		
-		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')			
-		);	
-		$this->db->where('id', $id);
-		$this->db->update('m_auth_license', $data);
-		
-		redirect($this->page->base_url());
-	}
-	
-	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();						
-		$this->db->delete('m_auth_license',array('id'=>$id));		
-		redirect($this->agent->referrer());
-	}
-
 	public function option_unit_gmf(){
 		$m_unit = $this->db->query("SELECT DISTINCT UNIT FROM db_hrm.dbo.TBL_SOE_HEAD");
 		return options($m_unit, 'UNIT', 'UNIT');
 	}
 
 	public function option_ac_type(){
-		$m_unit = $this->db->query("SELECT DISTINCT c.scp_spec_type
-								FROM db_license.dbo.tbl_amel a
-								INNER JOIN db_license.dbo.tbl_amel_scope b
-								ON a.lic_no = b.lic_no 
-								INNER JOIN db_license.dbo.tbl_master_scopes c
-								ON b.scp_code = c.scp_code");
+		$m_unit = $this->db->query("SELECT scp_spec_type
+										FROM db_license.dbo.tbl_master_scopes
+										WHERE scp_indent = 'AMEL' AND scp_spec_type != 'Engine'
+										GROUP BY scp_spec_type
+										ORDER BY scp_spec_type");
 		return options($m_unit, 'scp_spec_type', 'scp_spec_type');
 	}
-	
+		
 
 }
 

@@ -22,6 +22,8 @@ $(document).ready(function(){
         "searching"         : false, 	   
 		"scrollY"			: "342px",
         "scrollCollapse"	: true,
+        "bPaginate"         : false,  
+        "bSort"             : false,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
 		"order" 	 		: [], //Initial no order.
@@ -45,7 +47,7 @@ $(document).ready(function(){
 		//Set column definition initialisation properties.
 		"columnDefs" : [
 			{ 
-				"targets"	: [8,9,10], //first column / numbering column
+				"targets"	: [], //first column / numbering column
 				"orderable"	: false, //set not orderable
 			},
 		],
@@ -55,6 +57,8 @@ $(document).ready(function(){
         "searching"         : false, 
 		"scrollY"			: "342px",
         "scrollCollapse"	: true,
+        "bPaginate"         : false,  
+        "bSort"             : false,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
 		"order" 	 		: [], //Initial no order.
@@ -78,7 +82,7 @@ $(document).ready(function(){
 		//Set column definition initialisation properties.
 		"columnDefs" : [
 			{ 
-				"targets"	: [8,9,10], //first column / numbering column
+				"targets"	: [], //first column / numbering column
 				"orderable"	: false, //set not orderable
 			},
 		],
@@ -103,7 +107,7 @@ $(document).ready(function(){
                 </tr>                
           		<tr class="text-authorization-written">
                     <td>
-                        <select id="tab-search-written" name="tab-search-written" class="col-md-12 form-control">                                                
+                        <select id="tab-search-written" name="tab-search-written" class="col-md-12 form-control">  
                         <option value="request_number_written">Request Number</option>
                         <option value="personnel_number_written">Personnel Number</option> 
                         <option value="status_assesment_written">Status</option>
@@ -111,7 +115,7 @@ $(document).ready(function(){
                         <option value="id_written_sesi">Sesi</option>
                         <option value="id_written_room">Room</option>
                         <option value="score_written">Score</option>
-                        <option value="result_written">Result</option>                                                                                                                                                                                           
+                        <option value="result_written">Result</option>              
                         </select>                   
                     </td>  
                     <td id="box-type-search-written">
@@ -197,6 +201,7 @@ $(document).ready(function(){
                 <th width="5%">Sesi</th>
                 <th width="10%">Room</th>
 				<th width="20%">Assessment scope</th>
+                <th width="10%">PIC</th>
 				<th width="5%">Score</th>
                 <th width="15%">Result</th>
 				<th width="5%">Action</th>
@@ -220,6 +225,7 @@ $(document).ready(function(){
                 <th width="5%">Sesi</th>
                 <th width="10%">Room</th>
 				<th width="20%">Assessment scope</th>
+                <th width="10%">PIC</th>
 				<th width="5%">Score</th>
                 <th width="15%">Result</th>
 				<th width="5%">Action</th>

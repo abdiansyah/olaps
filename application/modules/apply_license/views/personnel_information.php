@@ -164,12 +164,16 @@ echo bootstrap_datepicker();
 ?>        
 <script type="text/javascript"> 
     $( window ).load(function() {
-    //$('[name=personnel_number]').click();           
+    $('[name=personnel_number]').click();           
     });
     $('#msg').hide();
     
     $('.data-superior').hide();
-        
+    
+    $('.personnel_information_form').one('mousemove',function(){
+    $('[name=personnel_number_superior]').click();
+    $('.data-superior').show();    
+    });     
             
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker({
     format : 'dd-mm-yyyy'
@@ -184,7 +188,7 @@ echo bootstrap_datepicker();
     $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=validitycontract],[name=id_personnel_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
     var typeemp = $('[name=typeemp]:radio:checked').val();
     var personnel_number = $('[name=personnel_number]').val();
-    if(typeemp == 1){           
+    if(typeemp == 1 || typeemp == null){           
     var jqxhr = $.getJSON("<?php echo base_url();?>index.php/apply_license/get_data_personnel_by_gmf/" + personnel_number, function(data) {
         $('[name=name]').val(data.EMPLNAME);                
         $('[name=presenttitle]').val(data.JOBTITLE);
@@ -214,11 +218,11 @@ echo bootstrap_datepicker();
             var d = work[0];
             var m = work[1];
             var y = work[2]; 
-            var date_work = new Date(y+'-'+m+'-'+d);
-            if(date_work > now){                
+            var date_work = new Date(y+'-'+m+'-'+d);            
+            if(date_work > now || date_work == '31-12-9999'){                
                $('[name=submitpersonnelinformation]').attr('disabled',false);                
             };                            
-            if(date_work < now){                
+            if(date_work < now !== '31-12-9999'){                
                $('[name=submitpersonnelinformation]').attr('disabled',true);
                alert('You retired'); 
             };    
@@ -233,7 +237,7 @@ echo bootstrap_datepicker();
            $('#msg').hide();        
         });              
     };
-    if(typeemp == 2){
+    if(typeemp == 2 || typeemp == null){
         var jqxhr = $.getJSON("<?php echo base_url();?>index.php/apply_license/get_data_personnel_by_non_gmf/" + personnel_number, function(data) {                
         $('[name=name]').val(data.EMPLNAME);                
         $('[name=presenttitle]').val(data.JOBTITLE);

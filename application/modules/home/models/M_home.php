@@ -14,6 +14,7 @@ class M_home extends CI_Model {
                             WHEN t_apply_license.take_authorization = '1' THEN 'Take Authorization'
                             WHEN t_apply_license.referral_authorization = '1' THEN 'Referral Authorization'
                             WHEN t_apply_license.status_issue_authorization = '2' THEN 'Issue Authorization Finished'
+                            WHEN t_apply_license.status_issue_authorization = '1' THEN 'Issue Authorization Process'
                             WHEN t_apply_license.status_assesment = '2' THEN 'Assesment Process Closed'                            
                             WHEN t_apply_license.status_assesment = '1' THEN 'Assesment Process' 
                             WHEN t_apply_license.status_approved_quality = '1' THEN 'Data Validated' 
@@ -27,7 +28,9 @@ class M_home extends CI_Model {
                             WHEN t_apply_license.status_approved_quality IS NULL then                         
                             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))                             
                             WHEN t_apply_license.status_assesment IS NULL then
-                            (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))                                                                                               
+                            (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))                 
+                            WHEN t_apply_license.date_status_assesment IS NULL then
+                            (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),105)) FROM t_assesment AS TA WHERE (TA.request_number_fk = t_apply_license.request_number))
                             WHEN t_apply_license.status_issue_authorization IS NULL then
                             (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))
                             WHEN t_apply_license.take_authorization IS NULL then
@@ -50,13 +53,13 @@ class M_home extends CI_Model {
 	}
 	
 	public function get_value_home() {
-        $personnel_number 	        = $this->input->post('personnel_number');
+        @$personnel_number 	        = $this->input->post('personnel_number');
         $request_number_user        = $this->input->post('request_number_user');
         $date_request               = $this->input->post('date_request');
         $employee_personnel_number  = $this->input->post('employee_personnel_number');
         $name_personnel             = $this->input->post('name_personnel');
         $status                     = $this->input->post('status');
-        $this->db->where('TSH.personnel_number',$personnel_number);
+        $this->db->where('CONVERT(VARCHAR(20),TSH.personnel_number)',@$personnel_number);
         if($request_number_user!=''){
             $this->db->where('t_apply_license.request_number',$request_number_user);
         };
@@ -108,7 +111,7 @@ class M_home extends CI_Model {
             $this->db->where('t_apply_license.status_submit','1');                       
         };
         
-        $this->db->or_where('TSH.report_to',@$personnel_number); 
+        $this->db->or_where('CONVERT(VARCHAR(20),TSH.report_to)',@$personnel_number); 
         if($request_number_user!=''){
             $this->db->where('t_apply_license.request_number',$request_number_user);
         };              

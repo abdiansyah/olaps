@@ -3,11 +3,11 @@ if(@$data_history[0]!=''){
 ?>
 <div class="row">
 <div class="col-md-10 col-md-offset-1 col-center-block table-responsive">
-<div class="box box-info box-center" id="halaman5">	   
-	<div class="box-header with-border">
-		<h3 class="box-title"></h3>
-	</div>
-	<div class="box-body">
+<div class="box box-info box-center" id="halaman5">    
+    <div class="box-header with-border">
+        <h3 class="box-title"></h3>
+    </div>
+    <div class="box-body">
             <div class="col-md-12">
             <div class="wizard">
             <div class="wizard-inner">
@@ -54,7 +54,7 @@ if(@$data_history[0]!=''){
                         <a id="head_nav">Data Validated</a>
                     </li>
                     <?php
-                    if(!empty($data_history[0]->verification_assesment)){
+                    if($data_history[0]->check_assesment == '2'){
                     $class_approved_assesment = "active";
                     }else{
                     $class_approved_assesment = "disabled";    
@@ -110,7 +110,7 @@ if(@$data_history[0]!=''){
             </div>
             </div>  
             <div class="col-md-9">           
-				<div class="box-body table-responsive no-padding"> 
+                <div class="box-body table-responsive no-padding"> 
                     <br/>
                     <h4><b>Personnel information</b> :</h4>                                      
                     <table id="" class="table table_bootstrap">   
@@ -122,24 +122,24 @@ if(@$data_history[0]!=''){
                     <th width="20%"> Request number </th>
                     <th width="20%"> Date request </th>                                                                 
                     </tr>
-                    <tbody>	                    
-					<tr>                        						                        
-						<td><input type="hidden" name="name_applicant" value="<?php echo @$data_history[0]->name;?>"/><?php echo @$data_history[0]->name;?></td>                        										                        
-						<td><input type="hidden" name="personnel_number_applicant" value="<?php echo @$data_history[0]->personnel_number;?>"/><?php echo @$data_history[0]->personnel_number;?></td>                        								                       
-						<td><?php echo @$data_history[0]->departement;?></td>                        						      
-						<td><?php echo @$data_history[0]->presenttitle;?></td>                        						
+                    <tbody>                     
+                    <tr>                                                                        
+                        <td><input type="hidden" name="name_applicant" value="<?php echo @$data_history[0]->name;?>"/><?php echo @$data_history[0]->name;?></td>                                                                                        
+                        <td><input type="hidden" name="personnel_number_applicant" value="<?php echo @$data_history[0]->personnel_number;?>"/><?php echo @$data_history[0]->personnel_number;?></td>                                                                               
+                        <td><?php echo @$data_history[0]->departement;?></td>                                                     
+                        <td><?php echo @$data_history[0]->presenttitle;?></td>                                              
                         <td><input type="hidden" name="request_number_applicant" value="
                         <?php 
                         $request_number = @$data_history[0]->request_number; 
                         echo @$request_number?>"/><?php echo @$request_number;?>
-                        </td>                        						                    
-						<td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$data_history[0]->date_submited));?></td>                        						
-					</tr>                                                                                               
+                        </td>                                                                   
+                        <td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$data_history[0]->date_submited));?></td>                                                
+                    </tr>                                                                                               
                     </tbody>                     
-					</table>
+                    </table>
                     <br/>
-				</div>
-			</div>
+                </div>
+            </div>
             <div class="col-md-3">
                     <div class="panel panel-info"> <!-- div type panel -->
                        <div class="panel-heading text-center"> <!-- div head panel -->
@@ -216,18 +216,18 @@ if(@$data_history[0]!=''){
         </table>
         </div>
         </div>                        
-			<div class="col-md-12" id="dtl_to_atasan">           
-				<div class="box-body table-responsive no-padding"> 
+            <div class="col-md-12" id="dtl_to_atasan">           
+                <div class="box-body table-responsive no-padding"> 
                     <br/>
                     <h4><b>Application Status</b> :</h4>                                      
                     <table id="" class="table table-bordered">                    
                     <thead>
                     <tr>                        
-						<th>No</th>                        
-						<th>Date</th>                        
+                        <th>No</th>                        
+                        <th>Date</th>                        
                         <th>Time</th>
                         <th>Activity</th>                        
-					</tr>    
+                    </tr>    
                     </thead>
                     <tbody>                    
                     <?php
@@ -366,26 +366,26 @@ if(@$data_history[0]!=''){
                     </tr>                                     
                     <?php
                     endforeach;
-                    ?>                    					                                     
+                    ?>                                                                           
                     </tbody>                     
-					</table>
+                    </table>
                     <br />
-				</div>
+                </div>
                 <div>
                 <a href="<?php echo $back; ?>"><button type="button" class="btn btn-info pull-right close2 btn-sm"  name="previous"><b>PREVIOUS</b></button><a>
                 </div> 
             </div>
-            <div class="col-md-12" id="statement_atasan">			
+            <div class="col-md-12" id="statement_atasan">           
             <div class="box-body table-responsive no-padding">                
                 <table class="table" id="tbl_dtl_statement_atasan">
                     <thead>                    
                     </thead>
-                    <tbody>										                                                                                                                        											
+                    <tbody>                                                                                                                                                                                                         
                     </tbody>                                                        
-	           </table>
+               </table>
             </div>
             </div>                      
-	</div>     
+    </div>     
 </div>
 </div>
 </div>

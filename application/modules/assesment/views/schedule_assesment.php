@@ -139,7 +139,7 @@
             <div class="box body col-md-12" id="summary-assesment">
             <div class="col-md-12"> 
             <h3>ANDA YAKIN DENGAN TANGGAL UJIAN YANG ANDA PILIH?</h3>
-            <table>
+            <table class="table table-bordered">                 
             <thead>                                                                                                                        
                 <th width="15%">Assesment</th>
                 <th width="5%">Date</th>
@@ -190,6 +190,10 @@ $(function(){
   $('.date_written_assesment').datepicker(
         {format: 'dd-mm-yyyy'}           
   );
+
+    $('.date_written_assesment').datepicker().on('changeDate', function(){
+        $(this).datepicker('hide');
+    });
   $('.tab-schedule-assesment').on('change', '.id_sesi', function(e){    
     var id = this.id;
     var data_id_sesi = id.split("_"); 

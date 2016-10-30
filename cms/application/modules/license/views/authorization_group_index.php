@@ -3,7 +3,8 @@ $().ready(function(){
 $('#datatables_license_type').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
-        "select"            : true,      
+        "select"            : true,                 
+        "bSort"             : false,     
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
@@ -27,7 +28,8 @@ $('#datatables_license_type').dataTable({
 $('#datatables_type_spect').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
-        "select"            : true,      
+        "select"            : true,
+        "bSort"             : false,      
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
@@ -52,6 +54,7 @@ $('#datatables_spect_category').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
         "select"            : true,      
+        "bSort"             : false,
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.

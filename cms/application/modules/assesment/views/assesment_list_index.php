@@ -3,7 +3,9 @@ $(document).ready(function(){
     $('#datatables_list_assesment').dataTable({
 		"scrollY"			: "342px", 
         "searching"         : false, 
-        "select"            : true,      
+        "select"            : true,
+        "bPaginate"         : false,  
+        "bSort"             : false,      
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.

@@ -3,7 +3,7 @@
     <option id="category_select" value="<?php echo $row->id; ?>"><?php echo $row->name_t;?></option>                                                        
     <?php endforeach; ?>  
 <script type="text/javascript">                
-$('#tab-category').change(function(){            
+$('#tab-category').on('change',function(){            
     var category = $(this).val();
     var spec = $('#tab-spec').val();          
     var type = $('.type:checked').val();

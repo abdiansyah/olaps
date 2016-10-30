@@ -2,19 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends MX_Controller {
-	
-	var $gallerypath;
-	var $gallery_path_url;
-	
+		
 	public function __construct() {
 		parent::__construct();
 		
-		date_default_timezone_set('Asia/Jakarta');
-		$this->page->use_directory();
+		date_default_timezone_set('Asia/Jakarta');	
 		$this->load->model('model_users');
-		
-		$this->gallerypath = realpath(APPPATH . '../assets/photo_user');
-		$this->gallery_path_url = base_url().'assets/photo_user/';
 	}
 	
 	public function index() {
@@ -34,7 +27,7 @@ class Users extends MX_Controller {
 			$row[] = $no;									
             $row[] = $rc->name;            			
             $row[] = $rc->name_group;
-			$row[] = '<a href="'.site_url('/setting/users/edit/'.$rc->personnel_number_fk).'" title="Edit Data"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>';
+            $row[] = '<a href="'.site_url('/setting/users/edit/'.$rc->personnel_number).'" title="Edit Data"><button class="btn-info btn-sm btn-flat">&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;</button></a> &nbsp; &nbsp; &nbsp; <a href="'.site_url('/setting/users/delete/'.$rc->personnel_number).'" title="Hapus Data"><button class="btn-warning btn-sm btn-flat">Hapus</button></a>';			
 
 			$data[] = $row;
 		}
@@ -51,7 +44,7 @@ class Users extends MX_Controller {
 	}
 	
 	private function form($action = 'insert', $id = ''){
-		if ($this->agent->referrer() == '') redirect($this->page->base_url());
+		if ($this->agent->referrer() == '') redirect(site_url('setting/users'));
 		
 		$title = '';
 		if($this->uri->segment(3) == 'add'){ 
@@ -63,7 +56,7 @@ class Users extends MX_Controller {
 		$this->page->view('users_form', array (
 			'ttl'		=> $title,
 			'back'		=> $this->agent->referrer(),
-			'action'	=> $this->page->base_url("/{$action}/{$id}"),
+			'action'	=> $this->page->base_url("/users/{$action}/{$id}"),
 			'users'		=> $this->model_users->by_id_users($id),
 			'aksi'		=> $action,
 		));
@@ -77,92 +70,39 @@ class Users extends MX_Controller {
 		$this->form('update', $id);
 	}
 	
-	public function insert(){		
-		if ( ! $this->input->post()) show_404(); 
-		
-		$konfigurasi = array('allowed_types' =>'jpg|jpeg|gif|png|bmp',
-							 'upload_path' => $this->gallerypath);
-							 
-		$this->load->library('upload', $konfigurasi);
-		$this->upload->do_upload();
-		$datafile = $this->upload->data();
-	
-		$konfigurasi = array('source_image' => $datafile['full_path'],
-							 'new_image' => $this->gallerypath . '/thumbnails',
-							 'maintain_ration' => true,
-							 'width' => 110,
-							 'height' =>100);
-
-		$this->load->library('image_lib', $konfigurasi);
-		$this->image_lib->resize();
-		
+	public function insert(){				
 		$data = array(
-			'username' 			=> $this->input->post('username'),
-			'name_users'		=> $this->input->post('name_users'),
-			'password' 			=> password($this->input->post('password')),
-			'photo'	   			=> $_FILES['userfile']['name'],
-			'id_users_group_fk'	=> $this->input->post('id_users_group_fk'),
-			'blockage'   		=> $this->input->post('blockage')
+			'personnel_number_fk'  	=> $this->input->post('personnel_number'),				
+			'id_group_fk'   		=> $this->input->post('group')
 		);
-		$this->db->insert('users', $data);
-		
-		redirect($this->page->base_url());
+		$this->db->insert('m_employee_group', $data);
+		redirect(site_url('setting/users'));
 	}
 	
-	public function update($id){		
-		if ( ! $this->input->post()) show_404(); 
+	public function update($id=''){
 	
-		$userfile = $_FILES['userfile']['name'];
-		
-		if(!empty($userfile)){
-			$konfigurasi = array('allowed_types' =>'jpg|jpeg|gif|png|bmp',
-								 'upload_path' => $this->gallerypath);
-							 
-			$this->load->library('upload', $konfigurasi);
-			$this->upload->do_upload();
-			$datafile = $this->upload->data();
+				$data = array(
+					'id_group_fk'   		=> $this->input->post('group'),
+				);		
+				$this->db->where('personnel_number_fk', $id);
+				$this->db->update('m_employee_group', $data);					
+			redirect(site_url('setting/users'));	
+	}
 	
-			$konfigurasi = array('source_image' => $datafile['full_path'],
-								'new_image' => $this->gallerypath . '/thumbnails',
-								'maintain_ration' => true,
-								'width' => 110,
-								'height' =>100);
+	public function delete($id=''){
+		if (!empty($id)){		
+			$this->db->delete('m_employee_group', array('personnel_number_fk' => $id));
+			redirect(site_url('setting/users'));
+		}else{
+			redirect(site_url('setting/users'));
+		};
+	}
 
-			$this->load->library('image_lib', $konfigurasi);
-			$this->image_lib->resize();
-		
-			$data = array(
-				'username' 			=> $this->input->post('username'),
-				'name_users'		=> $this->input->post('name_users'),
-				'password' 			=> password($this->input->post('password')),
-				'photo'	   			=> $_FILES['userfile']['name'],
-				'id_users_group_fk'	=> $this->input->post('id_users_group_fk'),
-				'blockage'   		=> $this->input->post('blockage')
-			);		
-			$this->db->where('id_users', $id);
-			$this->db->update('users', $data);
-		}
-		else{		
-			$data = array(
-				'username' 			=> $this->input->post('username'),
-				'name_users'		=> $this->input->post('name_users'),
-				'password' 			=> password($this->input->post('password')),
-				'id_users_group_fk'	=> $this->input->post('id_users_group_fk'),
-				'blockage'   		=> $this->input->post('blockage')
-			);		
-			$this->db->where('id_users', $id);
-			$this->db->update('users', $data);	
-		}
-		
-		redirect($this->page->base_url());
-	}
-	
-	public function delete($id){
-		if ($this->agent->referrer() == '') show_404();
-		
-		$this->db->delete('users', array('id_users' => $id));
-		redirect($this->agent->referrer());
-	}
+	public function option_group()
+    {
+        $m_unit = $this->db->query("SELECT * FROM m_group ORDER BY name_group");
+        return options($m_unit, 'id_group', 'name_group');
+    }
 
 }
 

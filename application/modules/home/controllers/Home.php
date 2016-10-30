@@ -27,8 +27,11 @@ class Home extends CI_Controller
     }
     
     public function get_ajax_home(){
-        $user_data = $this->session->userdata('users');                                                                           
-        $sess_employee_group = $user_data->id_employee_group;  
+        $user_data = $this->session->userdata('users');
+        $sess_personnel_number  = $user_data->PERNR;                                                                          
+        $sess_employee_group = $user_data->id_employee_group;
+        $cek_superior = $this->m_home->cek_superior($sess_personnel_number);
+
         $list = $this->m_home->get_value_home();                
 		$data = array();
 		$no = $_POST['start'];
@@ -37,10 +40,10 @@ class Home extends CI_Controller
 			$no++;
 			$row = array();
 			$row[] = $no;
-            if(@$sess_employee_group == '1'){            
+            if(@$cek_superior == '1'){            
             $row[] = @$rc->name;
             $row[] = @$rc->personnel_number;
-            }            
+            };            
 			$row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" title="Edit Data">'.@$rc->request_number.'</a>';
 			$row[] = @$rc->last_update;
             if(@$rc->current_status == 'Success'){                        

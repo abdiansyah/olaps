@@ -17,29 +17,29 @@ class Quality_control extends MX_Controller
     public function index()
     {
         $this->page->view('quality_change_index', array(
-            'search' => site_url('quality_control/quality_control/form_list_search'),
-            'request_number' => $this->input->post('request_number'),
-            'personnel_number' => $this->input->post('personnel_number'),
-            'reason_apply_license' => $this->input->post('reason_apply_license'),
-            'code_unit' => $this->input->post('code_unit'),
-            'priority' => $this->input->post('priority'),
-            'datetime_priority' => $this->input->post('datetime_priority'),
-            'personnel_number_superior' => $this->input->post('personnel_number_superior'),
-            'personnel_number_quality' => $this->input->post('personnel_number_quality'),
-            'id_disposition_user_fk' => $this->input->post('id_disposition_user_fk'),
-            'id_location_user_fk' => $this->input->post('id_location_user_fk'),
-            'date_request' => $this->input->post('date_request'),
-            'date_approved_superior' => $this->input->post('date_approved_superior'),
-            'date_approved_quality' => $this->input->post('date_approved_quality'),
-            'date_referral_authorization' => $this->input->post('date_referral_authorization'),
-            'date_take_authorization' => $this->input->post('date_take_authorization'),
-            'status_submit' => $this->input->post('status_submit'),
-            'status_approved_superior' => $this->input->post('status_approved_superior'),
-            'status_approved_quality' => $this->input->post('status_approved_quality'),
-            'status_assesment' => $this->input->post('status_assesment'),
-            'status_issue_authorization' => $this->input->post('status_issue_authorization'),
-            'referral_authorization' => $this->input->post('referral_authorization'),
-            'take_authorization' => $this->input->post('take_authorization')
+            'search'                        => site_url('quality_control/quality_control/form_list_search'),
+            'request_number'                => $this->input->post('request_number'),
+            'personnel_number'              => $this->input->post('personnel_number'),
+            'reason_apply_license'          => $this->input->post('reason_apply_license'),
+            'code_unit'                     => $this->input->post('code_unit'),
+            'priority'                      => $this->input->post('priority'),
+            'datetime_priority'             => $this->input->post('datetime_priority'),
+            'personnel_number_superior'     => $this->input->post('personnel_number_superior'),
+            'personnel_number_quality'      => $this->input->post('personnel_number_quality'),
+            'id_disposition_user_fk'        => $this->input->post('id_disposition_user_fk'),
+            'id_location_user_fk'           => $this->input->post('id_location_user_fk'),
+            'date_request'                  => $this->input->post('date_request'),
+            'date_approved_superior'        => $this->input->post('date_approved_superior'),
+            'date_approved_quality'         => $this->input->post('date_approved_quality'),
+            'date_referral_authorization'   => $this->input->post('date_referral_authorization'),
+            'date_take_authorization'       => $this->input->post('date_take_authorization'),
+            'status_submit'                 => $this->input->post('status_submit'),
+            'status_approved_superior'      => $this->input->post('status_approved_superior'),
+            'status_approved_quality'       => $this->input->post('status_approved_quality'),
+            'status_assesment'              => $this->input->post('status_assesment'),
+            'status_issue_authorization'    => $this->input->post('status_issue_authorization'),
+            'referral_authorization'        => $this->input->post('referral_authorization'),
+            'take_authorization'            => $this->input->post('take_authorization')
         ));
     }
     
@@ -64,12 +64,10 @@ class Quality_control extends MX_Controller
             @$date_submited = $grid->date_request;
             if ($grid->date_finish != '') {
                 @$date_until = $grid->date_finish;
-            }
-            ;
+                };
             if ($grid->date_finish == '' || $grid->date_finish == null) {
                 @$date_until = date('d-m-Y');
-            }
-            ;
+                };
             $row[]  = round(abs(strtotime($date_until) - strtotime($date_submited)) / 86400);
             $row[]  = $grid->date_priority;
             $row[]  = $grid->time_priority;
@@ -109,12 +107,10 @@ class Quality_control extends MX_Controller
             @$date_submited = $grid->date_request;
             if ($grid->date_finish != '') {
                 @$date_until = $grid->date_finish;
-            }
-            ;
+                };
             if ($grid->date_finish == '' || $grid->date_finish == 'Null') {
                 @$date_until = date('d-m-Y');
-            }
-            ;
+                };
             $row[]  = round(abs(strtotime($date_until) - strtotime($date_submited)) / 86400);
             $row[]  = $grid->remark;
             $row[]  = '<a href="' . site_url('quality_control/view/' . $grid->request_number) . '" title="Edit Data"><button class="btn-info btn-sm btn-flat">View</button></a>';
@@ -143,16 +139,13 @@ class Quality_control extends MX_Controller
         $title = '';
         if ($this->uri->segment(3) == 'view') {
             $title = 'View';
-        }
-        ;
+            };
         if ($this->uri->segment(3) == 'edit') {
             $title = 'Edit';
-        }
-        ;
+            };
         if ($this->uri->segment(3) == 'add') {
             $title = 'Add';
-        }
-        ;
+            };
         
         $this->page->view('quality_change_form', array(
             'ttl' => $title,
@@ -169,7 +162,7 @@ class Quality_control extends MX_Controller
     {
         $this->form('add', $id);
         $sess_personnel_number = $this->session->userdata('users_quality')->PERNR;
-        $url_apply_license     = $_SERVER['SERVER_ADDR'].'/app_olds/';
+        $url_apply_license     = 'http://192.168.240.107/app_olds/';
         if (isset($_POST['simpan_detail_history'])) {
             $request_number    = $this->input->post('request_number');
             $personnel_number  = $this->input->post('personnel_number');
@@ -184,14 +177,14 @@ class Quality_control extends MX_Controller
             $name_applicant    = $data_applicant['EMPLNAME'];
             $email_applicant   = $data_applicant['EMAIL'];
             $config = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
-            'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE);
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -199,7 +192,15 @@ class Quality_control extends MX_Controller
             $this->email->subject('APPLY LICENSE');
             
             
-            if ($priority != '' && $datetime_priority != '') {
+            if (@$priority == 'Normal') {
+                $data = array(
+                    'priority' => $priority,                    
+                );
+                $this->db->where('request_number', $request_number);
+                $this->db->update('t_apply_license', $data);
+            }
+
+            if (@$priority == 'High' && @$datetime_priority != '') {
                 $data = array(
                     'priority' => $priority,
                     'datetime_priority' => $datetime_priority
@@ -235,8 +236,7 @@ class Quality_control extends MX_Controller
                 );
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
-            }
-            ;
+            };
             if ($m_sub_status == '4') {
                 $data = array(
                     'status_approved_quality' => '2',
@@ -455,11 +455,10 @@ class Quality_control extends MX_Controller
                     $cek_oral_assesment = $this->model_quality_control->cek_assesment($request_number, $personnel_number, $id_license[$key], $id_type[$key], $id_spect[$key], $id_category[$key], $id_scope[$key]);
                     if ($cek_oral_assesment->num_rows() > 0) {
                         $data_oral_assesment = array(
-                            'date_oral_assesment' => date('Y-m-d', strtotime($date_oral_assesment[$key])),
-                            'id_oral_sesi' => $id_oral_sesi[$key],
-                            'id_oral_room_fk' => $id_oral_room[$key]
+                            'date_oral_assesment'   => date('Y-m-d', strtotime($date_oral_assesment[$key])),
+                            'id_oral_sesi'          => $id_oral_sesi[$key],
+                            'id_oral_room_fk'       => $id_oral_room[$key]
                         );
-                        $this->db->update('t_assesment', $data_oral_assesment);
                         $this->db->where('request_number_fk', $request_number);
                         $this->db->where('personnel_number_fk', $personnel_number);
                         $this->db->where('id_auth_license_fk', $id_license[$key]);
@@ -468,21 +467,22 @@ class Quality_control extends MX_Controller
                         $this->db->where('id_auth_category_fk', $id_category[$key]);
                         $this->db->where('id_auth_scope_fk', $id_scope[$key]);
                         $this->db->where('id_assesment_scope_fk', $id_assesment[$key]);
+                        $this->db->update('t_assesment', $data_oral_assesment);                        
                     } else {
                         $data_assesment = array(
-                            'request_number_fk' => $request_number,
-                            'personnel_number_fk' => $personnel_number,
-                            'status_assesment' => '1', //send by quality            
+                            'request_number_fk'     => $request_number,
+                            'personnel_number_fk'   => $personnel_number,
+                            'status_assesment'      => '1', //send by quality            
                             'id_assesment_scope_fk' => $id_assesment[$key],
-                            'date_oral_assesment' => date('Y-m-d', strtotime($date_oral_assesment[$key])),
-                            'id_oral_sesi' => $id_oral_sesi[$key],
-                            'id_oral_room_fk' => $id_oral_room[$key],
-                            'id_auth_license_fk' => $id_license[$key],
-                            'id_auth_type_fk' => $id_type[$key],
-                            'id_auth_spec_fk' => $id_spect[$key],
-                            'id_auth_category_fk' => $id_category[$key],
-                            'id_auth_scope_fk' => $id_scope[$key],
-                            'date_assesment' => date('Y-m-d H:i:s')
+                            'date_oral_assesment'   => date('Y-m-d', strtotime($date_oral_assesment[$key])),
+                            'id_oral_sesi'          => $id_oral_sesi[$key],
+                            'id_oral_room_fk'       => $id_oral_room[$key],
+                            'id_auth_license_fk'    => $id_license[$key],
+                            'id_auth_type_fk'       => $id_type[$key],
+                            'id_auth_spec_fk'       => $id_spect[$key],
+                            'id_auth_category_fk'   => $id_category[$key],
+                            'id_auth_scope_fk'      => $id_scope[$key],
+                            'date_assesment'        => date('Y-m-d H:i:s')
                         );
                         //print_r($data_assesment);
                         //            die();             
@@ -506,14 +506,14 @@ class Quality_control extends MX_Controller
             $name_applicant   = $data_applicant['EMPLNAME'];
             $email_applicant  = $data_applicant['EMAIL'];
             $config = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
-            'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE);
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -550,7 +550,6 @@ class Quality_control extends MX_Controller
                             'id_written_sesi' => $id_written_sesi[$key],
                             'id_written_room_fk' => $id_written_room[$key]
                         );
-                        $this->db->update('t_assesment', $data_written_assesment);
                         $this->db->where('request_number_fk', $request_number);
                         $this->db->where('personnel_number_fk', $personnel_number);
                         $this->db->where('id_auth_license_fk', $id_license[$key]);
@@ -559,6 +558,7 @@ class Quality_control extends MX_Controller
                         $this->db->where('id_auth_category_fk', $id_category[$key]);
                         $this->db->where('id_auth_scope_fk', $id_scope[$key]);
                         $this->db->where('id_assesment_scope_fk', $id_assesment[$key]);
+                        $this->db->update('t_assesment', $data_written_assesment);                        
                     } else {
                         //die('input baru');
                         $data_assesment = array(
@@ -612,7 +612,7 @@ class Quality_control extends MX_Controller
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             //die($pesan);        
             $this->email->message($pesan);
-            $this->email->send();
+            
             redirect(site_url('quality_control'));
         }
     }
@@ -632,8 +632,8 @@ class Quality_control extends MX_Controller
             $data['data_file_requirement_revision']     = $this->model_quality_control->get_data_requirement_revision($personnel_number);            
             $data['request_number']                     = $request_number;
             $data['personnel_number']                   = $personnel_number;
-            $data['data_file_general_document_quality'] = $this->model_quality_control->get_general_document_quality($request_number);
-            $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number, $personnel_number);
+            $data['data_file_general_document_quality'] = $this->model_quality_control->get_general_document_quality($request_number, $personnel_number);
+            $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number);
             $this->page->view('quality_control/form_data_requirement', $data);
         }
     }
@@ -644,14 +644,17 @@ class Quality_control extends MX_Controller
             $personnel_number = $this->input->post('personnel_number');
             $request_number   = $this->session->userdata('request_number');
             $name_file        = $this->input->post('name_file');
-            $name_file_ftp    = $this->input->post('name_file_ftp');
+            $name_file_ftp    = $this->input->post('name_file_ftp');                                
             $code_file        = $this->input->post('code_file');
+            @$cd_folder_by    = $this->model_quality_control->get_code_file_by($code_file); 
+            @$code_folder     = $cd_folder_by->name;
             
             $data = array(
                 'request_number'    => $request_number,
                 'personnel_number'  => $personnel_number,
                 'name_file'         => $name_file,
                 'name_file_ftp'     => $name_file_ftp,
+                'code_folder'       => $code_folder,
                 'code_file'         => $code_file,
                 'ttl'               => 'View requirement'
             );
@@ -670,7 +673,7 @@ class Quality_control extends MX_Controller
             $request_number          = $this->input->post('request_number');
             $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
             $code_data_requirement_s = $this->input->post('code_data_requirement');
-            @$file_data_requirement  = count($_FILES['file_data_requirement']['name']);
+            @$file_data_requirement = count($_FILES['file_data_requirement']['name']);
             $save_result_expiration_data_requirement = $this->input->post('save_result_expiration_data_requirement');
             $subfolder                               = $personnel_number;
             
@@ -708,14 +711,14 @@ class Quality_control extends MX_Controller
             $this->ftp->close();
                                     
             $config = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com',                                                                                               
-            'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE);
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE);  
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -795,18 +798,18 @@ class Quality_control extends MX_Controller
                     $this->db->update('t_apply_license', $data);
                     $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
                     redirect(site_url('quality_control/index'));
-                }
-            }
+                 }
+             }
             //endif
         
-            if (isset($_POST['save_req_document_tqd'])) {
-            $this->load->library('ftp');
-            $ftp_config['hostname'] = '127.0.0.1';
-            $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismillah';
+        if (isset($_POST['save_req_document_tqd'])) {
+            $this->load->library('ftp');                
+            $ftp_config['hostname'] = '192.168.40.107'; 
+            $ftp_config['username'] = 'usr-olaps';
+            $ftp_config['password'] = 'p@ssw0rd';
             $ftp_config['debug']    = TRUE;
             $this->load->library('upload');
-            $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
+            $mainfolder              = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS'; 
             $personnel_number        = $this->input->post('personnel_number');
             $request_number          = $this->input->post('request_number');
             $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
@@ -814,8 +817,9 @@ class Quality_control extends MX_Controller
             @$file_req_spec_document_quality = count($_FILES['file_req_spec_document_quality']['name']);
             $expiration_date_spec_quality = $this->input->post('expiration_date_spec_quality');
             $subfolder               = $personnel_number;
-          
-                   
+            
+            //print_r(date('YmdHis'));
+            //        die();       
             $this->ftp->connect($ftp_config);
             $this->ftp->close();
             $this->ftp->connect($ftp_config);
@@ -840,14 +844,14 @@ class Quality_control extends MX_Controller
                     $data_requirement = array(
                         'personnel_number_fk' => @$personnel_number,
                         'name_file'     => @$fileNameNew,
-                        'code_file'     => @$code_req_spec_document_quality,
+                        'code_file'     => @$code_data_requirement,
                         'status_valid'  => '1',
                         'update_by'     => @$sess_personnel_number
                     );
                     $this->db->insert('t_file_requirement', $data_requirement);
                     if($send){
                         $this->session->set_flashdata('msg', 'Upload document successfully.');
-                        redirect(site_url('quality_control/index'));                    
+                       redirect(site_url('quality_control/index'));                    
                     }else{
                         $this->session->set_flashdata('msg', 'Document failed upload, please check network.');
                         redirect(site_url('quality_control/index'));                    
@@ -863,7 +867,7 @@ class Quality_control extends MX_Controller
                 }else{
                     $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
                     redirect(site_url('quality_control/index'));
-                }       
+                }     
     }
 }
 
@@ -897,7 +901,7 @@ class Quality_control extends MX_Controller
         
         $data['data_file_requirement']              = $this->model_quality_control->get_data_requirement($personnel_number);
         $data['data_file_general_document_quality'] = $this->model_quality_control->get_general_document_quality($request_number);
-        $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number,$personnel_number);
+        $data['data_file_spec_document_quality']    = $this->model_quality_control->get_spec_document_quality($request_number, $personnel_number);
         $this->page->view('quality_control/form_data_requirement', $data);
     }
     
@@ -953,13 +957,17 @@ class Quality_control extends MX_Controller
         return options($m_unit, 'UNIT', 'UNIT');
     }
     
-    public function cek_room($id_sesi)
-    {
-        $this->model_quality_control->get_room_by($id_sesi);
+    public function cek_room_written($date_written_assesment, $id_sesi, $id_room){
+        $this->model_quality_control->get_room_written_by($date_written_assesment,$id_sesi,$id_room);
     }
-    public function cek_one_room()
-    {
-        $this->model_quality_control->get_room();
+
+    public function cek_room_oral($date_oral_assesment, $id_sesi, $id_room){
+        $this->model_quality_control->get_room_oral_by($date_oral_assesment,$id_sesi,$id_room);
+    }
+
+    public function get_all_room(){
+        $m_room = $this->db->query("SELECT id_room, name_room FROM m_room");
+        return options($m_room, 'id_room', 'name_room');
     }
 }
 

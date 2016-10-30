@@ -1,10 +1,11 @@
 <script type="text/javascript">
 $().ready(function(){	  
-	$('#datatables').dataTable({
+	$('#datatables_menu').dataTable({
 		"scrollY"			: "342px",
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
 		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
+		"bSort"             : false,
 		"order" 	 		: [], //Initial no order.
 
 		// Load data for the table's content from an Ajax source
@@ -33,15 +34,15 @@ $().ready(function(){
 </div>
 
 <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
-	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables">
+	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_menu">
 		<thead>
 			<tr>
-				<th width="20%">name menu</th>
+				<th width="20%">Name menu</th>
 				<th width="30%">URL</th>
 				<th width="13%">ID parent menu</th>
-				<th width="13%">changed time</th>
-				<th width="17%">changed by</th>
-				<th width="7%">action</th>
+				<th width="13%">Changed time</th>
+				<th width="17%">Changed by</th>
+				<th width="7%">Action</th>
 			</tr>
 		</thead>
 	</table>

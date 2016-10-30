@@ -3,21 +3,24 @@
 $().ready(function(){
 var unit = '<?php echo @$unit;?>';
 var spect = '<?php echo @$spect;?>';
-
-
 var status_license = '<?php echo @$status_license;?>';
 
  $('#datatables_ame_license').dataTable({
-    "scrollY"         : "342px", 
+    "scrollY"         : "500px", 
     "searching"       : false, 
     "select"          : true,
     "bLengthChange"   : false,      
     "scrollCollapse"  : true,
-    "bPaginate"       : false,  
+    "bPaginate"       : false, 
+    "bInfo"           : false, 
+    "bSort"           : false,               
     "processing"      : true, //Feature control the processing indicator.
     "serverSide"      : true, //Feature control DataTables' server-side processing mode.
-    "order"           : [], //Initial no order.                   
-
+    "order"           : [], //Initial no order.  
+    "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {        
+        var record_count = this.fnSettings().fnDisplayEnd();
+        $('#atotaldata').html(record_count);
+    },                 
     // Load data for the table's content from an Ajax source
     "ajax": {
       "url" : "<?php echo site_url('license_holder/ame_license/ajax_ame_license'); ?>",
@@ -51,6 +54,7 @@ var status_license = '<?php echo @$status_license;?>';
       <div class="box-body">
     <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->   
     <form action="#" method="POST">
+    <a id="rightsearchcount"></a>
     <div class="radio">
     <b>Search By Unit </b>&nbsp; &nbsp;
     <input type="text" name="unit" placeholder="Unit" maxlength="30" size="30">
@@ -78,7 +82,7 @@ var status_license = '<?php echo @$status_license;?>';
     </div> 
     <div class="radio">
     <br/>
-    <b>Total data :</b>&nbsp; &nbsp; 
+    <b>Total data :</b>&nbsp;<b id="atotaldata"></b> 
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     &nbsp;&nbsp;&nbsp;&nbsp;
     </div>        
@@ -94,6 +98,7 @@ var status_license = '<?php echo @$status_license;?>';
        </tr>                                                          
     </thead>
     </table>
+    <br/>
     </form>
 </div>
 </div>
