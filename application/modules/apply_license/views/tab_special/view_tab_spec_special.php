@@ -8,7 +8,14 @@
             var type_special = $('[name=check_special]:checked').val();
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_special/" + spec_special + "/" + type_special, function(data, status){                 
               $("select[id=tab-category-special]").html(data);
-            });        
+            }); 
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_special , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_special').show();
+               } else {
+                  $('#etops_special').hide();
+               };
+    });       
         });      
      </script>
     

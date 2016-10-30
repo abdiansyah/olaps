@@ -548,7 +548,7 @@
 }
 ?>
 <script type="text/javascript">
-    $('.hidden-page, #etops').hide();
+    $('.hidden-page, #etops, #etops_license_garuda, #etops_license_citilink, #etops_license_sriwijaya, #etops_easa, #etops_special,#etops_garuda, #etops_citilink, #etops_sriwijaya').hide();
     $('div[name=tab-type]').hide();    
         $('div[name=tab-authorization]').hide();
         $('div[name=tab-customer-authorization],div[name=tab-authorization-garuda],div[name=tab-authorization-citilink],div[name=tab-authorization-sriwijaya]').hide();

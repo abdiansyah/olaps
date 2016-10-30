@@ -161,18 +161,19 @@ $(document).ready(function () {
                       
 });
     
-    $('[name=submitcompletingdata]').click(function(){
+  /*  $('[name=submitcompletingdata]').click(function(){
         $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
         $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',true);        
     });
+    */
     
     $('[name=submitcompletingdata]').mouseout(function(){
         $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);           
     });
     
-    $('[name=savecompletingdata]').click(function(){    
+    /* $('[name=savecompletingdata]').click(function(){    
         $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',false);        
-    });        
+    }); */        
     
     
     $('.expiration_date_req_general,.date_training_req_general_certificate,.date_training_req_spec_certificate,.date_training_req_spec_certificate_easa,.date_training_req_spec_certificate_special,.date_training_req_spec_certificate_garuda,.date_training_req_spec_certificate_citilink,.date_training_req_spec_certificate_sriwijaya,.expiration_date_req_spec_certificate_special,.expiration_date_req_spec_certificate_garuda,.expiration_date_req_spec_certificate_citilink,.expiration_date_req_spec_certificate_sriwijaya').datepicker(         

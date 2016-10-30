@@ -9,6 +9,13 @@
         var type_customer_23 =  $('#type_customer_23').val();                   
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_garuda + "/" + check_customer + "/" + type_customer_23, function(data, status){                 
               $("select[id=tab-category-garuda]").html(data);
+            });
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_garuda , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_garuda').show();k
+               } else {
+                  $('#etops_garuda').hide();
+               };
             }); 
         return true;
         });
@@ -20,6 +27,14 @@
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_license_garuda + "/" + license_5 + "/" + type_23, function(data, status){                 
               $("select[id=tab-category-license-garuda]").html(data);
             }); 
+
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_license_garuda , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_license_garuda').show();
+               } else {
+                  $('#etops_license_garuda').hide();
+               };
+            });
         return true;
         });
         
@@ -29,6 +44,13 @@
         var type_customer_24 =  $('#type_customer_24').val();                   
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_citilink + "/" + check_customer + "/" + type_customer_24, function(data, status){                 
               $("select[id=tab-category-citilink]").html(data);
+            });
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_citilink , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_citilink').show();
+               } else {
+                  $('#etops_citilink').hide();
+               };
             });
         return true;            
         });
@@ -40,6 +62,13 @@
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_license_citilink + "/" + license_5 + "/" + type_24, function(data, status){                 
               $("select[id=tab-category-license-citilink]").html(data);
             }); 
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_license_citilink , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_license_citilink').show();
+               } else {
+                  $('#etops_license_citilink').hide();
+               };
+            });
         return true;
         });
         
@@ -50,6 +79,14 @@
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_sriwijaya + "/" + check_customer + "/" + type_customer_25, function(data, status){                 
               $("select[id=tab-category-sriwijaya]").html(data);
             }); 
+
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_sriwijaya , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_sriwijaya').show();
+               } else {
+                  $('#etops_sriwijaya').hide();
+               };
+            });
         return true;            
         });
         
@@ -59,6 +96,13 @@
         var type_25 =  $('#type_25').val();                   
             $.get("<?php echo base_url();?>index.php/apply_license/get_spec_customer/" + spec_customer_license_sriwijaya + "/" + license_5 + "/" + type_25, function(data, status){                 
               $("select[id=tab-category-license-sriwijaya]").html(data);
+            });
+            $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_license_sriwijaya , function(data, status){                 
+               if(data=='1') {
+                  $('#etops_license_sriwijaya').show();
+               } else {
+                  $('#etops_license_sriwijaya').hide();
+               };
             }); 
         return true;
         });

@@ -101,6 +101,12 @@ class M_apply_license extends CI_Model {
         $data_personnel_json = json_encode($data_personnel);                
         die($data_personnel_json);
     }
+
+    public function get_gm_personnel_by($personnel_number)
+    {
+        $query      = "SELECT email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
+        return $this->db->query($query);
+    }
     
     public function get_data_row_personnel_by($personnel_number){
         $name_superior = $this->db->select('TSHS.EMPLNAME')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->

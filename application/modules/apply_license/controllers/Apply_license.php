@@ -2113,10 +2113,10 @@ class Apply_license extends CI_Controller
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
-            $sess_data_superior      = $this->m_apply_license->get_data_row_personnel_by($personnel_number);
+            $sess_data_gm       = $this->m_apply_license->get_gm_personnel_by($personnel_number)->row_array();
             $unit                    = $sess_data_personnel['departement'];
             $presenttitle            = $sess_data_personnel['presenttitle'];
-            $email_superior          = $sess_data_superior['EMAIL_SUPERIOR'];
+            $email_gm                 = $sess_data_gm['email'];            
             $cek_validate_req_number = $request_number;
             $url                     = $_SERVER['HTTP_REFERER'];
             $url_cek_approved_atasan = base_url() . 'index.php/apply_license/cek_approved_atasan/' . $cek_validate_req_number . '/' . $personnel_number;
@@ -2129,7 +2129,7 @@ class Apply_license extends CI_Controller
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from($email);
-            $this->email->to($email_superior);
+            $this->email->to($email_gm);
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                     "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
@@ -2265,7 +2265,7 @@ class Apply_license extends CI_Controller
                                             break;
                                     }
                                     @$data_cek_approved_atasan .= '<td> ' . $reason_apply_license . ' </td>                                     
-                                    <td> ' . $value->name_spect . ' ' . $value->name_category . ' ' . $value->name_scope . ' </td>                                                                                                                                                                                                                                 
+                                    <td> ' . $value->name_spect . ' ' . $value->name_category . ' ' . $value->name_scope . ' </td>                                                
                                     </tr>';
                                 }
                             
