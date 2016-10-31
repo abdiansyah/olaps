@@ -164,23 +164,20 @@ echo bootstrap_datepicker();
 ?>        
 <script type="text/javascript"> 
     $( window ).load(function() {
-    $('[name=personnel_number]').click();           
+        $('[name=personnel_number]').click();                 
     });
-    $('#msg').hide();
-    
-    $('.data-superior').hide();
-    
     $('.personnel_information_form').one('mousemove',function(){
-    $('[name=personnel_number_superior]').click();
-    $('.data-superior').show();    
-    });     
+            $('[name=personnel_number_superior]').click();
+            $('.data-superior').show();    
+        });
+    $('#msg,.data-superior').hide();
             
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker({
     format : 'dd-mm-yyyy'
     }); 
     
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker().on('changeDate', function(e){        
-    $(this).datepicker('hide');
+        $(this).datepicker('hide');
     });
     
          

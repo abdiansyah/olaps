@@ -7,7 +7,7 @@ class M_assesment extends CI_Model {
     }         
     public function get_data_assesment($personnel_number,$request_number)
     {
-        $query = "SELECT tal.reason_apply_license, masc.id, masc.name_t, tal.date_request, 
+        $query = "SELECT tal.reason_apply_license, tald.is_etops, masc.id, masc.name_t, tal.date_request, 
                 (SELECT TOP 1 ta.date_written_assesment FROM t_assesment AS ta WHERE ta.request_number_fk = tal.request_number AND ta.id_assesment_scope_fk = tald.id_assesment_scope_fk AND tald.id_auth_license_fk = ta.id_auth_license_fk AND tald.id_auth_type_fk = ta.id_auth_type_fk AND tald.id_auth_spect_fk = ta.id_auth_spec_fk AND tald.id_auth_category_fk = ta.id_auth_category_fk AND tald.id_auth_scope_fk = ta.id_auth_scope_fk) AS date_written_assesment,
                 (SELECT TOP 1 ta.id_written_sesi FROM t_assesment AS ta WHERE ta.request_number_fk = tal.request_number AND ta.id_assesment_scope_fk = tald.id_assesment_scope_fk AND tald.id_auth_license_fk = ta.id_auth_license_fk AND tald.id_auth_type_fk = ta.id_auth_type_fk AND tald.id_auth_spect_fk = ta.id_auth_spec_fk AND tald.id_auth_category_fk = ta.id_auth_category_fk AND tald.id_auth_scope_fk = ta.id_auth_scope_fk) AS id_sesi_written_assesment,
                 (CASE (SELECT TOP 1 ta.id_written_sesi FROM t_assesment AS ta WHERE ta.request_number_fk = tal.request_number AND ta.id_assesment_scope_fk = tald.id_assesment_scope_fk AND tald.id_auth_license_fk = ta.id_auth_license_fk AND tald.id_auth_type_fk = ta.id_auth_type_fk AND tald.id_auth_spect_fk = ta.id_auth_spec_fk AND tald.id_auth_category_fk = ta.id_auth_category_fk AND tald.id_auth_scope_fk = ta.id_auth_scope_fk) WHEN '1' THEN '09:00 - 11:00' WHEN '2' THEN '13:00 - 15:00' END) AS sesi_written_assesment,

@@ -814,6 +814,7 @@
             $('#tab-spec-easa')[0].selectedIndex = 0;            
  			$('#tab-category-easa').empty();
  			$('#tab-scope-easa').empty(); 
+            $('#etops_easa').attr('checked',false);
             box_html_authorization_easa.fadeIn('slow');
             return true;
         });
@@ -861,6 +862,7 @@
         $('#tab-spec-special')[0].selectedIndex = 0;
         $('#tab-category-special').empty();
         $('#tab-scope-special').empty(); 
+        $('#etops_special').attr('checked',false);
         box_html_authorization_special.fadeIn('slow');
         return true;
     });
@@ -908,6 +910,7 @@
         $('#tab-spec-license-garuda')[0].selectedIndex = 0;
         $('#tab-category-license-garuda').empty();
         $('#tab-scope-license-garuda').empty(); 
+        $('#etops_license_garuda').attr('checked',false);
         box_html_authorization_license_garuda.fadeIn('slow');
         return true;
     });
@@ -954,6 +957,7 @@
         $('#tab-spec-license-citilink')[0].selectedIndex = 0;
         $('#tab-category-license-citilink').empty();
         $('#tab-scope-license-citilink').empty(); 
+        $('#etops_license_citilink').attr('checked',false);
         box_html_authorization_license_citilink.fadeIn('slow');
         return true;
     });
@@ -999,7 +1003,8 @@
         $('.tab-authorization-sriwijaya tr.text-license-sriwijaya:last').before(box_html_authorization_license_sriwijaya);  			            
         $('#tab-spec-license-sriwijaya')[0].selectedIndex = 0;
         $('#tab-category-license-sriwijaya').empty();
-        $('#tab-scope-license-sriwijaya').empty(); 
+        $('#tab-scope-license-sriwijaya').empty();
+        $('#etops_license_sriwijaya').attr('checked',false); 
         box_html_authorization_license_sriwijaya.fadeIn('slow');
         return true;
     });
@@ -1031,7 +1036,7 @@
                         var check_etops_garuda = 'checked';
                     }else if(!$('#etops_citilink').is(':checked')){
                         var etops_garuda  = '';
-                        var check_garuda = '';
+                        var check_etops_garuda = '';
                     }
        
             
@@ -1048,6 +1053,7 @@
         $('#tab-spec-garuda')[0].selectedIndex = 0;
         $('#tab-category-garuda').empty();
         $('#tab-scope-garuda').empty(); 
+        $('#etops_garuda').attr('checked',false);
         box_html_authorization_garuda.fadeIn('slow');
         return true;
     });
@@ -1093,7 +1099,8 @@
         $('.tab-add-citilink-authorization tr.text-citilink-authorization:last').before(box_html_authorization_citilink);  			            
         $('#tab-spec-citilink')[0].selectedIndex = 0;
         $('#tab-category-citilink').empty();
-        $('#tab-scope-citilink').empty(); 
+        $('#tab-scope-citilink').empty();
+        $('#etops_citilink').attr('checked',false); 
         box_html_authorization_citilink.fadeIn('slow');
         return true;
     });
@@ -1131,7 +1138,7 @@
         var box_html_authorization_sriwijaya = $('<tr class="text-sriwijaya-authorization" id="field-data-sriwijaya">' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_spec_sriwijaya_text + '" readonly/><input name="tab-spec-sriwijaya[]" type="hidden" value="' + tab_spec_sriwijaya + '"/></td>' +
                             '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_category_sriwijaya_text + '" readonly/><input name="tab-category-sriwijaya[]" type="hidden" value="' + tab_category_sriwijaya + '"/></td>' +
-                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_sriwijaya_text + '" readonly/><input name="tab-scope-sriwijaya[]" type="hidden" value="' + tab_scope_sriwijaya + '"/><input name="tab-scope-assesment-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_sriwijaya + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_sriwijaya +' disabled/><input type="hidden" name="etops-license-sriwijaya[]" '+ check_etops_sriwijaya +' value="' + etops_sriwijaya + '"/></td>' +                                                                
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_scope_sriwijaya_text + '" readonly/><input name="tab-scope-sriwijaya[]" type="hidden" value="' + tab_scope_sriwijaya + '"/><input name="tab-scope-assesment-sriwijaya[]" type="hidden" value="' + tab_scope_assesment_sriwijaya + '"/></td>' +'<td style="text-align: center;width: 10px;""><input type="checkbox" '+ check_etops_sriwijaya +' disabled/><input type="hidden" name="etop-sriwijaya[]" '+ check_etops_sriwijaya +' value="' + etops_sriwijaya + '"/></td>' +                                                                
                             '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-sriwijaya">' + n_sriwijaya_authorization + 
                             '</span><a class="remove-box-sriwijaya btn btn-danger"><i class="fa fa-remove"></a></td>' +  
                             '</tr>');
@@ -1141,6 +1148,7 @@
         $('#tab-spec-sriwijaya')[0].selectedIndex = 0;
         $('#tab-category-sriwijaya').empty();
         $('#tab-scope-sriwijaya').empty(); 
+        $('#etops_sriwijaya').attr('checked',false);
         box_html_authorization_sriwijaya.fadeIn('slow');
         return true;
     });

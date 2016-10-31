@@ -62,10 +62,10 @@ class Quality_control extends MX_Controller
             $row[] = $grid->last_update;
             $row[] = $grid->time;
             @$date_submited = $grid->date_request;
-            if ($grid->date_finish != '') {
+            if ($grid->date_finish != null) {
                 @$date_until = $grid->date_finish;
                 };
-            if ($grid->date_finish == '' || $grid->date_finish == null) {
+            if ($grid->date_finish == null) {
                 @$date_until = date('d-m-Y');
                 };
             $row[]  = round(abs(strtotime($date_until) - strtotime($date_submited)) / 86400);
@@ -105,10 +105,10 @@ class Quality_control extends MX_Controller
             $row[] = $grid->last_update;
             $row[] = $grid->time;
             @$date_submited = $grid->date_request;
-            if ($grid->date_finish != '') {
+            if ($grid->date_finish != null) {
                 @$date_until = $grid->date_finish;
                 };
-            if ($grid->date_finish == '' || $grid->date_finish == 'Null') {
+            if ($grid->date_finish == null) {
                 @$date_until = date('d-m-Y');
                 };
             $row[]  = round(abs(strtotime($date_until) - strtotime($date_submited)) / 86400);
@@ -177,14 +177,14 @@ class Quality_control extends MX_Controller
             $name_applicant    = $data_applicant['EMPLNAME'];
             $email_applicant   = $data_applicant['EMAIL'];
             $config = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.googlemail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE);  
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE); 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -506,14 +506,14 @@ class Quality_control extends MX_Controller
             $name_applicant   = $data_applicant['EMPLNAME'];
             $email_applicant  = $data_applicant['EMAIL'];
             $config = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.googlemail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE);  
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE); 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -663,9 +663,9 @@ class Quality_control extends MX_Controller
         
         if (isset($_POST['save_validation_document'])) {
             $this->load->library('ftp');                
-            $ftp_config['hostname'] = '127.0.0.1'; 
-            $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismillah';
+            $ftp_config['hostname'] = '192.168.40.107'; 
+            $ftp_config['username'] = 'usr-olaps';
+            $ftp_config['password'] = 'p@ssw0rd';
             $ftp_config['debug']    = TRUE;                
             $this->load->library('upload');                                                              
             $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
@@ -711,14 +711,14 @@ class Quality_control extends MX_Controller
             $this->ftp->close();
                                     
             $config = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.googlemail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE);  
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE); 
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -804,9 +804,9 @@ class Quality_control extends MX_Controller
         
         if (isset($_POST['save_req_document_tqd'])) {
             $this->load->library('ftp');                
-            $ftp_config['hostname'] = '192.168.40.107'; 
-            $ftp_config['username'] = 'usr-olaps';
-            $ftp_config['password'] = 'p@ssw0rd';
+            $ftp_config['hostname'] = '127.0.0.1'; 
+            $ftp_config['username'] = 'yayas';
+            $ftp_config['password'] = 'Bismillah';
             $ftp_config['debug']    = TRUE;
             $this->load->library('upload');
             $mainfolder              = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS'; 

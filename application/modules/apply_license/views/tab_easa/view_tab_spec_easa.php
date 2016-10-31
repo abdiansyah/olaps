@@ -16,7 +16,7 @@ $('#tab-spec-easa').change(function(){
                } else {
                   $('#etops_easa').hide();
                };
-    });        
+    });             
 });      
 </script>
     

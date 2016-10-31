@@ -54,6 +54,7 @@ class M_home extends CI_Model {
 	
 	public function get_value_home() {
         @$personnel_number 	        = $this->input->post('personnel_number');
+        @$unit                      = $this->input->post('unit');
         $request_number_user        = $this->input->post('request_number_user');
         $date_request               = $this->input->post('date_request');
         $employee_personnel_number  = $this->input->post('employee_personnel_number');
@@ -170,6 +171,11 @@ class M_home extends CI_Model {
             $this->db->where('t_apply_license.status_approved_superior',null);
             $this->db->where('t_apply_license.status_submit','1');                       
         };
+        $this->db->or_where('CONVERT(VARCHAR(20),TSH.departement)',@$unit); 
+        $this->db->where('CONVERT(VARCHAR(20),TSH.personnel_number)',@$personnel_number);         
+        $this->db->LIKE('CONVERT(VARCHAR(20),TSH.presenttitle)','GM');
+            
+        // SELECT * FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = 'TQD';
             
 		$this->_get_query();
 		if(@$_POST['length'] != -1)

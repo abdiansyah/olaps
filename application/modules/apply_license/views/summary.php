@@ -228,8 +228,7 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                    </div>                    
 		</div>
         <div class="box-footer">
-            <button type="submit" class="btn btn-info pull-right btn-sm" name="submitsummary">SEND</button>  
-            <button type="button" class="btn btn-info pull-right close3 btn-sm" onclick="window.history.go(-1); return false;" name="previous">BACK</button>              
+            <button type="submit" class="btn btn-info pull-right btn-sm" name="submitsummary">SEND</button>               
             <a href="<?php echo site_url('home/index');?>"><button type="button" class="btn btn-warning pull-right btn-sm" name="cancel">CANCEL</button></a>           
         </div>
         </form>

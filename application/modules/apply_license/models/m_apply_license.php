@@ -101,12 +101,6 @@ class M_apply_license extends CI_Model {
         $data_personnel_json = json_encode($data_personnel);                
         die($data_personnel_json);
     }
-
-    public function get_gm_personnel_by($personnel_number)
-    {
-        $query      = "SELECT email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
-        return $this->db->query($query);
-    }
     
     public function get_data_row_personnel_by($personnel_number){
         $name_superior = $this->db->select('TSHS.EMPLNAME')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
@@ -134,6 +128,12 @@ class M_apply_license extends CI_Model {
                             TSH.REPORT_TO, (". $name_superior .") AS NAME_SUPERIOR, (". $email_superior .") AS EMAIL_SUPERIOR FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
                             WHERE TSH.PERNR = '$personnel_number'";                                                                        
         return $this->db->query($querydatarowemp)->row_array();     
+    }
+
+    public function get_gm_personnel_by($personnel_number)
+    {
+        $query   = "SELECT email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
+        return $this->db->query($query);
     }
     
     public function get_data_apply_personnel_by($personnel_number){        
@@ -291,7 +291,7 @@ class M_apply_license extends CI_Model {
     } 
     
     public function cek_data_summary($requset_number,$post_request_number,$personnel_number,$post_personnel_number){                          
-        $cek_query_validate = "SELECT mal.name_t AS name_license, tal.reason_apply_license AS reason_apply_license, tal.personnel_number, tal.request_number AS request_number, mat.name_t AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope, tal.date_request FROM t_apply_license tal
+        $cek_query_validate = "SELECT mal.name_t AS name_license, tal.reason_apply_license AS reason_apply_license, tal.personnel_number, tal.request_number AS request_number, mat.name_t AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope, tal.date_request, tald.is_etops FROM t_apply_license tal
                              LEFT JOIN t_apply_license_dtl AS tald ON tal.request_number = tald.request_number_fk
                              LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id  
                              LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id 

@@ -57,7 +57,7 @@ class model_quality_control extends CI_Model
                         WHEN t_apply_license.status_assesment IS NULL then 
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108))
                         WHEN t_apply_license.status_issue_authorization IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))                                                                                                                                            
+                        (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),108)) FROM t_assesment AS TA WHERE TA.request_number_fk = t_apply_license.request_number)                                                                                                                               
                         WHEN t_apply_license.referral_authorization IS NULL then
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),108))
                         WHEN t_apply_license.take_authorization IS NULL then

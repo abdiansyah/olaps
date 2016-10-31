@@ -201,6 +201,15 @@ if(@$data_history[0]!=''){
          <?php
          $no=1;
          foreach($cek_data_summary as $row) {
+            $is_etops = $row->is_etops;
+            switch ($is_etops) {
+                case 1 :
+                $status_etops = ' + ETOPS';
+                break;
+                case 0 :
+                $status_etops = '';
+                break;
+            }
          ?>
          <tr>                        
             <td width="3%"><?php echo $no++ ?> </td>
@@ -208,7 +217,7 @@ if(@$data_history[0]!=''){
             <td><?php echo $row->name_type; ?> </td>                                                        
             <td><?php echo $row->name_spect; ?> </td>                             
             <td><?php echo $row->name_category; ?> </td> 
-            <td><?php echo $row->name_scope; ?></td>                                                     
+            <td><?php echo $row->name_scope.''.$status_etops; ?></td>                                                     
          </tr>        
          <?php
          }        

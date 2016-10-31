@@ -71,9 +71,17 @@
                                 break;
                         }
                         echo $reason_apply_license;
+                        $is_etops = $data_assesment[0]->is_etops;
+                        switch ($is_etops) {
+                                case 1 :
+                                $status_etops = ' + ETOPS';
+                                break;
+                                case 2 :
+                                $status_etops = '';
+                                break;                            }
                         ?>
                         </td>                    
-                        <td><input type="hidden" name="id_assesment[]" value="<?php echo $value->id; ?>"/><?php echo $value->name_spect .' '.$value->name_category.' '.$value->name_scope; ?></td>
+                        <td><input type="hidden" name="id_assesment[]" value="<?php echo $value->id; ?>"/><?php echo $value->name_spect .' '.$value->name_category.' '.$value->name_scope.''.$status_etops; ?></td>
                         <td width="15%">
                         <?php 
                         if($value->date_written_assesment!='1970-01-01'){
