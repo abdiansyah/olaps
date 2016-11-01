@@ -219,7 +219,7 @@ class M_apply_license extends CI_Model {
                         LEFT JOIN m_auth_additional_req_general AS maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license AS mal ON mglrg.id_auth_license_fk = mal.id 
                         LEFT JOIN m_auth_type AS mat ON mglrg.id_auth_type_fk = mat.id                                                                         
-                        WHERE maarg.code_t NOT IN (". $not_file .") AND mal.id = '$license' AND (mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_document."
+                        WHERE mal.id = '$license' AND (mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_document."
                         OR (mal.id = '$check_easa'
                         AND mat.id = '$type_easa' ".$cek_file_general_document.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_document.")";
     return $this->db->query($query_general_document);                        
@@ -234,7 +234,7 @@ class M_apply_license extends CI_Model {
                         LEFT JOIN m_auth_additional_req_general maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license mal ON mglrg.id_auth_license_fk = mal.id 
                         LEFT JOIN m_auth_type mat ON mglrg.id_auth_type_fk = mat.id 
-                        WHERE maarg.code_t NOT IN (". $not_file .") AND mal.id = '$license' AND(mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_certificate."  
+                        WHERE mal.id = '$license' AND(mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_certificate."  
                         OR (mal.id = '$check_easa'
                         AND mat.id = '$type_easa' ".$cek_file_general_certificate.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_certificate.")
                         ";
@@ -249,7 +249,7 @@ class M_apply_license extends CI_Model {
     $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                             LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                             LEFT JOIN  m_auth_license mal ON mgsc.id_auth_license_fk = mal.id
-                            WHERE maars.code_t NOT IN (". $not_file .") AND mgsc.id_auth_license_fk = '$license'                    
+                            WHERE mgsc.id_auth_license_fk = '$license'                    
                             AND mgsc.id_auth_type_fk = '$type'                    
                             AND mgsc.id_auth_spect_fk = '$tab_spec'
                             AND mgsc.id_auth_category_fk = '$tab_category'

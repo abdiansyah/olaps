@@ -253,16 +253,15 @@ class Apply_license extends CI_Controller
                             @$data_req_specific .= '<tr class="label_req_spec">
                         <td><label>' . $no . '</label> </td>
                         <td><label class="label_req_spec">' . $value->name_t . '</label></td>';
-                            if ($value->category_continous == 'Non Recurrent') {
-                                @$data_req_specific .= '<td>&nbsp;</td>
-                        <td><input type="text" class="expiration_date_req_spec_certificate" name="expiration_date_req_spec_certificate[]"/></td>
-                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
-                            } else if ($value->category_continous == 'Recurrent') {
+                            if ($value->category_continous == 'Recurrent') {
                                 @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
-                        <td><input type="hidden" class="expiration_date_req_spec_certificate" id="expiration_date_req_spec_certificate_' . $no . '" name="expiration_date_req_spec_certificate[]" value="' . $value->age_requirement . '"/>
-                        <input type="hidden" class="result_expiration_date_req_spec_certificate" id="result_expiration_date_req_spec_certificate_' . $no . '" name="result_expiration_date_req_spec_certificate[]"/>
+                        <td><input type="hidden" class="expiration_date_req_spec_certificate" id="expiration_date_req_spec_certificate_' . $no . '" name="expiration_date_req_spec_certificate[]" value="' . $value->age_requirement . '"/>                        
                         <input type="text" class="label_result_expiration_date_req_spec_certificate" id="label_result_expiration_date_req_spec_certificate_' . $no . '" disabled/>
                         </td>
+                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
+                            } else if ($value->category_continous == 'Non Recurrent') {
+                                @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
+                                <td>&nbsp;</td>
                         <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             } else if ($value->category_continous == 'New') {
                                 @$data_req_specific .= '<td></td>
@@ -275,6 +274,7 @@ class Apply_license extends CI_Controller
                             };
                             @$data_req_specific .= '<td width="20%">
                             <input type="hidden" name="code_req_spec_certificate[]" value="' . $value->code_t . '"/>
+                            <input type="hidden" class="save_result_expiration_date_req_spec_certificate" id="save_result_expiration_date_req_spec_certificate_' . $no . '" name="save_result_expiration_date_req_spec_certificate[]"/>
                             <div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">0%</div ></div>                                                                                                     
                             </td>
                             <td><img class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/></td> 
@@ -2161,7 +2161,7 @@ class Apply_license extends CI_Controller
                 'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
                 'mailtype' => 'html',
                 'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE); 
+                'wordwrap' => TRUE);  
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2183,7 +2183,8 @@ class Apply_license extends CI_Controller
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from($email);
-            $this->email->to($email_superior,$email_gm);                        
+            $this->email->to($email_superior);                        
+            $this->email->cc($email_gm);                       
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                     "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
@@ -2288,9 +2289,10 @@ class Apply_license extends CI_Controller
     // -- Purpose : 
     function cek_approved_atasan($cek_validate_req_number = '', $personnel_number = '')
     {
-        @$cek_content_approved = "SELECT TOP 1 * FROM m_content_approved";
-        @$cek_approved_atasan = $this->m_apply_license->cek_approved_atasan($cek_validate_req_number, $personnel_number);
-        @$date_validity = date('d-m-Y', strtotime('+30 days', strtotime($cek_approved_atasan[0]->date_request)));
+        @$cek_content_approved  = "SELECT TOP 1 * FROM m_content_approved";
+        @$cek_approved_atasan   = $this->m_apply_license->cek_approved_atasan($cek_validate_req_number, $personnel_number);
+        @$date_validity         = date('d-m-Y', strtotime('+30 days', strtotime($cek_approved_atasan[0]->date_request)));
+        @$cek_auth_by_unit      =
         @$date_now      = date('d-m-Y');                
         if($cek_approved_atasan!=''){
             if (date('Y-m-d', strtotime($date_validity)) < date('Y-m-d', strtotime($date_now))) {
@@ -2372,15 +2374,16 @@ class Apply_license extends CI_Controller
         $data_applicant             = $this->m_apply_license->get_data_row_personnel_by($personnel_number_applicant);
         $name_applicant             = $data_applicant['EMPLNAME'];
         $email_applicant            = $data_applicant['EMAIL'];
-        $config = Array(
-        'protocol' => 'smtp',
-        'smtp_host' => 'ssl://smtp.googlemail.com',
-        'smtp_port' => 465,
-        'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-        'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-        'mailtype' => 'html',
-        'charset' => 'iso-8859-1',
-        'wordwrap' => TRUE); 
+            $config = Array(
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
+                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE
+            );  
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');

@@ -692,30 +692,30 @@ $(document).ready(function () {
         var ctr=0;
         var max=10;
     
-    timerId = setInterval(function () {    
-        ctr++;
-        $(progressbar).attr("style","width:" + ctr*max + "%");
-        progressbar.css('background','blue');
-        statustxt.html(ctr*max + "%"); 
-        statustxt.css('color','#000'); 
-        status_file.hide(); 
-        empty_file.hide();                                
-        // max reached?
-        if (ctr==max){
-        status_file.show(); 
-        empty_file.show(); 
-        clearInterval(timerId);
-        status_file.attr('src','<?php echo base_url('/assets/images/property/check.png'); ?>');
-        empty_file.attr('src','<?php echo base_url('/assets/images/property/cross_check.png'); ?>');
-        }            
-    }, 300);  
+        timerId = setInterval(function () {    
+            ctr++;
+            $(progressbar).attr("style","width:" + ctr*max + "%");
+            progressbar.css('background','blue');
+            statustxt.html(ctr*max + "%"); 
+            statustxt.css('color','#000'); 
+            status_file.hide(); 
+            empty_file.hide();                                
+            // max reached?
+            if (ctr==max){
+            status_file.show(); 
+            empty_file.show(); 
+            clearInterval(timerId);
+            status_file.attr('src','<?php echo base_url('/assets/images/property/check.png'); ?>');
+            empty_file.attr('src','<?php echo base_url('/assets/images/property/cross_check.png'); ?>');
+            }            
+        }, 300);  
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_certificate_citilink', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];    
-        alert(row_id);   
+        
         
         var progressbar     = $('#progressbar_certificate_citilink_'+ row_id);        
         var statustxt       = $('#statustxt_certificate_citilink_'+ row_id);                      
@@ -782,7 +782,7 @@ $(document).ready(function () {
         status_file.hide(); 
         empty_file.hide();  
                                   
-        $('#file_req_spec_certificate_sriwijaya_'+row_id).val('');                                                                                                                                                                                   
+        $('#file_req_spec_certificate_sriwijaya_'+row_id).val('');
     });  
     
     //cofc                                                                            
@@ -869,36 +869,39 @@ $(document).ready(function () {
         $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate#' + row_id).val(); 
-            var data_thn_id = id_thn.split("-");
-            var day = data_thn_id[0];
-            var month = data_thn_id[1]; 
-            var thn = data_thn_id[2];             
-            var age = $('#expiration_date_req_spec_certificate_'+ row_id).val(); 
-            var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)) 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                  
-            $('#result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);                                                        
-            $('#save_result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);
-            $('#label_result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                var id_thn = $('.date_training_req_spec_certificate#' + row_id).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];             
+                var age = $('#expiration_date_req_spec_certificate_'+ row_id).val(); 
+                var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)) 
+                if(rs_exp_date == null){
+                    $('#file_req_spec_certificate_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_' + row_id).attr('disabled',false);    
+                }
+                else{ 
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                      
+                $('#result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);                                                        
+                $('#save_result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);
+                $('#label_result_expiration_date_req_spec_certificate_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate#'+row_id).val().length == 0){
             $('#file_req_spec_certificate_' + row_id).attr('disabled',true);
             };
@@ -916,38 +919,41 @@ $(document).ready(function () {
         $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(e){                 
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_garuda#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate_license_garuda#' + row_id).val(); 
-            var data_thn_id = id_thn.split("-");
-            var day = data_thn_id[0];
-            var month = data_thn_id[1]; 
-            var thn = data_thn_id[2];             
-            var age = $('#expiration_date_req_spec_certificate_license_garuda_'+ row_id).val(); 
-            var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);  
-                                                                    
-            $('#result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                var id_thn = $('.date_training_req_spec_certificate_license_garuda#' + row_id).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];             
+                var age = $('#expiration_date_req_spec_certificate_license_garuda_'+ row_id).val(); 
+                var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
+                if(rs_exp_date == null){
+                    $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',false);    
+                }
+                else {                                                                                                                
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);  
+                                                                        
+                $('#result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);
+                $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);                                                        
+                $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_license_garuda#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',true);
+                $('#file_req_spec_certificate_license_garuda_' + row_id).attr('disabled',true);
             };
             $(this).datepicker('hide');
         });
@@ -956,36 +962,39 @@ $(document).ready(function () {
         $('.date_training_req_spec_certificate_license_citilink').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_citilink#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate_license_citilink#' + row_id).val(); 
-            var data_thn_id = id_thn.split("-");
-            var day = data_thn_id[0];
-            var month = data_thn_id[1]; 
-            var thn = data_thn_id[2];             
-            var age = $('#expiration_date_req_spec_certificate_license_citilink_'+ row_id).val(); 
-            var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                       
-            $('#result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                var id_thn = $('.date_training_req_spec_certificate_license_citilink#' + row_id).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];             
+                var age = $('#expiration_date_req_spec_certificate_license_citilink_'+ row_id).val(); 
+                var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
+                if(rs_exp_date == null){
+                    $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',false);    
+                }
+                else {
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                           
+                $('#result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);
+                $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);                                                        
+                $('#label_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_license_citilink#'+row_id).val().length == 0){
             $('#file_req_spec_certificate_license_citilink_' + row_id).attr('disabled',true);
             };
@@ -996,36 +1005,39 @@ $(document).ready(function () {
         $('.date_training_req_spec_certificate_license_sriwijaya').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_sriwijaya#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate_license_sriwijaya#' + row_id).val(); 
-            var data_thn_id = id_thn.split("-");
-            var day = data_thn_id[0];
-            var month = data_thn_id[1]; 
-            var thn = data_thn_id[2];             
-            var age = $('#expiration_date_req_spec_certificate_license_sriwijaya_'+ row_id).val(); 
-            var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                   
-            $('#result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);                                                        
-            $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);
-            $('#label_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                var id_thn = $('.date_training_req_spec_certificate_license_sriwijaya#' + row_id).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];             
+                var age = $('#expiration_date_req_spec_certificate_license_sriwijaya_'+ row_id).val(); 
+                var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
+                if(rs_exp_date == null){
+                    $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',false);    
+                }
+                else { 
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                       
+                $('#result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);                                                        
+                $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);
+                $('#label_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_license_sriwijaya#'+row_id).val().length == 0){
             $('#file_req_spec_certificate_license_sriwijaya_' + row_id).attr('disabled',true);
             };
@@ -1035,39 +1047,41 @@ $(document).ready(function () {
         $('.date_training_req_spec_certificate_easa').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_easa#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate_easa#' + row_id).val(); 
-            var data_thn_id = id_thn.split("-");
-            var day = data_thn_id[0];
-            var month = data_thn_id[1]; 
-            var thn = data_thn_id[2];             
-            var age = $('#expiration_date_req_spec_certificate_easa_'+ row_id).val(); 
-            var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-            
-            
-            $('#result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                var id_thn = $('.date_training_req_spec_certificate_easa#' + row_id).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];             
+                var age = $('#expiration_date_req_spec_certificate_easa_'+ row_id).val(); 
+                var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
+                if(rs_exp_date == null) {
+                    $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',false);    
+                } else {                                                                                                                
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                
+                
+                $('#result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);
+                $('#save_result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);                                                        
+                $('#label_result_expiration_date_req_spec_certificate_easa_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_easa#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',true);
+                $('#file_req_spec_certificate_easa_' + row_id).attr('disabled',true);
             };
             $(this).datepicker('hide');
         });
@@ -1084,31 +1098,34 @@ $(document).ready(function () {
             var age = $('#expiration_date_req_spec_certificate_special_'+ row_id).val(); 
             var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
             if(rs_exp_date == null){
-             $('#file_req_spec_certificate_special_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-            
-            $('#result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_special_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_special_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
-            }else if($('.date_training_req_spec_certificate_special#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_special_' + row_id).attr('disabled',true);
-            };
+                    $('#file_req_spec_certificate_special_' + row_id).attr('disabled',false);    
+                } else if(isNaN(thn + age)) {
+                    $('#file_req_spec_certificate_special_' + row_id).attr('disabled',false);    
+                }
+                else{
+                    var data_thn_exp_id = rs_exp_date.split("-");            
+                    var month_exp = data_thn_exp_id[1];
+                    var thn_exp = data_thn_exp_id[2]; 
+                    var d = new Date();
+                    var day_now = d.getDate();
+                    var month_date_now = d.getMonth();
+                    var thn_date_now = d.getFullYear();                                                                             
+                    var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                    var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                    
+                    $('#result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);
+                    $('#save_result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);                                                        
+                    $('#label_result_expiration_date_req_spec_certificate_special_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_special_' + row_id).attr('disabled',false); 
+                        }else{
+                            $('#warning').modal({ backdrop: 'static', keyboard: false });
+                            $('#file_req_spec_certificate_special_' + row_id).attr('disabled',true);                 
+                        };                                                                                
+                    }                                  
+            } else if($('.date_training_req_spec_certificate_special#'+row_id).val().length == 0) {
+                $('#file_req_spec_certificate_special_' + row_id).attr('disabled',true);
+                };
             $(this).datepicker('hide');
         });
         
@@ -1122,32 +1139,35 @@ $(document).ready(function () {
             var thn = data_thn_id[2];             
             var age = $('#expiration_date_req_spec_certificate_garuda_'+ row_id).val(); 
             var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                        
-            $('#result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);
-            $('#result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
-            }else if($('.date_training_req_spec_certificate_garuda#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',true);
-            };
+                if(rs_exp_date == null){
+                        $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',false);    
+                    } else if(isNaN(thn + age)) {
+                        $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',false);    
+                    }
+                    else {           
+                    var data_thn_exp_id = rs_exp_date.split("-");            
+                    var month_exp = data_thn_exp_id[1];
+                    var thn_exp = data_thn_exp_id[2]; 
+                    var d = new Date();
+                    var day_now = d.getDate();
+                    var month_date_now = d.getMonth();
+                    var thn_date_now = d.getFullYear();                                                                             
+                    var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                    var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                                
+                    $('#result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);
+                    $('#result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);                                                        
+                    $('#label_result_expiration_date_req_spec_certificate_garuda_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
+            } else if($('.date_training_req_spec_certificate_garuda#'+row_id).val().length == 0) {
+                    $('#file_req_spec_certificate_garuda_' + row_id).attr('disabled',true);
+                };
             $(this).datepicker('hide');
         });
         
@@ -1161,33 +1181,34 @@ $(document).ready(function () {
             var thn = data_thn_id[2];             
             var age = $('#expiration_date_req_spec_certificate_citilink_'+ row_id).val(); 
             var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-
-                                                            
-            $('#result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                if(rs_exp_date == null){
+                        $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',false);    
+                    } else if(isNaN(thn + age)) {
+                        $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',false);    
+                    } else {
+                    var data_thn_exp_id = rs_exp_date.split("-");            
+                    var month_exp = data_thn_exp_id[1];
+                    var thn_exp = data_thn_exp_id[2]; 
+                    var d = new Date();
+                    var day_now = d.getDate();
+                    var month_date_now = d.getMonth();
+                    var thn_date_now = d.getFullYear();                                                                             
+                    var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                    var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                    
+                    $('#result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);
+                    $('#save_result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);                                                        
+                    $('#label_result_expiration_date_req_spec_certificate_citilink_'+row_id).val(rs_exp_date);
+                    if(date_exp > date_now){
+                        $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_citilink#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',true);
-            };
+                    $('#file_req_spec_certificate_citilink_' + row_id).attr('disabled',true);
+                };
             $(this).datepicker('hide');
         });
         
@@ -1201,31 +1222,33 @@ $(document).ready(function () {
             var thn = data_thn_id[2];             
             var age = $('#expiration_date_req_spec_certificate_sriwijaya_'+ row_id).val(); 
             var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                        
-            $('#result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false); 
-            }else{
-                $('#warning').modal({ backdrop: 'static', keyboard: false });
-                $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                if(rs_exp_date == null){
+                    $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false);    
+                    } else if(isNaN(thn + age)) {
+                        $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false);    
+                    } else {
+                        var data_thn_exp_id = rs_exp_date.split("-");            
+                        var month_exp = data_thn_exp_id[1];
+                        var thn_exp = data_thn_exp_id[2]; 
+                        var d = new Date();
+                        var day_now = d.getDate();
+                        var month_date_now = d.getMonth();
+                        var thn_date_now = d.getFullYear();                                                                             
+                        var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                        var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                                    
+                        $('#result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);
+                        $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);                                                        
+                        $('#label_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(rs_exp_date);
+                        if(date_exp > date_now){
+                            $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false); 
+                        }else{
+                            $('#warning').modal({ backdrop: 'static', keyboard: false });
+                            $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',true);                 
+                        };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_sriwijaya#'+row_id).val().length == 0){
-            $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',true);
+                $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',true);
             };
             $(this).datepicker('hide');
         });
@@ -1240,28 +1263,30 @@ $(document).ready(function () {
             var thn = data_thn_id[2];             
             var age = $('#expiration_date_req_spec_certificate_cofc_'+ row_id).val(); 
             var rs_exp_date = day + "-" + month + "-" + (parseInt(thn) + parseInt(age)); 
-            if(rs_exp_date == null){
-             $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',false);    
-            }else{                                                                                                                
-            var data_thn_exp_id = rs_exp_date.split("-");            
-            var month_exp = data_thn_exp_id[1];
-            var thn_exp = data_thn_exp_id[2]; 
-            var d = new Date();
-            var day_now = d.getDate();
-            var month_date_now = d.getMonth();
-            var thn_date_now = d.getFullYear();                                                                             
-            var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
-            var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
-                                                                        
-            $('#result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);
-            $('#save_result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);                                                        
-            $('#label_result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);
-            if(date_exp > date_now){
-                $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',false); 
-            }else{
-                $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',true);                 
-            };                                                                                
-            }                                  
+                if(rs_exp_date == null){
+                        $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',false);    
+                    } else if(isNaN(thn + age)) {
+                        $('#file_req_spec_certificate_sriwijaya_' + row_id).attr('disabled',false);    
+                    } else {
+                        var data_thn_exp_id = rs_exp_date.split("-");            
+                        var month_exp = data_thn_exp_id[1];
+                        var thn_exp = data_thn_exp_id[2]; 
+                        var d = new Date();
+                        var day_now = d.getDate();
+                        var month_date_now = d.getMonth();
+                        var thn_date_now = d.getFullYear();                                                                             
+                        var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                        var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);
+                                                                                    
+                        $('#result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);
+                        $('#save_result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);                                                        
+                        $('#label_result_expiration_date_req_spec_certificate_cofc_'+row_id).val(rs_exp_date);
+                        if(date_exp > date_now){
+                            $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',false); 
+                        }else{
+                            $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',true);                 
+                        };                                                                                
+                }                                  
             }else if($('.date_training_req_spec_certificate_cofc#'+row_id).val().length == 0){
             $('#file_req_spec_certificate_cofc_' + row_id).attr('disabled',true);
             };

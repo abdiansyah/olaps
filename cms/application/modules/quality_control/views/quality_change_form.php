@@ -138,8 +138,8 @@ $().ready(function(){
                         $request_number = @$rc[0]->request_number; 
                         echo @$request_number?>"/><?php echo @$request_number;?>
                         </td>                                                                   
-                        <td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$rc[0]->date_submited));?></td>                                              
-                    </tr>                                                                                               
+                        <td class="col-md-10"><?php echo date('d-M-Y',strtotime(@$rc[0]->date_submited));?></td>
+                    </tr>
                     </tbody>                     
                     </table>
                     <br/>
@@ -627,19 +627,21 @@ echo bootstrap_datetimepicker();
 ?>     
 <script type="text/javascript">
 function check_uncheck_checkbox(isChecked) {
-if (isChecked) {
-    $('.check_assesment').each(function() {
-        this.checked = true;
-    });
-} else {
-    $('.check_assesment').each(function() {
-        this.checked = false;
-    });
-}
+    if (isChecked) {
+        $('.check_assesment').each(function() {
+            this.checked = true;
+        });
+    } else {
+        $('.check_assesment').each(function() {
+            this.checked = false;
+        });
+    }
 }
 
 $('[name=datetime_priority]').datetimepicker({
-    format:'yyyy-mm-dd hh:ii:ss'
+    format:'yyyy-mm-dd hh:ii:ss',
+    daysOfWeekDisabled: [0,6],
+    autoclose: true,
 });
 
 

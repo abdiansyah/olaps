@@ -133,7 +133,7 @@ if(@$data_history[0]!=''){
                         $request_number = @$data_history[0]->request_number; 
                         echo @$request_number?>"/><?php echo @$request_number;?>
                         </td>                                                                   
-                        <td class="col-md-10">: <?php echo date('d-M-Y',strtotime(@$data_history[0]->date_submited));?></td>                                                
+                        <td class="col-md-10"><?php echo date('d-M-Y',strtotime(@$data_history[0]->date_submited));?></td>                                                
                     </tr>                                                                                               
                     </tbody>                     
                     </table>

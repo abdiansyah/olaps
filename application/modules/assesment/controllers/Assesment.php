@@ -54,7 +54,7 @@
 // -- Function Name : assesment_event
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
-        function get_summary_assesment($sesi='', $assesment='', $room='', $date_written_assesment ='',$summary_name=''){             
+        function get_summary_assesment($sesi='', $assesment='', $room='', $date_written_assesment ='',$summary_name='') {             
             $this->m_assesment->get_summary_assesment($sesi, $assesment, $room, $date_written_assesment, $summary_name);                                               
         }
         

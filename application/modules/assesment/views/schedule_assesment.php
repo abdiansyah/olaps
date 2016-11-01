@@ -213,14 +213,14 @@ $(function(){
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
     if(id_sesi!=''){        
-    $.getJSON("<?php echo base_url();?>index.php/assesment/cek_room/" + id_sesi, function(data) {            
-        $('#name_room_'+ row_id_sesi).val(data.nr);
-        $('#id_room_'+ row_id_sesi).val(data.ir);                                          
-    });
-    $.getJSON("<?php echo base_url();?>index.php/assesment/cek_one_room/", function(data) {            
-        $('#name_room_'+ row_id_sesi).val(data.nr);
-        $('#id_room_'+ row_id_sesi).val(data.ir);                                          
-    });         
+        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_room/" + id_sesi, function(data) {            
+            $('#name_room_'+ row_id_sesi).val(data.nr);
+            $('#id_room_'+ row_id_sesi).val(data.ir);                                          
+        });
+        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_one_room/", function(data) {            
+            $('#name_room_'+ row_id_sesi).val(data.nr);
+            $('#id_room_'+ row_id_sesi).val(data.ir);                                          
+        });         
     };                      
        
   });
@@ -233,11 +233,11 @@ $(function(){
     var date_written_assesment = $('#date_written_assesment_'+ row_id_sesi).val();
     var id_sesi = $('#id_sesi_'+ row_id_sesi).val();        
     var id_room = $('#id_room_'+ row_id_sesi).val();      
-    if(id_room!=''){    
-    $.getJSON("<?php echo base_url();?>assesment/get_room_kuota/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {            
-        $('#kuota_room_'+ row_id_sesi).val(data.jumlah_sesi);                                                         
-    });    
-    }
+    if(id_room!='') {    
+        $.getJSON("<?php echo base_url();?>assesment/get_room_kuota/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {            
+                $('#kuota_room_'+ row_id_sesi).val(data.jumlah_sesi);
+            });    
+        }
   });
              
   $('.date_written_assesment').mouseover(function(){        
@@ -250,16 +250,16 @@ $(function(){
     var id_assesment = $("input[name^='id_assesment']");
     var id_room = $("input[name^='id_room']");
     var id_date_written_assesment = $("input[name^='date_written_assesment']");
-    for(i=0;i<n_sesi;i++){
-        sesi = id_sesi[i].value;
-        assesment = id_assesment[i].value;
-        room = id_room[i].value;
-        date_written_assesment = id_date_written_assesment[i].value;   
-                
-        $.get("<?php echo $this->page->base_url();?>/get_summary_assesment/" + sesi + "/" + assesment + "/" + room + "/" + date_written_assesment, function(data, status){                                    
-            $('#body-summary-assesment').append(data);                                       
-        });
-    };
+        for(i=0;i<n_sesi;i++){
+            sesi = id_sesi[i].value;
+            assesment = id_assesment[i].value;
+            room = id_room[i].value;
+            date_written_assesment = id_date_written_assesment[i].value;   
+                    
+            $.get("<?php echo $this->page->base_url();?>/get_summary_assesment/" + sesi + "/" + assesment + "/" + room + "/" + date_written_assesment, function(data, status){                                    
+                $('#body-summary-assesment').append(data);                                       
+            });
+        };
     $('#summary-assesment').show();
     $('#sum-assesment-first').hide();                                               
   });
