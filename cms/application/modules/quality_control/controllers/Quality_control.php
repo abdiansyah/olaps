@@ -528,7 +528,8 @@ class Quality_control extends MX_Controller
                                 <td> No </td>
                                 <td> Authorization scope </td>                                
                                 <td> Room </td>                        
-                                <td> Sesi  </td>                        
+                                <td> Date </td>                        
+                                <td> Sesi </td>                        
                                 </tr>';
                         $no = 1;
                             foreach ($cekdataoral as $row) {                                
@@ -544,8 +545,9 @@ class Quality_control extends MX_Controller
                                             }
                                 $pesan .= '<tr>                        
                                         <td> ' . $no++ . ' </td>
-                                        <td> ' . $row->name_spect . ' '. $row->name_category . ' ' . $row->name_scope.' '. $status_etops.'</td>
+                                        <td> ' . $row->name_spect . ' '. $row->name_category . ' ' . $row->name_scope.' '. $status_etops.'</td>                                        
                                         <td> ' . $row->name_room . ' </td>
+                                        <td> ' . date('d-m-Y',strtotime($row->date_oral_assesment)) . ' </td>
                                         <td> ' . $row->name_sesi . ' </td>
                                         </tr>';
                             }

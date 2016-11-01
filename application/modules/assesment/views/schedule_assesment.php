@@ -76,7 +76,7 @@
                                 case 1 :
                                 $status_etops = ' + ETOPS';
                                 break;
-                                case 2 :
+                                case 0 :
                                 $status_etops = '';
                                 break;                            }
                         ?>
