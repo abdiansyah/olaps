@@ -1613,7 +1613,8 @@ class Apply_license extends CI_Controller
                        }                                                                         
                    $this->ftp->close();            
        if(isset($_POST['savecompletingdata'])){
-       redirect(site_url('apply_license/index'));
+            $data['content'] = $this->session->set_flashdata('content_not_valid', 'Save successfull.');
+            redirect(site_url('home/index'));
        };
         if (isset($_POST['submitcompletingdata'])) {
             $sess_completing_data = array(
@@ -1653,6 +1654,7 @@ class Apply_license extends CI_Controller
             $tab_spec_s                       = $sess_license['tab_spec_s'];
             $tab_category_s                   = $sess_license['tab_category_s'];
             $tab_scope_s                      = $sess_license['tab_scope_s'];
+            $etops_s                          = $sess_license['etops_s'];
             $type_check_23                    = $sess_license_garuda['type_check_23'];
             $tab_spec_license_garuda_s        = $sess_license_garuda['tab_spec_license_garuda_s'];
             $tab_category_license_garuda_s    = $sess_license_garuda['tab_category_license_garuda_s'];
@@ -1670,6 +1672,12 @@ class Apply_license extends CI_Controller
                     $tab_category   = $tab_category_s[$key];
                     $tab_spec       = $tab_spec_s[$key];
                     $tab_scope      = $value;
+                    $etops          = $etops_s[$key];
+                    if($etops = '1') {
+                        $status_etops = ' + ETOPS';
+                    } else if($etops = '') {
+                        $status_etops = '';
+                    }
                     //$query_license=array();                        
                     $master_license = $this->m_apply_license->query_license($license, $type, $tab_spec, $tab_category, $tab_scope)->result();
                     foreach ($master_license as $value) {
@@ -1680,6 +1688,7 @@ class Apply_license extends CI_Controller
                         <td>' . $value->name_spect . '</td>
                         <td>' . $value->name_category . '</td>
                         <td>' . $value->name_scope . '</td>
+                        <td>' . $status_etops . '</td>
                         </tr>';
                     }
                 }
@@ -2154,14 +2163,15 @@ class Apply_license extends CI_Controller
             $sess_data_personnel     = $this->session->userdata('sess_data_personnel');
             // Send Notification Email To Atasan  
             $config = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.googlemail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE);  
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE
+            );  
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2374,16 +2384,16 @@ class Apply_license extends CI_Controller
         $data_applicant             = $this->m_apply_license->get_data_row_personnel_by($personnel_number_applicant);
         $name_applicant             = $data_applicant['EMPLNAME'];
         $email_applicant            = $data_applicant['EMAIL'];
-            $config = Array(
-                'protocol' => 'smtp',
-                'smtp_host' => 'ssl://smtp.googlemail.com',
-                'smtp_port' => 465,
-                'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-                'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
-                'mailtype' => 'html',
-                'charset' => 'iso-8859-1',
-                'wordwrap' => TRUE
-            );  
+        $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.googlemail.com',
+        'smtp_port' => 465,
+        'smtp_user' => 'devlicensetq@gmail.com',
+        'smtp_pass' => 'Bismillah1995', 
+        'mailtype' => 'html',
+        'charset' => 'iso-8859-1',
+        'wordwrap' => TRUE
+        );  
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');

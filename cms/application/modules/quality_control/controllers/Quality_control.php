@@ -181,11 +181,12 @@ class Quality_control extends MX_Controller
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
+            'wordwrap' => TRUE
+            );  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -451,11 +452,12 @@ class Quality_control extends MX_Controller
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
+            'wordwrap' => TRUE
+            );  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -529,7 +531,7 @@ class Quality_control extends MX_Controller
                                 <td> Authorization scope </td>                                
                                 <td> Room </td>                        
                                 <td> Date </td>                        
-                                <td> Sesi </td>                        
+                                <td> Sesi  </td>                        
                                 </tr>';
                         $no = 1;
                             foreach ($cekdataoral as $row) {                                
@@ -545,7 +547,7 @@ class Quality_control extends MX_Controller
                                             }
                                 $pesan .= '<tr>                        
                                         <td> ' . $no++ . ' </td>
-                                        <td> ' . $row->name_spect . ' '. $row->name_category . ' ' . $row->name_scope.' '. $status_etops.'</td>                                        
+                                        <td> ' . $row->name_spect . ' '. $row->name_category . ' ' . $row->name_scope.' '. $status_etops.'</td>
                                         <td> ' . $row->name_room . ' </td>
                                         <td> ' . date('d-m-Y',strtotime($row->date_oral_assesment)) . ' </td>
                                         <td> ' . $row->name_sesi . ' </td>
@@ -559,7 +561,8 @@ class Quality_control extends MX_Controller
                         $pesan .= '<p>Fax: +62-21-550 1257</p>';
                         $this->email->message($pesan);                    
                         if ($this->email->send()) {
-                                redirect(site_url('quality_control'));
+                                $this->session->set_flashdata('msg', 'Sending schedule oral assesment successfully.');
+                                redirect(site_url('quality_control'));                                
                             } else {
                                 redirect(site_url('quality_control'));
                             }                
@@ -574,8 +577,8 @@ class Quality_control extends MX_Controller
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
             'wordwrap' => TRUE);  
@@ -680,6 +683,7 @@ class Quality_control extends MX_Controller
             //die($pesan);        
             $this->email->message($pesan);
             if ($this->email->send()) {
+                    $this->session->set_flashdata('msg', 'Sending schedule written assesment successfully.');
                     redirect(site_url('quality_control'));
                 } else {
                     redirect(site_url('quality_control'));
@@ -785,11 +789,12 @@ class Quality_control extends MX_Controller
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'devlicensetq@gmail.com', //isi dengan gmailmu!
-            'smtp_pass' => 'Bismillah1995', //isi dengan password gmailmu!
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
+            'wordwrap' => TRUE
+            );  
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -797,12 +802,19 @@ class Quality_control extends MX_Controller
             @$unit = $sess_data_personnel['UNIT'];
             @$presenttitle = $sess_data_personnel['JOBTITLE'];
             @$email_personnel = $sess_data_personnel['EMAIL'];
+            @$personnel_number_superior = $sess_data_personnel['REPORT_TO'];
+            $sess_data_personnel_superior = $this->model_quality_control->get_data_row_personnel_by($personnel_number_superior);
+            @$email_superior = $sess_data_personnel_superior['EMAIL'];
+            $sess_data_gm            = $this->model_quality_control->get_gm_personnel_by($personnel_number)->row_array();
+            $email_gm                = $sess_data_gm['email'];
             $url               = $_SERVER['HTTP_REFERER'];
             $cek_data_document = $this->model_quality_control->cek_data_document($personnel_number);
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from($email);
             $this->email->to($email_personnel);
+            $this->email->to($email_superior);
+            $this->email->to($email_gm);
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                  "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
@@ -810,7 +822,7 @@ class Quality_control extends MX_Controller
                  </head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $name_personnel . '</p>';
             $pesan .= '<p>1. <b>' . $name_personnel . '</b>/<b>' . $unit . '</b>/<b>' . $personnel_number . ' Jobtitle : (' . $presenttitle . ')</b></p>';
-            $pesan .= '<p>Thus, we can not proceed your application.</p>';
+            $pesan .= '<p>Thus, we can not proceed your application,</p>';
             $pesan .= '<p>as detailed below : </p>';
             $pesan .= '<table border="1">
                  <tr>

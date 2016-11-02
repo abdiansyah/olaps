@@ -152,7 +152,7 @@ class model_quality_control extends CI_Model
         }
         
         if(!empty($date_request)){
-           $this->db->LIKE('t_apply_license.date_request', $date_request);    
+           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));    
         }
         
         if(!empty($date_approved_superior)){
@@ -271,7 +271,7 @@ class model_quality_control extends CI_Model
         }
         
         if(!empty($date_request)){
-           $this->db->LIKE('t_apply_license.date_request', $date_request);    
+           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));   
         }
         
         if(!empty($date_approved_superior)){
@@ -529,6 +529,12 @@ class model_quality_control extends CI_Model
                             TSH.REPORT_TO FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
                             WHERE TSH.PERNR = '$personnel_number'";                                                                        
         return $this->db->query($querydatarowemp)->row_array();     
+    }
+
+    public function get_gm_personnel_by($personnel_number)
+    {
+        $query   = "SELECT email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
+        return $this->db->query($query);
     }
     
     public function cek_summary($request_number){                          

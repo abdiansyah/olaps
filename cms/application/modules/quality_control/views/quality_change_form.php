@@ -585,7 +585,7 @@ $().ready(function(){
             </div>                                        
             </div>
             <?php 
-            if($cek_user_akses=='528109'||$cek_user_akses=='580106'||$cek_user_akses=='780532'):
+            if($cek_user_akses=='526922'||$cek_user_akses=='580435'):
             ?>                              
             <div class="form-group">
             <label class="col-sm-2 control-label ">Priority</label>

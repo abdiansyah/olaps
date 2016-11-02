@@ -101,7 +101,7 @@
 						</div>						
 					</div>
 					<div class="form-group">
-						<label for="businessphone" class="col-sm-2 col-md-offset-2 control-label">Business Phone :</label>
+						<label for="businessphone" class="col-sm-2 col-md-offset-2 control-label">Office Phone :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="businessphone" type="text" />
 						</div>						
@@ -124,11 +124,11 @@
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="personnel_number_superior" type="text" />
 						</div>
-                        <?php if(@$sess_employee_group == '1'){ ?>
+                        
                          <div class="col-sm-2">
                             <button type="button" name="cari_id_emp_gmf" class="btn btn-info btn-sm"><b>SEARCH EMP GMF</b></button>
                         </div>
-                        <?php } ?>						
+                        
 					</div>
                     <div class="form-group data-superior" id="fieldnongmfemp">
 						<label for="" class="col-sm-2 col-md-offset-2 control-label">Name :</label>
@@ -166,10 +166,7 @@ echo bootstrap_datepicker();
     $( window ).load(function() {
         $('[name=personnel_number]').click();                 
     });
-    $('.personnel_information_form').one('mousemove',function(){
-            $('[name=personnel_number_superior]').click();
-            $('.data-superior').show();    
-        });
+
     $('#msg,.data-superior').hide();
             
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker({
@@ -231,8 +228,9 @@ echo bootstrap_datepicker();
         }); 
         jqxhr.complete(function(){
            console.log("send data complete");
-           $('#msg').hide();        
-        });              
+           $('#msg').hide(); 
+        $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=personnel_number_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').prop("readonly", true);        
+        });                     
     };
     if(typeemp == 2 || typeemp == null){
         var jqxhr = $.getJSON("<?php echo base_url();?>index.php/apply_license/get_data_personnel_by_non_gmf/" + personnel_number, function(data) {                
@@ -281,29 +279,31 @@ echo bootstrap_datepicker();
         jqxhr.complete(function(){
            console.log("send data complete");
            $('#msg').hide();        
-        });               
+        });
+        $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').prop("readonly", false);                
     }; 
     if($('[name=name]').val()=='' || $('[name=typeemp]').val()==''){
         $('#msg').show();
-    };  
+        };  
     });
     
-    $('[name=cari_id_emp_gmf],[name=personnel_number_superior]').click(function(){
+    $('[name=cari_id_emp_gmf]').click(function(){
     $('[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
     var personnel_number_superior = $('[name=personnel_number_superior]').val();  
     var jqxhr = $.getJSON("<?php echo base_url();?>index.php/apply_license/get_data_personnel_by_gmf/" + personnel_number_superior, function(data) {
-        $('[name=name_superior]').val(data.EMPLNAME);                
-        $('[name=jobtitle_superior]').val(data.JOBTITLE);
-        $('[name=email_superior]').val(data.EMAIL);        
-    });
-    jqxhr.complete(function(){
-       console.log("send data complete");       
-    });    
+            $('[name=name_superior]').val(data.EMPLNAME);                
+            $('[name=jobtitle_superior]').val(data.JOBTITLE);
+            $('[name=email_superior]').val(data.EMAIL);        
+        });
+        jqxhr.complete(function(){
+           console.log("send data complete");       
+        });
+        $('.data-superior').show();      
     });
     
     
     $('#nongmfemp, #gmfemp').change(function() {      
-    if($('#gmfemp').is(':checked')){                
+    if ($('#gmfemp').is(':checked')) {                
         $('input[name=validitycontract]').hide(); 
         $('div#fieldgmfemp').show('slow');
         $('div#fieldnongmfemp').hide();   
@@ -313,7 +313,7 @@ echo bootstrap_datepicker();
         $('[name=personnelnumber],[name=mobilephone],[name=businessphone]').prop('required',true);  
         $('[name=personnelnumber],[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=personnel_number_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                       
         $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation]').prop("readonly", true);          
-    }else if($('#nongmfemp').is(':checked')){
+    } else if ($('#nongmfemp').is(':checked')){
         $('input[name=validitycontract]').show(); 
         $('div#fieldnongmfemp').show('slow'); 
         $('div#fieldgmfemp').hide();          
@@ -323,7 +323,6 @@ echo bootstrap_datepicker();
         $('[name=personnelnumber],[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=validitycontract],[name=id_personnel_superior],[name=email_superior]').prop('required',true);                                                 
         $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=validitycontract],[name=personnel_number_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                
     }
-    });
-    
- 
+
+});    
 </script>

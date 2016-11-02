@@ -1,8 +1,7 @@
 <?php
-if(!isset($data_authorization_request['submitauthorizationrequest'])){
+if(!isset($data_authorization_request['submitauthorizationrequest'])) {
         redirect('apply_license/index');
-    }else
-    {
+    } else {
 ?>
 <div class="row">
 <div class="col-md-12 col-center-block table-responsive">
@@ -52,29 +51,29 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])){
                     <tbody class="body_general_requirement" id="content_general_requirement" >	
                     <?php 
                     $i=1;
-                    if (is_array(@$additional_general_document) || is_object(@$additional_general_document))
-                    { 
-                    foreach($additional_general_document as $row): 
-                    ?>
-                    <tr>                                        
-                    <td align="center"><?php echo $i;?></td>                                               
-                    <td><?php echo $row->name_t;?><input type="hidden" class="no_row_general_document" value="<?php echo $i;?>"/></td>                                                                                                                                                           
-                    <?php if($row->category_continous == '-' || $row->category_continous =='New'){?>
-                    <td><input type="hidden" class="type_continous_general_document" value="<?php echo $row->category_continous; ?>" /></td>
-                    <td><input type="hidden" id="code_req_general_document_<?php echo $row->code_t;?>" name="code_req_general_document[]" value="<?php echo $row->code_t; ?>" />
-                    <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general" name="file_req_document_general[]"/>
-                    </td>                                   
-                    <?php } ?>                                                            
-                    <td width="20%">
-                    <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
-                    <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>                                                                                                     
-                    </td>
-                    <td><img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> </td>              
-                    </tr>
-                    <?php
-                    $i++;                     
-                    endforeach;
-                    }
+                        if (is_array(@$additional_general_document) || is_object(@$additional_general_document))
+                        { 
+                            foreach($additional_general_document as $row): 
+                            ?>
+                            <tr>                                        
+                            <td align="center"><?php echo $i;?></td>                                               
+                            <td><?php echo $row->name_t;?><input type="hidden" class="no_row_general_document" value="<?php echo $i;?>"/></td>
+                            <?php if($row->category_continous == '-' || $row->category_continous =='New') { ?>
+                                        <td><input type="hidden" class="type_continous_general_document" value="<?php echo $row->category_continous; ?>" /></td>
+                                        <td><input type="hidden" id="code_req_general_document_<?php echo $row->code_t;?>" name="code_req_general_document[]" value="<?php echo $row->code_t; ?>" />
+                                        <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general" name="file_req_document_general[]"/>
+                                        </td>                                   
+                            <?php } ?>                                                            
+                            <td width="20%">
+                            <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
+                            <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>    
+                            </td>
+                            <td><img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> </td>              
+                            </tr>
+                        <?php
+                            $i++;                     
+                            endforeach;
+                        }
                     ?>                                     
                     </tbody>                    
 					</table>
@@ -96,17 +95,17 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])){
 					</tr>
                     <tbody class="body_specification_requirement" id="content_specification_requirement">	
                     <?php 
-                    echo @$data_general_certificate;
-                    echo @$data_req_specific;
-                    echo @$data_req_specific_license_garuda;
-                    echo @$data_req_specific_license_citilink;
-                    echo @$data_req_specific_license_sriwijaya;                             
-                    echo @$data_req_specific_easa;                     
-                    echo @$data_req_specific_special;                    
-                    echo @$data_req_specific_garuda;                    
-                    echo @$data_req_specific_citilink;                    
-                    echo @$data_req_specific_sriwijaya;
-                    echo @$data_req_specific_cofc;
+                        echo @$data_general_certificate;
+                        echo @$data_req_specific;
+                        echo @$data_req_specific_license_garuda;
+                        echo @$data_req_specific_license_citilink;
+                        echo @$data_req_specific_license_sriwijaya;                             
+                        echo @$data_req_specific_easa;                     
+                        echo @$data_req_specific_special;                    
+                        echo @$data_req_specific_garuda;                    
+                        echo @$data_req_specific_citilink;                    
+                        echo @$data_req_specific_sriwijaya;
+                        echo @$data_req_specific_cofc;
                     ?>                                     
                     </tbody>                     
 					</table>
@@ -171,7 +170,7 @@ $(document).ready(function () {
     });
     
     $('[name=savecompletingdata]').click(function(){    
-        $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',false);        
+        $('.file_req_document_general,.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',false);        
     });        
     
     
@@ -240,9 +239,9 @@ $(document).ready(function () {
         statustxt.html("0%"); 
         statustxt.css('color','#000');  
         status_file.hide(); 
-        empty_file.hide();  
-                                  
-        $('#file_req_document_general_'+row_id+'_'+code_1+'_'+code_2).val('');                                                                                                                                                                                   
+        empty_file.hide();         
+                                             
+                                                                       
     }); 
     
     

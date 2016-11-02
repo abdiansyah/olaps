@@ -18,7 +18,7 @@ if(($p_search_high =='request_number')||($p_search_high =='personnel_number')||(
 <input name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control" type="text"/>
 <?php endif; 
 if(($p_search_high =='datetime_priority')||($p_search_high =='date_request')||($p_search_high =='date_approved_superior')||($p_search_high =='date_approved_quality')||($p_search_high =='date_take_authorization')||($p_search_high =='date_finish')):?>
-<input name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control" type="text" placeholder="dd-mm-yyyy"/>
+<input name="input-tab-search-high" id="input-tab-search-high" name="date" class="col-md-12 form-control" type="text" placeholder="dd-mm-yyyy"/>
 <?php endif; 
 if($p_search_high =='code_unit') : ?>
 <select name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control select2-tab-search-high">    
@@ -51,6 +51,16 @@ if ($p_search_high =='reason_apply_license') : ?>
     <option value="4">Ratting Change</option>    
 </select>
 <?php endif;?>
+<?php
+echo bootstrap_datepicker();
+?>
+<script type="text/javascript">
+$().ready(funtion{
+    $('[name=date]').datepicker({
+       format : 'dd-mm-yyyy' 
+    });
+});
+</script>
 
 
          

@@ -159,11 +159,12 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                                     <thead>
                                         <tr>
                                             <th align="center"><label>No</label></th>
-                                            <th align="center"><label>Authorization Type</label></th>                                
+                                            <th align="center"><label>Authorization Type</label></th>
                                             <th align="center"><label>Type</label></th> 
                                             <th align="center"><label>Rating</label></th> 
                                             <th align="center"><label>Category</label></th> 
-                                            <th align="center"><label>Scope of Authorization</label></th>                                                                                                                                                                                     
+                                            <th align="center"><label>Scope of Authorization</label></th>                    
+                                            <th align="center"><label>ETOPS</label></th>                   
                                         </tr>
                                     </thead>                                    
                                     <tbody id="sum_license_authorization">

@@ -2,28 +2,29 @@
 $().ready(function(){
   //  var request_number = '';
 //    var personnel_number = '';
-    var request_number = '<?php echo $request_number; ?>';
-    var personnel_number = '<?php echo $personnel_number; ?>'; 
-    var reason_apply_license = '<?php echo $reason_apply_license; ?>'; 
-    var code_unit = '<?php echo $code_unit; ?>'; 
-    var priority = '<?php echo $priority; ?>'; 
-    var datetime_priority = '<?php echo $datetime_priority; ?>'; 
-    var personnel_number_superior = '<?php echo $personnel_number_superior; ?>'; 
-    var personnel_number_quality = '<?php echo $personnel_number_quality; ?>'; 
-    var id_disposition_user_fk = '<?php echo $id_disposition_user_fk; ?>'; 
-    var id_location_user_fk = '<?php echo $id_location_user_fk; ?>'; 
-    var date_request = '<?php echo $date_request; ?>'; 
-    var date_approved_superior = '<?php echo $date_approved_superior; ?>'; 
-    var date_approved_quality = '<?php echo $date_approved_quality; ?>';
+    var request_number              = '<?php echo $request_number; ?>';
+    var personnel_number            = '<?php echo $personnel_number; ?>'; 
+    var reason_apply_license        = '<?php echo $reason_apply_license; ?>'; 
+    var code_unit                   = '<?php echo $code_unit; ?>'; 
+    var priority                    = '<?php echo $priority; ?>'; 
+    var datetime_priority           = '<?php echo $datetime_priority; ?>'; 
+    var personnel_number_superior   = '<?php echo $personnel_number_superior; ?>'; 
+    var personnel_number_quality    = '<?php echo $personnel_number_quality; ?>'; 
+    var id_disposition_user_fk      = '<?php echo $id_disposition_user_fk; ?>'; 
+    var id_location_user_fk         = '<?php echo $id_location_user_fk; ?>'; 
+    var date_request                = '<?php echo $date_request; ?>'; 
+    var date_approved_superior      = '<?php echo $date_approved_superior; ?>'; 
+    var date_approved_quality       = '<?php echo $date_approved_quality; ?>';
     var date_referral_authorization = '<?php echo $date_referral_authorization; ?>';          
-    var date_take_authorization = '<?php echo $date_take_authorization; ?>';     
-    var status_submit = '<?php echo $status_submit; ?>';     
-    var status_approved_superior = '<?php echo $status_approved_superior; ?>'; 
-    var status_approved_quality = '<?php echo $status_approved_quality; ?>'; 
-    var status_assesment = '<?php echo $status_assesment; ?>';
-    var status_issue_authorization = '<?php echo $status_issue_authorization; ?>';
-    var referral_authorization = '<?php echo $referral_authorization; ?>';  
-    var take_authorization = '<?php echo $take_authorization; ?>';             
+    var date_take_authorization     = '<?php echo $date_take_authorization; ?>';     
+    var status_submit               = '<?php echo $status_submit; ?>';     
+    var status_approved_superior    = '<?php echo $status_approved_superior; ?>'; 
+    var status_approved_quality     = '<?php echo $status_approved_quality; ?>'; 
+    var status_assesment            = '<?php echo $status_assesment; ?>';
+    var status_issue_authorization  = '<?php echo $status_issue_authorization; ?>';
+    var referral_authorization      = '<?php echo $referral_authorization; ?>';  
+    var take_authorization          = '<?php echo $take_authorization; ?>'; 
+    // alert(date_request)
     
     $('#datatables_high').dataTable({
 		"scrollY"			: "342px",
@@ -32,20 +33,20 @@ $().ready(function(){
         "bSort"             : false,
         "select"            : true,      
         "scrollCollapse"	: true,
-		"processing" 		: true, //Feature control the processing indicator.
-		"serverSide" 		: true, //Feature control DataTables' server-side processing mode.
-		"order" 	 		: [], //Initial no order. 
+		"processing" 		: true, 
+		"serverSide" 		: true, 
+		"order" 	 		: [],
         "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         switch(aData[7]){
             case 'Success':                               
                 $(nRow).css('color', 'white');               
                 $('td', nRow).css('background-color', '#1FA67B');
-            break;
+                break;
             default:                                
                 $('td', nRow).css('background-color', '#FFA500');        
             };  
         },
-		// Load data for the table's content from an Ajax source
+		
 		"ajax": {
 			"url"	: "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf'); ?>",
 			"type"	: "POST" ,
@@ -74,11 +75,11 @@ $().ready(function(){
             }           
 		},
 
-		//Set column definition initialisation properties.
+		
 		"columnDefs" : [
 			{ 
-				"targets"	: [], //first column / numbering column
-				"orderable"	: false, //set not orderable                            
+				"targets"	: [],
+				"orderable"	: false,
 			},
 		],
 	});
@@ -298,6 +299,9 @@ echo '</b>
 <?php echo jquery_select2(); ?>
 <?php echo bootstrap_datepicker();?>
 <script type="text/javascript">
+$('.modal-content').datepicker({       
+        // language: 'pt-BR'
+});
 $('.select2-tab-search-high').select2({width : '100%'});
 
 $('#tab-search-high').change(function(){            

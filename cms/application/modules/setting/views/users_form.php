@@ -7,7 +7,7 @@ $().ready(function(){
 </script>
 
 <section class="content-header">
-	<h1>Management User <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl.'-'.$action; ?></small></h1>
+	<h1>Management User <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl; ?></small></h1>
 </section>
 
 <?php echo form_open_multipart($action, array('class' => 'form-horizontal row-form', 'data-toggle' => 'validator')); ?>
