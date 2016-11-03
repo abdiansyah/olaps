@@ -2424,7 +2424,7 @@ class Apply_license extends CI_Controller
             //      die($pesan);        
             $this->email->message($pesan);
         } else if (isset($_POST['submitdisapproved'])) {
-            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
+            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'" ;
             $this->db->query($query_validate);
             $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
             $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);

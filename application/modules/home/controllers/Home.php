@@ -57,7 +57,7 @@ class Home extends CI_Controller
             }
             if(@$cek_superior == '1'){
                 if(@$rc->current_status == 'Data Submited'){             
-                    $row[] = '<a href="'.site_url('/apply_license/apply_license/cek_approved_atasan/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-danger btn-sm">&nbsp;&nbsp;&nbsp;<b>Approved Superior</b>&nbsp;&nbsp;&nbsp;</a>';
+                    $row[] = '<a href="'.site_url('/apply_license/apply_license/cek_approved_atasan/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-warning btn-sm">&nbsp;&nbsp;&nbsp;<b>Superior Approval</b>&nbsp;&nbsp;&nbsp;</a>';
                 }else{
                     $row[] = '';
                 }
