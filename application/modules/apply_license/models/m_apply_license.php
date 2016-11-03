@@ -8,7 +8,7 @@ class M_apply_license extends CI_Model {
                         where('TSH.REPORT_TO = TSHS.PERNR')->get_compiled_select();
         $email_superior = $this->db->select('TSHS.EMAIL')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
                         where('TSH.REPORT_TO = TSHS.PERNR')->get_compiled_select();
-        // update 21-09-2016 
+        
         $name_superior_for_non_gmf = $this->db->select('TSHS.EMPLNAME')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
                         where('TSHS.PERNR = REPORT_TO')->get_compiled_select();
         $email_superior_for_non_gmf = $this->db->select('TSHS.EMAIL')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
@@ -63,7 +63,7 @@ class M_apply_license extends CI_Model {
         $email_superior = $this->db->select('TSHS.EMAIL')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
                         where('TSH.REPORT_TO = TSHS.PERNR')->get_compiled_select();                                                            
                                     
-        $querydataemp = "SELECT TSH.PERNR, TSH.EMPLNAME, TSH.EMAIL, TSH.JOBTITLE, TSH.UNIT, TSH.LASTEDUCLEVEL,
+        $querydataemp = "SELECT TSH.PERNR, TSH.EMPLNAME, TSH.EMAIL, TSH.JOBTITLE, TSH.UNIT, TSH.LASTEDUCDESC,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.WORKUNTILDATE,120),105)) AS WORKUNTILDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.BORNDATE,120),105)) AS BORNDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.EMPLODATE,120),105)) AS EMPLODATE,
@@ -88,7 +88,7 @@ class M_apply_license extends CI_Model {
         $email_superior = $this->db->select('TSHS.EMAIL')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
                         where('TSH.REPORT_TO = TSHS.PERNR')->get_compiled_select();                                                            
                                     
-        $querydataemp = "SELECT (personnel_number) AS PERNR , (name) AS EMPLNAME, (email) AS EMAIL, (presenttitle) AS JOBTITLE, (departement) AS UNIT, (formaleducation) AS LASTEDUCLEVEL,
+        $querydataemp = "SELECT (personnel_number) AS PERNR , (name) AS EMPLNAME, (email) AS EMAIL, (presenttitle) AS JOBTITLE, (departement) AS UNIT, (formaleducation) AS LASTEDUCDESC,
                         (CONVERT(varchar(10), CONVERT(datetime, validitycontract,120),105)) AS WORKUNTILDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, dateofbirth,120),105)) AS BORNDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, dateofemployee,120),105)) AS EMPLODATE,

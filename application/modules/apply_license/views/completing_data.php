@@ -140,9 +140,8 @@ $(document).ready(function () {
     if (event.keyCode === 10 || event.keyCode === 13) 
         event.preventDefault();
     });  
-    
-    // 26-09-2016    
-   $('.body_general_requirement').on('change', '.file_req_document_general', function(e){           
+        
+   $('.body_general_requirement').on('change', '.file_req_document_general', function(){           
     var file_req_document_general_003     = $('#file_req_document_general_1_ARG_0003').val();
     var file_req_document_general_004     = $('#file_req_document_general_2_ARG_0004').val();
     var file_req_document_general_005     = $('#file_req_document_general_3_ARG_0005').val();
@@ -160,10 +159,10 @@ $(document).ready(function () {
                       
 });
     
-    // $('[name=submitcompletingdata]').click(function(){
-    //     $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
-    //     $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',true);        
-    // });
+    $('[name=submitcompletingdata]').click(function(){
+        $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
+        $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',true);        
+    });
     
     $('[name=submitcompletingdata]').mouseout(function(){
         $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);           
@@ -188,7 +187,7 @@ $(document).ready(function () {
     });
     
     // Progressbar upload file           
-    $('.body_general_requirement').on('change', '.file_req_document_general', function(e){        
+    $('.body_general_requirement').on('change', '.file_req_document_general', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
@@ -223,13 +222,20 @@ $(document).ready(function () {
     }, 300);  
     }); 
     
-    $('.body_general_requirement').on('click', '.empty_file_document_general', function(e){        
+    $('.body_general_requirement').on('click', '.empty_file_document_general', function(){
+
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
         var code_1 = data_row_id[5];
-        var code_2 = data_row_id[6];        
-                                                                   
+        var code_2 = data_row_id[6];
+        var file_req_document_general_003     = $('#file_req_document_general_1_ARG_0003').val();
+        var file_req_document_general_004     = $('#file_req_document_general_2_ARG_0004').val();
+        var file_req_document_general_005     = $('#file_req_document_general_3_ARG_0005').val();
+        var file_req_document_general_006     = $('#file_req_document_general_4_ARG_0006').val();
+        var file_req_document_general_007     = $('#file_req_document_general_5_ARG_0007').val();        
+        var file_req_document_general = $('#file_req_document_general_'+row_id+'_'+code_1+'_'+code_2);
+
         var empty_file     = $('#empty_file_document_general_'+ row_id+'_'+code_1+'_'+code_2);
         var progressbar     = $('#progressbar_document_general_'+row_id); 
         var status_file     = $('#status_file_document_general_'+ row_id);       
@@ -239,13 +245,22 @@ $(document).ready(function () {
         statustxt.html("0%"); 
         statustxt.css('color','#000');  
         status_file.hide(); 
-        empty_file.hide();         
-                                             
-                                                                       
+        empty_file.hide(); 
+        file_req_document_general.replaceWith( file_req_document_general.val('').clone( true ) );    
+        
+        if(file_req_document_general_003 =='' || file_req_document_general_004 ==''){
+            $('#file_req_document_general_1_ARG_0003').attr('required',false);
+            $('#file_req_document_general_2_ARG_0004').attr('required',false);            
+        };  
+        if(file_req_document_general_005 == '' || file_req_document_general_006 =='' || file_req_document_general_007 ==''){
+            $('#file_req_document_general_3_ARG_0005').attr('required',false);
+            $('#file_req_document_general_4_ARG_0006').attr('required',false);
+            $('#file_req_document_general_5_ARG_0007').attr('required',false);
+        }; 
     }); 
     
     
-    $('.body_specification_requirement').on('change', '.file_req_document_certificate', function(e){
+    $('.body_specification_requirement').on('change', '.file_req_document_certificate', function(){
         
         var id = this.id;
         var data_row_id = id.split("_"); 
@@ -281,7 +296,7 @@ $(document).ready(function () {
     }); 
     
     
-    $('.body_specification_requirement').on('click', '.empty_file_document_certificate', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_document_certificate', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];        
@@ -301,7 +316,7 @@ $(document).ready(function () {
         $('#file_req_document_certificate_'+row_id).val('');                                                                                                                                                                                   
     });     
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];                              
@@ -334,7 +349,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_req_certificate', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_req_certificate', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];        
@@ -355,7 +370,7 @@ $(document).ready(function () {
     });
      
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_garuda', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_garuda', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -388,7 +403,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-     $('.body_specification_requirement').on('click', '.empty_file_certificate_license_garuda', function(e){        
+     $('.body_specification_requirement').on('click', '.empty_file_certificate_license_garuda', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -409,7 +424,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_license_garuda_'+row_id).val('');                                                                                                                                                                                   
     });
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_citilink', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_citilink', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -442,7 +457,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_citilink', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_citilink', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -464,7 +479,7 @@ $(document).ready(function () {
     });
       
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_sriwijaya', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_sriwijaya', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -497,7 +512,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_sriwijaya', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_sriwijaya', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -518,7 +533,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_license_sriwijaya_'+row_id).val('');                                                                                                                                                                                   
     }); 
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_easa', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_easa', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -551,7 +566,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_easa', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_easa', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -571,7 +586,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_easa_'+row_id).val('');                                                                                                                                                                                   
     }); 
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_special', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_special', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -604,7 +619,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_special', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_special', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -624,7 +639,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_special_'+row_id).val('');                                                                                                                                                                                   
     });  
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_garuda', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_garuda', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -657,7 +672,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_garuda', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_garuda', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -677,7 +692,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_garuda_'+row_id).val('');                                                                                                                                                                                   
     });  
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_citilink', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_citilink', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -710,7 +725,7 @@ $(document).ready(function () {
         }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_citilink', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_citilink', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];    
@@ -731,7 +746,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_citilink_'+row_id).val('');                                                                                                                                                                                   
     });   
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_sriwijaya', function(e){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_sriwijaya', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -764,7 +779,7 @@ $(document).ready(function () {
     }, 300);  
     }); 
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_sriwijaya', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_sriwijaya', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -793,7 +808,7 @@ $(document).ready(function () {
        var month = ("0" + (date_training.getMonth() + 1)).slice(-2);       
        $('.date_training').val((day)+'-'+(month)+'-'+date_training.getFullYear());            
     };
-        $('.body_general_requirement').on('.focusout', '.expiration_date_req_general_document', function(e){
+        $('.body_general_requirement').on('.focusout', '.expiration_date_req_general_document', function(){
             var row_id = this.id;
             if($('.expiration_date_req_general_document').val != ''){        
             $('#file_req_document_general_' + row_id).attr('disabled',false);
@@ -803,7 +818,7 @@ $(document).ready(function () {
 
         }); 
         
-        $('.date_training_req_general_certificate').datepicker().on('click', function(e){
+        $('.date_training_req_general_certificate').datepicker().on('click', function(){
             var row_id = this.id;                                      
             $('#result_expiration_date_req_general_certificate_'+row_id).val('');
             $('#save_result_expiration_date_req_general_certificate_'+row_id).val(''); 
@@ -858,14 +873,14 @@ $(document).ready(function () {
           $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(e){
+        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(){
             var row_id = this.id;                                      
             $('#result_expiration_date_req_spec_certificate_'+row_id).val('');
             $('#save_result_expiration_date_req_spec_certificate_'+row_id).val(''); 
             $('#label_result_expiration_date_req_spec_certificate_'+row_id).val('');
         });              
         
-        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate#' + row_id).val(); 
@@ -908,14 +923,14 @@ $(document).ready(function () {
         });
         
         // License Garuda
-        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(e){z
+        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(){z
             var row_id = this.id;                                      
             $('#result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val('');
             $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(''); 
             $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val('');
         });
         
-        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(e){                 
+        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(){                 
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_garuda#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_garuda#' + row_id).val(); 
@@ -958,7 +973,7 @@ $(document).ready(function () {
         });
 
         // License Citilink
-        $('.date_training_req_spec_certificate_license_citilink').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_license_citilink').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_citilink#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_citilink#' + row_id).val(); 
@@ -1001,7 +1016,7 @@ $(document).ready(function () {
         });
         
         // License Sriwijaya
-        $('.date_training_req_spec_certificate_license_sriwijaya').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_license_sriwijaya').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_sriwijaya#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_sriwijaya#' + row_id).val(); 
@@ -1043,7 +1058,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_easa').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_easa').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_easa#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_easa#' + row_id).val(); 
@@ -1086,7 +1101,7 @@ $(document).ready(function () {
         });
         
         
-        $('.date_training_req_spec_certificate_special').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_special').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_special#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_special#' + row_id).val(); 
@@ -1128,7 +1143,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_garuda').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_garuda').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_garuda#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_garuda#' + row_id).val(); 
@@ -1170,7 +1185,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_citilink').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_citilink').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_citilink#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_citilink#' + row_id).val(); 
@@ -1211,7 +1226,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_sriwijaya').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_sriwijaya').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_sriwijaya#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_sriwijaya#' + row_id).val(); 
@@ -1252,7 +1267,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_cofc').datepicker().on('changeDate', function(e){        
+        $('.date_training_req_spec_certificate_cofc').datepicker().on('changeDate', function(){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_cofc#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_cofc#' + row_id).val(); 

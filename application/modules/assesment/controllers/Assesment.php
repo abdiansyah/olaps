@@ -64,42 +64,42 @@
 // -- Purpose :
         function save_assesment(){            
             if(isset($_POST['submitassesmentevent'])){ 
-            $request_number             = $this->input->post('request_number');
-            $check_assesment            = $this->input->post('check_assesment');              
-            $personnel_number           = $this->input->post('personnel_number');
-            $id_assesment               = $this->input->post('id_assesment');
-            $date_written_assesment     = $this->input->post('date_written_assesment');
-            $id_sesi                    = $this->input->post('id_sesi');
-            $id_room                    = $this->input->post('id_room');
-            $id_license                 = $this->input->post('id_license');
-            $id_type                    = $this->input->post('id_type');
-            $id_spect                   = $this->input->post('id_spect');
-            $id_category                = $this->input->post('id_category');
-            $id_scope                   = $this->input->post('id_scope');                                       
-            foreach($id_assesment as $key => $value){            
-            @$data_assesment = array(            
-            'date_written_assesment'    => date('Y-m-d',strtotime($date_written_assesment[$key])),
-            'id_written_sesi'           => $id_sesi[$key],
-            'id_written_room_fk'        => $id_room[$key],                                    
-            ); 
-            $this->db->where('id_auth_license_fk',$id_license[$key]);
-            $this->db->where('id_auth_type_fk',$id_type[$key]);
-            $this->db->where('id_auth_spec_fk',$id_spect[$key]);
-            $this->db->where('id_auth_category_fk',$id_category[$key]);
-            $this->db->where('id_auth_scope_fk',$id_scope[$key]);
-            $this->db->update('t_assesment',@$data_assesment);
-             
-            
-            $this->db->query("UPDATE t_apply_license_dtl SET status_written_assesment = '2' WHERE 
-            request_number_fk = '$request_number' AND
-            id_auth_license_fk = '$id_license[$key]' AND
-            id_auth_type_fk = '$id_type[$key]' AND
-            id_auth_spect_fk = '$id_spect[$key]' AND
-            id_auth_category_fk = '$id_category[$key]' AND
-            id_auth_scope_fk = '$id_scope[$key]' AND
-            id_assesment_scope_fk = '$id_assesment[$key]'");  
-             
-            }            
+                $request_number             = $this->input->post('request_number');
+                $check_assesment            = $this->input->post('check_assesment');              
+                $personnel_number           = $this->input->post('personnel_number');
+                $id_assesment               = $this->input->post('id_assesment');
+                $date_written_assesment     = $this->input->post('date_written_assesment');
+                $id_sesi                    = $this->input->post('id_sesi');
+                $id_room                    = $this->input->post('id_room');
+                $id_license                 = $this->input->post('id_license');
+                $id_type                    = $this->input->post('id_type');
+                $id_spect                   = $this->input->post('id_spect');
+                $id_category                = $this->input->post('id_category');
+                $id_scope                   = $this->input->post('id_scope');                                       
+                foreach($id_assesment as $key => $value){            
+                    @$data_assesment = array(            
+                    'date_written_assesment'    => date('Y-m-d',strtotime($date_written_assesment[$key])),
+                    'id_written_sesi'           => $id_sesi[$key],
+                    'id_written_room_fk'        => $id_room[$key],                                    
+                    ); 
+
+                    $this->db->where('id_auth_license_fk',$id_license[$key]);
+                    $this->db->where('id_auth_type_fk',$id_type[$key]);
+                    $this->db->where('id_auth_spec_fk',$id_spect[$key]);
+                    $this->db->where('id_auth_category_fk',$id_category[$key]);
+                    $this->db->where('id_auth_scope_fk',$id_scope[$key]);
+                    $this->db->update('t_assesment',@$data_assesment);
+                     
+                    
+                    $this->db->query("UPDATE t_apply_license_dtl SET status_written_assesment = '2' WHERE 
+                    request_number_fk = '$request_number' AND
+                    id_auth_license_fk = '$id_license[$key]' AND
+                    id_auth_type_fk = '$id_type[$key]' AND
+                    id_auth_spect_fk = '$id_spect[$key]' AND
+                    id_auth_category_fk = '$id_category[$key]' AND
+                    id_auth_scope_fk = '$id_scope[$key]' AND
+                    id_assesment_scope_fk = '$id_assesment[$key]'");  
+                }            
             $this->db->query("UPDATE t_apply_license SET status_assesment = '1' where request_number = '$request_number'");                                                
             } 
             redirect('home/index');                                                                                                          

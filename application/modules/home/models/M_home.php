@@ -10,7 +10,8 @@ class M_home extends CI_Model {
        
         $this->db->select("TSH.name, TSH.personnel_number, TSH.departement, TSH.presenttitle, TSH.report_to, t_apply_license.request_number, 
                             (CASE t_apply_license.status_submit WHEN '1' THEN 'Data Submited' END) AS submited, (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105)) AS date_request,
-                            (CASE WHEN t_apply_license.finished = '1' THEN 'Success'
+                            (CASE WHEN t_apply_license.finished = '1' AND t_apply_license.status_approved_quality = '1' THEN 'Success'
+                            WHEN t_apply_license.finished = '1' AND t_apply_license.status_approved_quality = '2' THEN 'Failed'
                             WHEN t_apply_license.take_authorization = '1' THEN 'Take Authorization'
                             WHEN t_apply_license.referral_authorization = '1' THEN 'Referral Authorization'
                             WHEN t_apply_license.status_issue_authorization = '2' THEN 'Issue Authorization Finished'

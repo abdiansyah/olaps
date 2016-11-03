@@ -2171,7 +2171,7 @@ class Apply_license extends CI_Controller
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
             'wordwrap' => TRUE
-            );  
+            );    
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2194,7 +2194,7 @@ class Apply_license extends CI_Controller
             $this->email->set_newline("\r\n");
             $this->email->from($email);
             $this->email->to($email_superior);                        
-            $this->email->cc($email_gm);                       
+            $this->email->to($email_gm);                       
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                     "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
@@ -2420,11 +2420,10 @@ class Apply_license extends CI_Controller
             $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
             $pesan .= '<p>PT GMF AeroAsia</p>';
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';
-            //      die($pesan);        
+            $pesan .= '<p>Fax: +62-21-550 1257</p>';       
             $this->email->message($pesan);
         } else if (isset($_POST['submitdisapproved'])) {
-            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'" ;
+            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
             $this->db->query($query_validate);
             $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
             $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);
@@ -2447,7 +2446,8 @@ class Apply_license extends CI_Controller
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             $this->email->message($pesan);
-        };        
+        }
+        ;
         //Send Notification Email To Atasan                                 
         if ($this->email->send()) {
             $send_email=array(
@@ -2466,7 +2466,7 @@ class Apply_license extends CI_Controller
     // -- Function Name : history_request_number
         
     // -- Params : 
-            
+        
     // -- Purpose : 
     function history_request_number($p_request_number = '', $personnel_number = '')
     {

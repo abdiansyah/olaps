@@ -38,21 +38,30 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
         <label class="col-sm-2 control-label ">PIC Assesment Written</label>
         <div class="col-sm-4">
             <select name="pic_written" required>
-                <option value="0">--- choose personnel number ---</option>
-                <?php echo modules::run('assesment/assesment/option_employee_tqd'); ?>
+                    <?php if (@$data_assesment->pic_written == '') {?>
+                    <option value="0">--- choose personnel number ---</option>
+                <?php } else {?>
+                    <option value="<?php echo $data_assesment->pic_written; ?>"><?php echo $data_assesment->name_pic_written;?></option>           
+                <?php } echo modules::run('assesment/assesment/option_employee_tqd'); ?>
             </select>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label ">Score &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <div class="col-sm-3">
-            <input class="form-control " type="text" name="score_written" value="<?php if(@$data_assesment->score_written!=''){echo @$data_assesment->score_written;} ?>"/>
+            <input class="form-control" type="text" name="score_written" value="<?php if(@$data_assesment->score_written!=''){echo @$data_assesment->score_written;} ?>"/>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label ">Result&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <div class="col-sm-3">
             <input class="form-control " type="text" name="result_written" value="<?php echo @$data_assesment->result_written; ?>"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label ">Keterangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <div class="col-sm-3">
+            <textarea rows="10" cols="53" name="note_written"> <?php if(@$data_assesment->note_written != '') {echo @$data_assesment->note_written;} ?> </textarea>
         </div>
     </div>
     <?php endif; ?>    
@@ -81,8 +90,11 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
     <label class="col-sm-2 control-label ">PIC Assesment Oral</label>
         <div class="col-sm-4">
             <select name="pic_oral" required>
-                <option value="0">--- choose personnel number ---</option>
-                <?php echo modules::run('assesment/assesment/option_employee_tqd'); ?>
+                <?php if (@$data_assesment_oral->pic_oral == '') {?>
+                    <option value="0">--- choose personnel number ---</option>
+                <?php } else {?>
+                    <option value="<?php echo $data_assesment_oral->pic_oral; ?>"><?php echo $data_assesment_oral->name_pic_oral;?></option>
+                <?php } echo modules::run('assesment/assesment/option_employee_tqd'); ?>
             </select>
         </div>
     </div>
@@ -96,6 +108,12 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
         <label class="col-sm-2 control-label ">Result&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <div class="col-sm-3">
             <input class="form-control " type="text" name="result_oral" value="<?php echo @$data_assesment_oral->result_oral; ?>"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label ">Keterangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <div class="col-sm-3">
+            <textarea rows="10" cols="53" name="note_oral"> <?php if(@$data_assesment->note_oral != ''){echo @$data_assesment->note_oral;} ?> </textarea>
         </div>
     </div>
 	<?php endif; ?>	 

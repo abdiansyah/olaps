@@ -164,19 +164,23 @@ echo bootstrap_datepicker();
 ?>        
 <script type="text/javascript"> 
     $( window ).load(function() {
-        $('[name=personnel_number]').click();                 
-    });
-
+        $('[name=personnel_number]').click(); 
+                     
+        });
+    $('[name=businessphone],[name=mobilephone]').keyup(function()
+        {
+            this.value = this.value.replace(/(\d{3})\-?/g,'$1-');
+        });
     $('#msg,.data-superior').hide();
             
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker({
-    format : 'dd-mm-yyyy'
-    }); 
+        format : 'dd-mm-yyyy'
+        }); 
     
     $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker().on('changeDate', function(e){        
-        $(this).datepicker('hide');
-    });
-    
+            $(this).datepicker('hide');
+        });
+        
          
     $('[name=cari_id],[name=personnel_number]').click(function(){
     $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=validitycontract],[name=id_personnel_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
@@ -190,7 +194,7 @@ echo bootstrap_datepicker();
         $('[name=email]').val(data.EMAIL);
         $('[name=dateofbirth]').val(data.BORNDATE); 
         $('[name=dateofemployee]').val(data.EMPLODATE);
-        $('[name=formaleducation]').val(data.LASTEDUCLEVEL);
+        $('[name=formaleducation]').val(data.LASTEDUCDESC);
         $('[name=mobilephone]').val(data.mobilephone);
         $('[name=businessphone]').val(data.businessphone); 
         if(data.WORKUNTILDATE == '31-12-9999'){       
@@ -240,7 +244,7 @@ echo bootstrap_datepicker();
         $('[name=email]').val(data.EMAIL);
         $('[name=dateofbirth]').val(data.BORNDATE); 
         $('[name=dateofemployee]').val(data.EMPLODATE);
-        $('[name=formaleducation]').val(data.LASTEDUCLEVEL);
+        $('[name=formaleducation]').val(data.LASTEDUCDESC);
         $('[name=mobilephone]').val(data.mobilephone);
         $('[name=businessphone]').val(data.businessphone); 
         if(data.WORKUNTILDATE == '31-12-9999'){       
@@ -280,7 +284,7 @@ echo bootstrap_datepicker();
            console.log("send data complete");
            $('#msg').hide();        
         });
-        $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').prop("readonly", false);                
+        $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=personnel_number_superior]').prop("readonly", false);                
     }; 
     if($('[name=name]').val()=='' || $('[name=typeemp]').val()==''){
         $('#msg').show();

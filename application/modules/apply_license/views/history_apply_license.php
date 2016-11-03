@@ -103,7 +103,7 @@ if(@$data_history[0]!=''){
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                             <img id="status" src="<?php echo base_url('assets/images/property/finish.png'); ?>">
                         </a>
-                        <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Success</a>
+                       <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($data_history[0]->current_status = 'Data Rejected' || $data_history[0]->current_status = 'Rejected Superior' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
                     </li>
                 </ul>
             </div>
@@ -399,7 +399,7 @@ if(@$data_history[0]!=''){
 </div>
 </div>
 <?php
-}else{
+} else {
     redirect(base_url());
 }
 ?> 
@@ -407,13 +407,12 @@ if(@$data_history[0]!=''){
   $('[name=submitapproved]').attr('disabled',true);
   $('[name=submitdisapproved]').attr('disabled',true);
   $('[name=check_agree_atasan]').on('change',function(){
-    if(this.checked){
-    $('[name=submitapproved]').attr('disabled',false);
-    $('[name=submitdisapproved]').attr('disabled',false);      
-    }else
-    {
-    $('[name=submitapproved]').attr('disabled',true);
-    $('[name=submitdisapproved]').attr('disabled',true);        
+    if(this.checked) {
+        $('[name=submitapproved]').attr('disabled',false);
+        $('[name=submitdisapproved]').attr('disabled',false);      
+    } else {
+        $('[name=submitapproved]').attr('disabled',true);
+        $('[name=submitdisapproved]').attr('disabled',true);        
     }
   });  
 </script>   

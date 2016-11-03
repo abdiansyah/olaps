@@ -462,6 +462,7 @@ class Quality_control extends MX_Controller
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
             $this->email->to($email_applicant);
+            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject('SCHEDULE ORAL ASSESMENT');
 
             $data_update_status_assesment = array(
@@ -505,8 +506,6 @@ class Quality_control extends MX_Controller
                             'id_auth_scope_fk'      => $id_scope[$key],
                             'date_assesment'        => date('Y-m-d H:i:s')
                         );
-                        //print_r($data_assesment);
-                        //            die();             
                         $this->db->insert('t_assesment', $data_assesment);
                     }
                     $this->db->query("UPDATE t_apply_license_dtl SET status_oral_assesment = '1' WHERE 
@@ -565,7 +564,7 @@ class Quality_control extends MX_Controller
                                 redirect(site_url('quality_control'));                                
                             } else {
                                 redirect(site_url('quality_control'));
-                            }                
+                        }                
                     }            
             }
         if (isset($_POST['savewrittenassesment'])) {
@@ -581,11 +580,13 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
+            'wordwrap' => TRUE
+            );  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
             $this->email->to($email_applicant);
+            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject('WRITTEN ASSESMENT');
             
             
@@ -740,7 +741,7 @@ class Quality_control extends MX_Controller
             $this->load->library('ftp');                
             $ftp_config['hostname'] = '127.0.0.1'; 
             $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismillah';
+            $ftp_config['password'] = 'Bismilah';
             $ftp_config['debug']    = TRUE;                
             $this->load->library('upload');                                                              
             $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
@@ -815,6 +816,7 @@ class Quality_control extends MX_Controller
             $this->email->to($email_personnel);
             $this->email->to($email_superior);
             $this->email->to($email_gm);
+            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                  "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>

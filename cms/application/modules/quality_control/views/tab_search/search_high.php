@@ -1,6 +1,13 @@
 <?php echo jquery_select2(); ?>
 <script type="text/javascript">    
-	$('.select2-tab-search-high').select2({width : '100%'});
+    $('.select2-tab-search-high').select2({width : '100%'});  
+    $('.datepicker').keyup(function(){
+        if ($(this).val().length == 2){
+            $(this).val($(this).val() + "-");
+        }else if ($(this).val().length == 5){
+            $(this).val($(this).val() + "-");
+        }
+    });  
 </script>
 <?php if($p_search_high =='status_approved_superior') :?>
 <select name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control">
@@ -18,7 +25,7 @@ if(($p_search_high =='request_number')||($p_search_high =='personnel_number')||(
 <input name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control" type="text"/>
 <?php endif; 
 if(($p_search_high =='datetime_priority')||($p_search_high =='date_request')||($p_search_high =='date_approved_superior')||($p_search_high =='date_approved_quality')||($p_search_high =='date_take_authorization')||($p_search_high =='date_finish')):?>
-<input name="input-tab-search-high" id="input-tab-search-high" name="date" class="col-md-12 form-control" type="text" placeholder="dd-mm-yyyy"/>
+<input name="input-tab-search-high" id="input-tab-search-high" class="datepicker col-md-12 form-control" type="text" placeholder="sample : 21-01-2016"/>
 <?php endif; 
 if($p_search_high =='code_unit') : ?>
 <select name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control select2-tab-search-high">    
@@ -51,16 +58,7 @@ if ($p_search_high =='reason_apply_license') : ?>
     <option value="4">Ratting Change</option>    
 </select>
 <?php endif;?>
-<?php
-echo bootstrap_datepicker();
-?>
-<script type="text/javascript">
-$().ready(funtion{
-    $('[name=date]').datepicker({
-       format : 'dd-mm-yyyy' 
-    });
-});
-</script>
+
 
 
          

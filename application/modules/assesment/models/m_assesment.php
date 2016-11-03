@@ -20,12 +20,12 @@ class M_assesment extends CI_Model {
                 FROM t_apply_license AS tal 
                 LEFT JOIN t_apply_license_dtl AS tald ON tald.request_number_fk = tal.request_number
                 LEFT JOIN t_assesment AS ta ON tald.request_number_fk = ta.request_number_fk
-                LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id                                                 
-                LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id                                                 
+                LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id
+                LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id                              
                 LEFT JOIN m_auth_spect AS masp ON tald.id_auth_spect_fk = masp.id
                 LEFT JOIN m_auth_category AS mac ON tald.id_auth_category_fk = mac.id                              
                 LEFT JOIN m_auth_scope AS mas ON tald.id_auth_scope_fk = mas.id 
-                LEFT JOIN m_assesment_scope AS masc ON tald.id_assesment_scope_fk = masc.id                                      
+                LEFT JOIN m_assesment_scope AS masc ON tald.id_assesment_scope_fk = masc.id
                 WHERE tald.request_number_fk = '$request_number' AND tal.personnel_number ='$personnel_number' AND tald.id_auth_license_fk = ta.id_auth_license_fk AND tald.id_auth_type_fk = ta.id_auth_type_fk AND tald.id_auth_spect_fk = ta.id_auth_spec_fk AND tald.id_auth_category_fk = ta.id_auth_category_fk AND tald.id_auth_scope_fk = ta.id_auth_scope_fk AND tald.status_written_assesment = '1'";
         return $this->db->query($query)->result();        
     }   

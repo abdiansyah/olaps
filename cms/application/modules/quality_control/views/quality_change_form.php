@@ -109,7 +109,7 @@ $().ready(function(){
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                             <img id="status" src="<?php echo base_url('assets/images/property/finish.png'); ?>">
                         </a>
-                        <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Success</a>
+                        <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($rc[0]->current_status = 'Data Rejected' || $rc[0]->current_status = 'Rejected Superior' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
                     </li>
                     </ul>
             </div>
