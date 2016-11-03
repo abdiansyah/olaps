@@ -45,16 +45,23 @@ class Home extends CI_Controller
             $row = array();
             $row[] = $no;
             if(@$cek_superior == '1'){            
-            $row[] = @$rc->name;
-            $row[] = @$rc->personnel_number;
+                $row[] = @$rc->name;
+                $row[] = @$rc->personnel_number;
             };            
             $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" title="Edit Data">'.@$rc->request_number.'</a>';
             $row[] = @$rc->last_update;
             if(@$rc->current_status == 'Success'){                        
-            $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-success btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
+                $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-success btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>';
             }else{
-            $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-warning btn-sm">&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;</a>';
+                $row[] = '<a href="'.site_url('/apply_license/apply_license/history_request_number/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-warning btn-sm">&nbsp;&nbsp;&nbsp;<b>'.@$rc->current_status.'</b>&nbsp;&nbsp;&nbsp;</a>';
             }
+            if(@$cek_superior == '1'){
+                if(@$rc->current_status == 'Data Submited'){             
+                    $row[] = '<a href="'.site_url('/apply_license/apply_license/cek_approved_atasan/'.$rc->request_number).'/'.$rc->personnel_number.'" class="btn btn-danger btn-sm">&nbsp;&nbsp;&nbsp;<b>Approved Superior</b>&nbsp;&nbsp;&nbsp;</a>';
+                }else{
+                    $row[] = '';
+                }
+            }   
             $data[] = $row;
         }
 

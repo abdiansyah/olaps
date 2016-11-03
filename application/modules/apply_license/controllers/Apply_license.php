@@ -2424,7 +2424,7 @@ class Apply_license extends CI_Controller
             //      die($pesan);        
             $this->email->message($pesan);
         } else if (isset($_POST['submitdisapproved'])) {
-            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = CONVERT(datetime, NOW(),120), finished = '1', date_finish = CONVERT(datetime, NOW(),120) WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
+            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
             $this->db->query($query_validate);
             $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
             $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);
@@ -2447,8 +2447,7 @@ class Apply_license extends CI_Controller
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
             $pesan .= '<p>Fax: +62-21-550 1257</p>';
             $this->email->message($pesan);
-        }
-        ;
+        };        
         //Send Notification Email To Atasan                                 
         if ($this->email->send()) {
             $send_email=array(
@@ -2467,7 +2466,7 @@ class Apply_license extends CI_Controller
     // -- Function Name : history_request_number
         
     // -- Params : 
-        
+            
     // -- Purpose : 
     function history_request_number($p_request_number = '', $personnel_number = '')
     {
