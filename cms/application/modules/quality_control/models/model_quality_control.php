@@ -89,27 +89,27 @@ class model_quality_control extends CI_Model
 
     public function get_quality_control_high()
     {        
-        $personnel_number            = $this->input->post('personnel_number');
-        $request_number              = $this->input->post('request_number');
-        $code_unit                   = $this->input->post('code_unit');
-        $reason_apply_license        = $this->input->post('reason_apply_license');
-        $priority                    = $this->input->post('priority');
-        $datetime_priority           = $this->input->post('datetime_priority');
-        $personnel_number_superior   = $this->input->post('personnel_number_superior');
-        $personnel_number_quality    = $this->input->post('personnel_number_quality');
-        $id_disposition_user_fk      = $this->input->post('id_disposition_user_fk');
-        $id_location_user_fk         = $this->input->post('id_location_user_fk');
-        $date_request                = $this->input->post('date_request');
-        $date_approved_superior      = $this->input->post('date_approved_superior');
-        $date_approved_quality       = $this->input->post('date_approved_quality');
+        $personnel_number 	         = $this->input->post('personnel_number');
+        $request_number 	         = $this->input->post('request_number');
+        $code_unit 	                 = $this->input->post('code_unit');
+        $reason_apply_license 	     = $this->input->post('reason_apply_license');
+        $priority 	                 = $this->input->post('priority');
+        $datetime_priority 	         = $this->input->post('datetime_priority');
+        $personnel_number_superior 	 = $this->input->post('personnel_number_superior');
+        $personnel_number_quality 	 = $this->input->post('personnel_number_quality');
+        $id_disposition_user_fk 	 = $this->input->post('id_disposition_user_fk');
+        $id_location_user_fk 	     = $this->input->post('id_location_user_fk');
+        $date_request 	             = $this->input->post('date_request');
+        $date_approved_superior 	 = $this->input->post('date_approved_superior');
+        $date_approved_quality 	     = $this->input->post('date_approved_quality');
         $date_referral_authorization = $this->input->post('date_referral_authorization');
-        $date_take_authorization     = $this->input->post('date_take_authorization');
-        $status_submit               = $this->input->post('status_submit');                
-        $status_approved_superior    = $this->input->post('status_approved_superior');
-        $status_approved_quality     = $this->input->post('status_approved_quality');
-        $status_assesment            = $this->input->post('status_assesment');
-        $referral_authorization      = $this->input->post('referral_authorization');
-        $take_authorization          = $this->input->post('take_authorization');    
+        $date_take_authorization 	 = $this->input->post('date_take_authorization');
+        $status_submit    	         = $this->input->post('status_submit');                
+        $status_approved_superior 	 = $this->input->post('status_approved_superior');
+        $status_approved_quality 	 = $this->input->post('status_approved_quality');
+        $status_assesment 	         = $this->input->post('status_assesment');
+        $referral_authorization 	 = $this->input->post('referral_authorization');
+        $take_authorization 	     = $this->input->post('take_authorization');    
         $this->_get_query();
         if(!empty($personnel_number)){
            $this->db->where('personnel_number', $personnel_number);    
@@ -208,27 +208,27 @@ class model_quality_control extends CI_Model
     
         public function get_quality_control_normal()
         {        
-        $personnel_number            = $this->input->post('personnel_number');
-        $request_number              = $this->input->post('request_number');
-        $code_unit                   = $this->input->post('code_unit');
-        $reason_apply_license        = $this->input->post('reason_apply_license');
-        $priority                    = $this->input->post('priority');
-        $datetime_priority           = $this->input->post('datetime_priority');
-        $personnel_number_superior   = $this->input->post('personnel_number_superior');
-        $personnel_number_quality    = $this->input->post('personnel_number_quality');
-        $id_disposition_user_fk      = $this->input->post('id_disposition_user_fk');
-        $id_location_user_fk         = $this->input->post('id_location_user_fk');
-        $date_request                = $this->input->post('date_request');
-        $date_approved_superior      = $this->input->post('date_approved_superior');
-        $date_approved_quality       = $this->input->post('date_approved_quality');
+        $personnel_number 	         = $this->input->post('personnel_number');
+        $request_number 	         = $this->input->post('request_number');
+        $code_unit 	                 = $this->input->post('code_unit');
+        $reason_apply_license 	     = $this->input->post('reason_apply_license');
+        $priority 	                 = $this->input->post('priority');
+        $datetime_priority 	         = $this->input->post('datetime_priority');
+        $personnel_number_superior 	 = $this->input->post('personnel_number_superior');
+        $personnel_number_quality 	 = $this->input->post('personnel_number_quality');
+        $id_disposition_user_fk 	 = $this->input->post('id_disposition_user_fk');
+        $id_location_user_fk 	     = $this->input->post('id_location_user_fk');
+        $date_request 	             = $this->input->post('date_request');
+        $date_approved_superior 	 = $this->input->post('date_approved_superior');
+        $date_approved_quality 	     = $this->input->post('date_approved_quality');
         $date_referral_authorization = $this->input->post('date_referral_authorization');
-        $date_take_authorization     = $this->input->post('date_take_authorization');
-        $status_submit               = $this->input->post('status_submit');        
-        $status_approved_superior    = $this->input->post('status_approved_superior');
-        $status_approved_quality     = $this->input->post('status_approved_quality');
-        $status_assesment            = $this->input->post('status_assesment');
-        $referral_authorization      = $this->input->post('referral_authorization');
-        $take_authorization          = $this->input->post('take_authorization');    
+        $date_take_authorization 	 = $this->input->post('date_take_authorization');
+        $status_submit    	         = $this->input->post('status_submit');        
+        $status_approved_superior 	 = $this->input->post('status_approved_superior');
+        $status_approved_quality 	 = $this->input->post('status_approved_quality');
+        $status_assesment 	         = $this->input->post('status_assesment');
+        $referral_authorization 	 = $this->input->post('referral_authorization');
+        $take_authorization 	     = $this->input->post('take_authorization');    
         $this->_get_query();
         if(!empty($personnel_number)){
            $this->db->where('personnel_number', $personnel_number);    
@@ -509,7 +509,7 @@ class model_quality_control extends CI_Model
                     LEFT JOIN (SELECT personnel_number, name,  presenttitle, departement, email, dateofbirth, dateofemployee, mobilephone, businessphone FROM m_employee                
                     UNION
                     SELECT (CONVERT(varchar(10),TSH.PERNR)) AS personnel_number, (TSH.EMPLNAME) AS name, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement, (TSH.EMAIL) AS email, (TSH.BORNDATE) AS dateofbirth, (TSH.EMPLODATE) AS dateofemployee, (SELECT mobilephone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk = (CONVERT(varchar(10),TSH.PERNR))) AS mobilephone, (SELECT businessphone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk = (CONVERT(varchar(10),TSH.PERNR))) AS businessphone FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH) AS TSH 
-                    ON t_apply_license.personnel_number = TSH.personnel_number                                                                                   
+                    ON t_apply_license.personnel_number = TSH.personnel_number                                     								                 
                     WHERE " . $where ." ORDER BY date_submited, date_approved_superior DESC");
         return $datasrc->num_rows() > 0 ? $datasrc->result() : $this;
     }

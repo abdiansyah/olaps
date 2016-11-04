@@ -9,30 +9,31 @@
 				<div class="col-sm-12">
 					<!-- div content panel -->
 					<div class="col-sm-8">
-						<form class="form-horizontal">
+						<form class="form-horizontal" action="<?php echo site_url('contact/send_email');?>" method="post">
 							<div class="form-group">
-								<label for="request_number" class="col-sm-4 control-label">Name</label>
+								<label for="name" class="col-sm-4 control-label">Name</label>
 								<div class="col-sm-8">
-									<input type="date_request" class="form-control" id="date_request"></div>
+									<input type="text" name="name" class="form-control"></div>
 							</div>
 							<div class="form-group">
-								<label for="request_number" class="col-sm-4 control-label">Email</label>
+								<label for="request_number" class="col-sm-4 control-label">Email personnel</label>
 								<div class="col-sm-8">
-									<input type="date_request" class="form-control" id="date_request"></div>
+									<input type="text" name="email" class="form-control" id="email"></div>
 							</div>
 							<div class="form-group">
 								<label for="request_number" class="col-sm-4 control-label">Subject</label>
 								<div class="col-sm-8">
-									<input type="date_request" class="form-control" id="date_request"></div>
+									<input type="text" name="subject" class="form-control" ></div>
 							</div>
 							<div class="form-group">
-								<label for="request_number" class="col-sm-4 control-label">Message</label>
+								<label for="message" class="col-sm-4 control-label">Message</label>
 								<div class="col-sm-8">
-									<textarea class="form-control" cols="50"></textarea>
+									<textarea class="form-control" cols="50" name="message"></textarea>
 								</div>
 							</div>
+						
+						<button type="submit" class="btn btn-info pull-right" name="send" id="send">SEND</button>
 						</form>
-						<button type="submit" class="btn btn-info pull-right" name="next" id="next">APPLY</button>
 					</div>
 					<div class="col-sm-4">
 						<label for="request_number">EMAIL</label><br/>

@@ -25,9 +25,9 @@ class Room extends MX_Controller {
 		
 		foreach ($list as $grid) {			
 			$row = array();   			
-            $row[] = $grid->name_t;
-            $row[] = $grid->desc_t;
-            $row[] = '<a href="'.site_url('license/room/edit/'.$grid->id).'" title="Edit Data"><button class="btn-info btn-sm btn-flat">&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;</button></a> &nbsp; &nbsp; &nbsp; <a href="'.site_url('license/room/delete/'.$grid->id).'" title="Hapus Data"><button class="btn-warning btn-sm btn-flat">Hapus</button></a>';		                                                                                						          																												
+            $row[] = $grid->name_room;
+            $row[] = $grid->quota;
+            $row[] = '<a href="'.site_url('license/room/edit/'.$grid->id_room).'" title="Edit Data"><button class="btn-info btn-sm btn-flat">&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;</button></a> &nbsp; &nbsp; &nbsp; <a href="'.site_url('license/room/delete/'.$grid->id_room).'" title="Hapus Data"><button class="btn-warning btn-sm btn-flat">Hapus</button></a>';		                                                                                						          																												
 			$data[] = $row;            
 		}
 
@@ -72,29 +72,29 @@ class Room extends MX_Controller {
 	
 	public function insert(){		
 		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')
+			'name_room' 			=> $this->input->post('name_room'),
+			'quota' 	        	=> $this->input->post('quota')
 		
 		);
-		$this->db->insert('m_auth_license', $data);
+		$this->db->insert('m_room', $data);
 		
 		redirect($this->page->base_url());
 	}
 	
 	public function update($id){		
 		$data = array(
-			'name_t' 			=> $this->input->post('name_t'),
-			'desc_t' 	        => $this->input->post('desc_t')			
+			'name_room' 			=> $this->input->post('name_room'),
+			'quota' 	        	=> $this->input->post('quota')			
 		);	
-		$this->db->where('id', $id);
-		$this->db->update('m_auth_license', $data);
+		$this->db->where('id_room', $id);
+		$this->db->update('m_room', $data);
 		
 		redirect($this->page->base_url());
 	}
 	
 	public function delete($id){
 		if ($this->agent->referrer() == '') show_404();						
-		$this->db->delete('m_auth_license',array('id'=>$id));		
+		$this->db->delete('m_room',array('id_room'=>$id));		
 		redirect($this->agent->referrer());
 	}
 	

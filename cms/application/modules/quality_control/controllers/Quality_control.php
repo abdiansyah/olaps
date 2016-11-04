@@ -128,10 +128,6 @@ class Quality_control extends MX_Controller
         echo json_encode($output);
     }
     
-    
-    
-    
-    
     private function form($action = '', $id = '')
     {
         if ($this->agent->referrer() == '')
@@ -185,8 +181,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
-            );  
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -456,8 +451,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
-            );  
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -580,8 +574,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
-            );  
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -741,7 +734,7 @@ class Quality_control extends MX_Controller
             $this->load->library('ftp');                
             $ftp_config['hostname'] = '127.0.0.1'; 
             $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismilah';
+            $ftp_config['password'] = 'Bismillah';
             $ftp_config['debug']    = TRUE;                
             $this->load->library('upload');                                                              
             $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
@@ -794,8 +787,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE
-            );  
+            'wordwrap' => TRUE);  
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -814,8 +806,9 @@ class Quality_control extends MX_Controller
             $this->email->set_newline("\r\n");
             $this->email->from($email);
             $this->email->to($email_personnel);
-            $this->email->to($email_superior);
-            $this->email->to($email_gm);
+            $this->email->cc($email_superior);
+            $this->email->cc($email_gm);
+                
             // $this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"

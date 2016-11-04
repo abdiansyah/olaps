@@ -3,14 +3,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class model_room extends CI_Model
 {
-    private $table_room = 'm_auth_license';
-    private $column_order_room = array('m_auth_license.name_t');            
-    private $order_room = array('m_auth_license.id' => 'desc');    
+    private $table_room = 'm_room';
+    private $column_order_room = array('m_room.name_room');            
+    private $order_room = array('m_room.name_room' => 'desc');    
 
 
     public function _get_query_room()
     {
-        $this->db->select('id, name_t, desc_t');
+        $this->db->select('id_room, name_room, quota');
         $this->db->from($this->table_room);
         if (isset($_POST['order_room'])) {
             $this->db->order_by($this->column_order_room[$_POST['order_room']['0']['column']],
@@ -48,7 +48,7 @@ class model_room extends CI_Model
     
     public function by_id($id)
     {        
-        $datasrc = $this->db->get_where('m_auth_license', array('id' => $id));
+        $datasrc = $this->db->get_where('m_room', array('id_room' => $id));
         return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
     }
        

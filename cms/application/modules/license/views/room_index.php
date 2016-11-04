@@ -40,7 +40,7 @@ $('#datatables_room').dataTable({
 			<tr><h3>&nbsp;Room</h3></tr>
             <tr>				
 				<th width="15%">Name room</th>                
-                <th width="15%">Keterangan</th>
+                <th width="15%">Quota</th>
                  <th width="7%">Action</th>                							
 			</tr>                                                          
 		</thead>

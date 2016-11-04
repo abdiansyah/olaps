@@ -132,7 +132,7 @@ class M_apply_license extends CI_Model {
 
     public function get_gm_personnel_by($personnel_number)
     {
-        $query   = "SELECT email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
+        $query   = "SELECT personnel_number, email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
         return $this->db->query($query);
     }
     
@@ -258,8 +258,8 @@ class M_apply_license extends CI_Model {
     return $this->db->query($query_specification);
     }
     
-    public function query_license($license='',$type='',$tab_spec='',$tab_category='',$tab_scope=''){        
-    $query_license = "SELECT DISTINCT b.name_t AS name_t, b.id, d.name_t AS name_type, f.name_t AS name_spect, e.name_t AS name_category, c.name_t AS name_scope FROM m_group_scope_category a
+    public function query_license($license='',$type='',$tab_spec='',$tab_category='',$tab_scope='', $etops = ''){        
+    $query_license = "SELECT DISTINCT b.name_t AS name_t, b.id, d.name_t AS name_type, f.name_t AS name_spect, e.name_t AS name_category, c.name_t AS name_scope, (CASE '$etops' WHEN '1' THEN ' + ETOPS ' ELSE ' ' END) AS status_etops FROM m_group_scope_category a
                     LEFT JOIN m_auth_license b ON a.id_auth_license_fk = b.id 
                     LEFT JOIN m_auth_scope c ON c.id = a.id_auth_scope_fk  
                     LEFT JOIN m_auth_type d ON d.id = a.id_auth_type_fk             

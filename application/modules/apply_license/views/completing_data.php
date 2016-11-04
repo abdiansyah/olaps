@@ -6,15 +6,15 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
 <div class="row">
 <div class="col-md-12 col-center-block table-responsive">
 <div class="box box-info box-center" id="halaman3">
-	<div class="progress">
-		<div id="progress-step" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-			<label>60% Completed</label>
-		</div>
-	</div>
-	<div class="box-header with-border">
-		<h3 class="box-title">COMPLETING DATA</h3>
-	</div>
-	<div class="box-body">
+    <div class="progress">
+        <div id="progress-step" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+            <label>60% Completed</label>
+        </div>
+    </div>
+    <div class="box-header with-border">
+        <h3 class="box-title">COMPLETING DATA</h3>
+    </div>
+    <div class="box-body">
             <div id="warning" class="modal fade" role="dialog">
               <div class="modal-dialog">      
                 <div class="modal-content">
@@ -30,25 +30,25 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                   </div>
                 </div>
               </div>
-            </div>		
-			<div class="col-md-12" id="tab_completing_data">
+            </div>      
+            <div class="col-md-12" id="tab_completing_data">
             <form action="<?php echo site_url('apply_license/completing_data');?>" method="POST" enctype="multipart/form-data" name="form_competing_data" id="form_competing_data">
-				<div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive no-padding">
                     <div class="box-header">
                     <tr>                        
-						<td colspan="4"><h4><b>Document</b></h4></td>                        
-					</tr>
+                        <td colspan="4"><h4><b>Document</b></h4></td>                        
+                    </tr>
                     </div>
-                    <table id="table_requirement_document" class="table table-bordered">					
-					<tr>                        
-						<th>No</th>                        
-						<th>Document</th>                                                
+                    <table id="table_requirement_document" class="table table-bordered">                    
+                    <tr>                        
+                        <th>No</th>                        
+                        <th>Document</th>                                                
                         <th>Expiration Date</th>                         
                         <th>Upload Document</th>
                         <th>Progress</th>
                         <th>Status</th>
-					</tr>                    
-                    <tbody class="body_general_requirement" id="content_general_requirement" >	
+                    </tr>                    
+                    <tbody class="body_general_requirement" id="content_general_requirement" >  
                     <?php 
                     $i=1;
                         if (is_array(@$additional_general_document) || is_object(@$additional_general_document))
@@ -76,24 +76,24 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                         }
                     ?>                                     
                     </tbody>                    
-					</table>
+                    </table>
                     <br/>
                     <div class="box-header">
                     <tr>                        
-						<td colspan="4"><h4><b>Training Certificate</b></h4></td>                        
-					</tr>
+                        <td colspan="4"><h4><b>Training Certificate</b></h4></td>                        
+                    </tr>
                     </div>
-					<table id="table_requirement_certificate" class="table table-bordered">										                    
+                    <table id="table_requirement_certificate" class="table table-bordered">                                                         
                     <tr>                        
-						<th>No</th>                        
-						<th>Copy Certificate</th>                        
+                        <th>No</th>                        
+                        <th>Copy Certificate</th>                        
                         <th>Date Training</th>  
                         <th>Expiration Date</th>                          
                         <th>Upload Document</th>
                         <th>Progress</th>
                         <th>Status</th>                        
-					</tr>
-                    <tbody class="body_specification_requirement" id="content_specification_requirement">	
+                    </tr>
+                    <tbody class="body_specification_requirement" id="content_specification_requirement">   
                     <?php 
                         echo @$data_general_certificate;
                         echo @$data_req_specific;
@@ -108,15 +108,15 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                         echo @$data_req_specific_cofc;
                     ?>                                     
                     </tbody>                     
-					</table>
-				</div>
-			</div>		
-	</div>
-	<div class="box-footer">		
-		<button type="submit" class="btn btn-info pull-right open3 btn-sm" name="submitcompletingdata" id="submitcompletingdata"><b>NEXT</b></button>
-		<a href="<?php echo base_url();?>index.php/apply_license/index"><button type="button" class="btn btn-info pull-right close2 btn-sm" name="previous"><b>PREVIOUS</b></button></a>
+                    </table>
+                </div>
+            </div>      
+    </div>
+    <div class="box-footer">        
+        <button type="submit" class="btn btn-info pull-right open3 btn-sm" name="submitcompletingdata" id="submitcompletingdata"><b>NEXT</b></button>
+        <a href="<?php echo base_url();?>index.php/apply_license/index"><button type="button" class="btn btn-info pull-right close2 btn-sm" name="previous"><b>PREVIOUS</b></button></a>
         <button type="submit" class="btn btn-warning pull-right btn-sm" name="savecompletingdata"><b>SAVE</b></button>
-	</div>
+    </div>
     </form>
 </div>
 </div>
@@ -140,8 +140,9 @@ $(document).ready(function () {
     if (event.keyCode === 10 || event.keyCode === 13) 
         event.preventDefault();
     });  
-        
-   $('.body_general_requirement').on('change', '.file_req_document_general', function(){           
+    
+    // 26-09-2016    
+   $('.body_general_requirement').on('change', '.file_req_document_general', function(e){           
     var file_req_document_general_003     = $('#file_req_document_general_1_ARG_0003').val();
     var file_req_document_general_004     = $('#file_req_document_general_2_ARG_0004').val();
     var file_req_document_general_005     = $('#file_req_document_general_3_ARG_0005').val();
@@ -187,7 +188,7 @@ $(document).ready(function () {
     });
     
     // Progressbar upload file           
-    $('.body_general_requirement').on('change', '.file_req_document_general', function(){        
+    $('.body_general_requirement').on('change', '.file_req_document_general', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
@@ -222,7 +223,7 @@ $(document).ready(function () {
     }, 300);  
     }); 
     
-    $('.body_general_requirement').on('click', '.empty_file_document_general', function(){
+    $('.body_general_requirement').on('click', '.empty_file_document_general', function(e){
 
         var id = this.id;
         var data_row_id = id.split("_"); 
@@ -235,7 +236,7 @@ $(document).ready(function () {
         var file_req_document_general_006     = $('#file_req_document_general_4_ARG_0006').val();
         var file_req_document_general_007     = $('#file_req_document_general_5_ARG_0007').val();        
         var file_req_document_general = $('#file_req_document_general_'+row_id+'_'+code_1+'_'+code_2);
-
+        
         var empty_file     = $('#empty_file_document_general_'+ row_id+'_'+code_1+'_'+code_2);
         var progressbar     = $('#progressbar_document_general_'+row_id); 
         var status_file     = $('#status_file_document_general_'+ row_id);       
@@ -246,7 +247,7 @@ $(document).ready(function () {
         statustxt.css('color','#000');  
         status_file.hide(); 
         empty_file.hide(); 
-        file_req_document_general.replaceWith( file_req_document_general.val('').clone( true ) );    
+        file_req_document_general.replaceWith( file_req_document_general.val('').clone( true ) );        
         
         if(file_req_document_general_003 =='' || file_req_document_general_004 ==''){
             $('#file_req_document_general_1_ARG_0003').attr('required',false);
@@ -260,7 +261,7 @@ $(document).ready(function () {
     }); 
     
     
-    $('.body_specification_requirement').on('change', '.file_req_document_certificate', function(){
+    $('.body_specification_requirement').on('change', '.file_req_document_certificate', function(e){
         
         var id = this.id;
         var data_row_id = id.split("_"); 
@@ -296,7 +297,7 @@ $(document).ready(function () {
     }); 
     
     
-    $('.body_specification_requirement').on('click', '.empty_file_document_certificate', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_document_certificate', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];        
@@ -316,7 +317,7 @@ $(document).ready(function () {
         $('#file_req_document_certificate_'+row_id).val('');                                                                                                                                                                                   
     });     
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate, .file_general_spec_certificate', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];                              
@@ -349,7 +350,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_req_certificate', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_req_certificate', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];        
@@ -370,7 +371,7 @@ $(document).ready(function () {
     });
      
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_garuda', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_garuda, .file_req_general_certificate_license_garuda', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -403,7 +404,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-     $('.body_specification_requirement').on('click', '.empty_file_certificate_license_garuda', function(){        
+     $('.body_specification_requirement').on('click', '.empty_file_certificate_license_garuda', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -424,7 +425,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_license_garuda_'+row_id).val('');                                                                                                                                                                                   
     });
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_citilink', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_citilink,.file_req_general_certificate_license_citilink', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -457,7 +458,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_citilink', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_citilink', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -479,7 +480,7 @@ $(document).ready(function () {
     });
       
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_sriwijaya', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_license_sriwijaya,.file_req_general_certificate_license_sriwijaya', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];                                    
@@ -512,7 +513,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_sriwijaya', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_license_sriwijaya', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -533,7 +534,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_license_sriwijaya_'+row_id).val('');                                                                                                                                                                                   
     }); 
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_easa', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_easa,.file_req_general_certificate_easa', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -566,7 +567,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_easa', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_easa', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -586,7 +587,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_easa_'+row_id).val('');                                                                                                                                                                                   
     }); 
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_special', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_special,.file_req_general_certificate_special', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -619,7 +620,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_special', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_special', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -639,7 +640,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_special_'+row_id).val('');                                                                                                                                                                                   
     });  
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_garuda', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_garuda,.file_req_general_certificate_garuda', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -672,7 +673,7 @@ $(document).ready(function () {
     }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_garuda', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_garuda', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -692,7 +693,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_garuda_'+row_id).val('');                                                                                                                                                                                   
     });  
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_citilink', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_citilink,.file_req_general_certificate_citilink', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -725,7 +726,7 @@ $(document).ready(function () {
         }, 300);  
     });
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_citilink', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_citilink', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];    
@@ -746,7 +747,7 @@ $(document).ready(function () {
         $('#file_req_spec_certificate_citilink_'+row_id).val('');                                                                                                                                                                                   
     });   
     
-    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_sriwijaya', function(){        
+    $('.body_specification_requirement').on('change', '.file_req_spec_certificate_sriwijaya,.file_req_general_certificate_sriwijaya', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
@@ -779,7 +780,7 @@ $(document).ready(function () {
     }, 300);  
     }); 
     
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_sriwijaya', function(){        
+    $('.body_specification_requirement').on('click', '.empty_file_certificate_sriwijaya', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];       
@@ -808,7 +809,7 @@ $(document).ready(function () {
        var month = ("0" + (date_training.getMonth() + 1)).slice(-2);       
        $('.date_training').val((day)+'-'+(month)+'-'+date_training.getFullYear());            
     };
-        $('.body_general_requirement').on('.focusout', '.expiration_date_req_general_document', function(){
+        $('.body_general_requirement').on('.focusout', '.expiration_date_req_general_document', function(e){
             var row_id = this.id;
             if($('.expiration_date_req_general_document').val != ''){        
             $('#file_req_document_general_' + row_id).attr('disabled',false);
@@ -818,7 +819,7 @@ $(document).ready(function () {
 
         }); 
         
-        $('.date_training_req_general_certificate').datepicker().on('click', function(){
+        $('.date_training_req_general_certificate').datepicker().on('click', function(e){
             var row_id = this.id;                                      
             $('#result_expiration_date_req_general_certificate_'+row_id).val('');
             $('#save_result_expiration_date_req_general_certificate_'+row_id).val(''); 
@@ -873,14 +874,14 @@ $(document).ready(function () {
           $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(){
+        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(e){
             var row_id = this.id;                                      
             $('#result_expiration_date_req_spec_certificate_'+row_id).val('');
             $('#save_result_expiration_date_req_spec_certificate_'+row_id).val(''); 
             $('#label_result_expiration_date_req_spec_certificate_'+row_id).val('');
         });              
         
-        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate#' + row_id).val(); 
@@ -923,14 +924,14 @@ $(document).ready(function () {
         });
         
         // License Garuda
-        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(){z
+        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(e){
             var row_id = this.id;                                      
             $('#result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val('');
             $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(''); 
             $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val('');
         });
         
-        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(){                 
+        $('.date_training_req_spec_certificate_license_garuda').datepicker().on('changeDate', function(e){                 
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_garuda#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_garuda#' + row_id).val(); 
@@ -973,7 +974,7 @@ $(document).ready(function () {
         });
 
         // License Citilink
-        $('.date_training_req_spec_certificate_license_citilink').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_license_citilink').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_citilink#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_citilink#' + row_id).val(); 
@@ -1016,7 +1017,7 @@ $(document).ready(function () {
         });
         
         // License Sriwijaya
-        $('.date_training_req_spec_certificate_license_sriwijaya').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_license_sriwijaya').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_license_sriwijaya#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_license_sriwijaya#' + row_id).val(); 
@@ -1058,7 +1059,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_easa').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_easa').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_easa#'+row_id).val().length != 0){
                 var id_thn = $('.date_training_req_spec_certificate_easa#' + row_id).val(); 
@@ -1101,7 +1102,7 @@ $(document).ready(function () {
         });
         
         
-        $('.date_training_req_spec_certificate_special').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_special').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_special#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_special#' + row_id).val(); 
@@ -1143,7 +1144,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_garuda').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_garuda').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_garuda#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_garuda#' + row_id).val(); 
@@ -1185,7 +1186,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_citilink').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_citilink').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_citilink#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_citilink#' + row_id).val(); 
@@ -1226,7 +1227,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_sriwijaya').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_sriwijaya').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_sriwijaya#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_sriwijaya#' + row_id).val(); 
@@ -1267,7 +1268,7 @@ $(document).ready(function () {
             $(this).datepicker('hide');
         });
         
-        $('.date_training_req_spec_certificate_cofc').datepicker().on('changeDate', function(){        
+        $('.date_training_req_spec_certificate_cofc').datepicker().on('changeDate', function(e){        
             var row_id = this.id;
             if($('.date_training_req_spec_certificate_cofc#'+row_id).val().length != 0){
             var id_thn = $('.date_training_req_spec_certificate_cofc#' + row_id).val(); 

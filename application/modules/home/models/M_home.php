@@ -260,8 +260,8 @@ class M_home extends CI_Model {
     
     public function cek_superior($personnel_number='')
     {        
-        $query = "SELECT TOP 1 * FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH 
-                WHERE TSH.REPORT_TO = '$personnel_number'";
+        $query = "SELECT TOP 1 * FROM UNION_EMP AS TSH 
+                WHERE TSH.report_to = '$personnel_number'";
         return $this->db->query($query)->num_rows();                  
     }
     

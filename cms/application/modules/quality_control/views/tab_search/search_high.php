@@ -1,6 +1,6 @@
 <?php echo jquery_select2(); ?>
 <script type="text/javascript">    
-    $('.select2-tab-search-high').select2({width : '100%'});  
+	$('.select2-tab-search-high').select2({width : '100%'});  
     $('.datepicker').keyup(function(){
         if ($(this).val().length == 2){
             $(this).val($(this).val() + "-");

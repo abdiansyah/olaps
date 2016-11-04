@@ -399,7 +399,7 @@ if(@$data_history[0]!=''){
 </div>
 </div>
 <?php
-} else {
+}else{
     redirect(base_url());
 }
 ?> 
@@ -407,12 +407,13 @@ if(@$data_history[0]!=''){
   $('[name=submitapproved]').attr('disabled',true);
   $('[name=submitdisapproved]').attr('disabled',true);
   $('[name=check_agree_atasan]').on('change',function(){
-    if(this.checked) {
-        $('[name=submitapproved]').attr('disabled',false);
-        $('[name=submitdisapproved]').attr('disabled',false);      
-    } else {
-        $('[name=submitapproved]').attr('disabled',true);
-        $('[name=submitdisapproved]').attr('disabled',true);        
+    if(this.checked){
+    $('[name=submitapproved]').attr('disabled',false);
+    $('[name=submitdisapproved]').attr('disabled',false);      
+    }else
+    {
+    $('[name=submitapproved]').attr('disabled',true);
+    $('[name=submitdisapproved]').attr('disabled',true);        
     }
   });  
 </script>   

@@ -92,7 +92,7 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                                <div class="form-group">
                                <label class="col-sm-3 control-label">Name</label>
                                <div class="col-sm-9">
-                               <input type="text" class="form-control" name="sumname" value="<?php echo $sess_data_personnel['name']; ?>">                               
+                               <input type="text" class="form-control" name="sumname" value="<?php echo $sess_data_personnel['name']; ?>" disabled>                               
                                </div>                               
                                </div>
                                <div class="form-group">
@@ -104,25 +104,25 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                                <div class="form-group">
                                <label class="col-sm-3 control-label">Unit</label>
                                <div class="col-sm-9">
-                               <input type="text" class="form-control" name="sumunit" value="<?php echo $sess_data_personnel['departement']; ?>">                               
+                               <input type="text" class="form-control" name="sumunit" value="<?php echo $sess_data_personnel['departement']; ?>" disabled>                               
                                </div>                               
                                </div>
                                <div class="form-group">
                                <label class="col-sm-3 control-label">Job Title</label>
                                <div class="col-sm-9">
-                               <input type="text" class="form-control" name="sumjobtitle" value="<?php echo $sess_data_personnel['presenttitle']; ?>">                               
+                               <input type="text" class="form-control" name="sumjobtitle" value="<?php echo $sess_data_personnel['presenttitle']; ?>" disabled>                               
                                </div>                               
                                </div>
                                <div class="form-group">
                                <label class="col-sm-3 control-label">E-Mail</label>
                                <div class="col-sm-9">
-                               <input type="email" class="form-control" name="sumemail" value="<?php echo $sess_data_personnel['email']; ?>">                               
+                               <input type="email" class="form-control" name="sumemail" value="<?php echo $sess_data_personnel['email']; ?>" disabled>                               
                                </div>                               
                                </div>
                                <div class="form-group">
                                <label class="col-sm-3 control-label">Mobile Phone</label>
                                <div class="col-sm-9">
-                               <input type="text" class="form-control" name="summobilephone" value="<?php echo $sess_data_personnel['mobilephone']; ?>">                               
+                               <input type="text" class="form-control" name="summobilephone" value="<?php echo $sess_data_personnel['mobilephone']; ?>" disabled>                               
                                </div>                               
                                </div>
                                </div>
