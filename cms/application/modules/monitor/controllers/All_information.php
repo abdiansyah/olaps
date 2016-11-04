@@ -13,8 +13,8 @@ class All_information extends MX_Controller
     
     public function index()
     {
-        $data['report']=$this->model_monitor->report();
-        $this->load->view('index.php',$data);
+        // $data['report']=$this->model_monitor->report();
+        $this->page->view('index');
     }
     
 }
