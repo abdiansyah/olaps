@@ -103,7 +103,7 @@ if(@$data_history[0]!=''){
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                             <img id="status" src="<?php echo base_url('assets/images/property/finish.png'); ?>">
                         </a>
-                       <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($data_history[0]->current_status = 'Data Rejected' || $data_history[0]->current_status = 'Rejected Superior' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
+                       <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($data_history[0]->approved_superior != null && $data_history[0]->approved_superior != 'Approved Superior' || $data_history[0]->approved_quality != null && $data_history[0]->approved_quality != 'Data Validated' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
                     </li>
                 </ul>
             </div>

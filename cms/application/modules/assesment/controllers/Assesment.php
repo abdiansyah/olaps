@@ -157,6 +157,7 @@ class Assesment extends MX_Controller {
 	    $sess_data_gm           = $this->model_assesment->get_gm_personnel_by($personnel_number)->row_array();
 	    $name_applicant   		= $data_applicant['name'];
         $email_applicant   		= $data_applicant['email'];
+        // die($email_applicant);
         $email_superior  		= $data_applicant['email_superior'];  
         $email_gm               = $sess_data_gm['email'];           
         $config         = Array(
@@ -173,9 +174,9 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        $this->email->to($email_superior);
-        $this->email->to($email_gm);
-        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        // $this->email->to($email_superior);
+        // $this->email->to($email_gm);
+        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
         $this->email->subject('Result written assesment');
 
 		$data = array(									
@@ -224,10 +225,10 @@ class Assesment extends MX_Controller {
                 $this->email->message($pesan);                    
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg', 'Sending result writen assesment successfull.');
-                        redirect(site_url('quality_control'));                                
+                        redirect(site_url('assesment'));                                
                     } else {
                     	$this->session->set_flashdata('msg', 'Sending result written assesment failed.');
-                        redirect(site_url('quality_control'));
+                        redirect(site_url('assesment'));
                 }   		
 	}
     
@@ -258,9 +259,9 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        $this->email->to($email_superior);
-        $this->email->to($email_gm);
-        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        // $this->email->to($email_superior);
+        // $this->email->to($email_gm);
+        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
         $this->email->subject('Result oral assesment');
 
 		$data = array(									
@@ -309,10 +310,10 @@ class Assesment extends MX_Controller {
                 $this->email->message($pesan);                 
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg', 'Sending result oral assesment successfull.');
-                        redirect(site_url('quality_control'));                                
+                        redirect(site_url('assesment'));                                
                     } else {
                     	$this->session->set_flashdata('msg', 'Sending result oral assesment failed.');
-                        redirect(site_url('quality_control'));
+                        redirect(site_url('assesment'));
                 }  
 	}
 

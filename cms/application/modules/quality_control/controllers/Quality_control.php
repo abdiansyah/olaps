@@ -259,6 +259,13 @@ class Quality_control extends MX_Controller
                 $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
                 $pesan .= '<p>Fax: +62-21-550 1257</p>';
                 $this->email->message($pesan);
+                if ($this->email->send()) {
+                    $this->session->set_flashdata('msg', 'Send email successfull.');
+                    redirect(site_url('quality_control'));
+                } else {
+                    $this->session->set_flashdata('msg', 'Failed send email.');
+                    redirect(site_url('quality_control'));
+                }  
             };
             
             // Assesment           
@@ -418,12 +425,8 @@ class Quality_control extends MX_Controller
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
             }
-                        
-                if ($this->email->send()) {
-                    redirect(site_url('quality_control'));
-                } else {
-                    redirect(site_url('quality_control'));
-                }            
+                                   
+            redirect(site_url('quality_control'));                    
             return true;
         }
         if (isset($_POST['saveoralassesment'])) {
@@ -929,7 +932,7 @@ class Quality_control extends MX_Controller
                     $this->db->insert('t_file_requirement', $data_requirement);
                     if($send){
                         $this->session->set_flashdata('msg', 'Upload document successfully.');
-                       redirect(site_url('quality_control/index'));                    
+                        redirect(site_url('quality_control/index'));                    
                     }else{
                         $this->session->set_flashdata('msg', 'Document failed upload, please check network.');
                         redirect(site_url('quality_control/index'));                    

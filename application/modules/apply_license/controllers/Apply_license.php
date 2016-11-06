@@ -992,7 +992,9 @@ class Apply_license extends CI_Controller
                        'code_file'            => $code_req_document_certificate_s[$b],                
                        'name_file'            => $fileNameNew,
                        'id_auth_license_fk'   => $license,
-                       'id_auth_type_fk'      => $type                
+                       'id_auth_type_fk'      => $type,
+                       'status_license'       => $status_license
+
                        );
         
                        $this->db->insert('t_file_requirement',$data_general_certificate);
@@ -1152,7 +1154,7 @@ class Apply_license extends CI_Controller
                        }
                        
                        // File Specific Certificate License Garuda
-                       $code_req_spec_certificate_lincese_garuda_s                        = $this->input->post('code_req_spec_certificate_license_garuda');                                                                              
+                       $code_req_spec_certificate_license_garuda_s                        = $this->input->post('code_req_spec_certificate_license_garuda');                                                                              
                        @$file_req_spec_certificate_license_garuda_s                       = count($_FILES['file_req_spec_certificate_license_garuda']['name']);
                        $date_training_req_spec_certificate_license_garuda_s               = $this->input->post('date_training_req_spec_certificate_license_garuda');
                        $save_result_expiration_date_req_spec_certificate_license_garuda_s = $this->input->post('save_result_expiration_date_req_spec_certificate_license_garuda');                                                                          
