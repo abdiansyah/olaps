@@ -213,14 +213,13 @@ $(function(){
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
     if(id_sesi!=''){        
-        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_room/" + id_sesi, function(data) {            
-            $('#name_room_'+ row_id_sesi).val(data.nr);
-            $('#id_room_'+ row_id_sesi).val(data.ir);                                          
+        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_room/" + date_written_assesment + "/" +  id_sesi, function(data) {
+            $('#name_room_'+ row_id_sesi).val(data.limit);                                                
         });
-        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_one_room/", function(data) {            
-            $('#name_room_'+ row_id_sesi).val(data.nr);
-            $('#id_room_'+ row_id_sesi).val(data.ir);                                          
-        });         
+        // $.getJSON("<?php echo base_url();?>index.php/assesment/cek_one_room/", function(data) {            
+        //     $('#name_room_'+ row_id_sesi).val(data.nr);
+        //     $('#id_room_'+ row_id_sesi).val(data.ir);                                          
+        // });         
     };                      
        
   });

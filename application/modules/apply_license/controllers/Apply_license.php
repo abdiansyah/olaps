@@ -993,8 +993,7 @@ class Apply_license extends CI_Controller
                        'name_file'            => $fileNameNew,
                        'id_auth_license_fk'   => $license,
                        'id_auth_type_fk'      => $type,
-                       'status_license'       => $status_license
-
+                        'status_license'      => $status_license                
                        );
         
                        $this->db->insert('t_file_requirement',$data_general_certificate);
@@ -2761,7 +2760,7 @@ class Apply_license extends CI_Controller
         $this->load->view('apply_license/tab_customer/view_tab_scope_customer', $data);
         return true;
     }
-    function get_scope_customer_garuda($p_scope, $p_category, $p_spect, $p_type, $p_license)
+    function get_scope_customer_garuda($p_scope, $p_category, $p_spect='', $p_type='', $p_license='')
     {
         $data['auth_scope_assesment_customer_garuda'] = $this->m_apply_license->get_scope($p_scope, $p_category, $p_spect, $p_type, $p_license);
         $this->load->view('apply_license/tab_customer/view_tab_scope_assesment_customer_garuda', $data);
@@ -2773,7 +2772,7 @@ class Apply_license extends CI_Controller
         $this->load->view('apply_license/tab_customer/view_tab_scope_assesment_customer_citilink', $data);
         return true;
     }
-    function get_scope_customer_sriwijaya($p_scope, $p_category, $p_spect, $p_type, $p_license)
+    function get_scope_customer_sriwijaya($p_scope, $p_category, $p_spect='', $p_type='', $p_license='')
     {
         $data['auth_scope_assesment_customer_sriwijaya'] = $this->m_apply_license->get_scope($p_scope, $p_category, $p_spect, $p_type, $p_license);
         $this->load->view('apply_license/tab_customer/view_tab_scope_assesment_customer_sriwijaya', $data);

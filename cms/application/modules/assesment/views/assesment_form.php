@@ -113,7 +113,7 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
     <div class="form-group">
         <label class="col-sm-2 control-label ">Keterangan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <div class="col-sm-3">
-            <textarea rows="10" cols="53" name="note_oral"> <?php if(@$data_assesment->note_oral != ''){echo @$data_assesment->note_oral;} ?> </textarea>
+            <textarea rows="10" cols="53" name="note_oral"> <?php if(@$data_assesment_oral->note_oral != ''){echo @$data_assesment_oral->note_oral;} ?> </textarea>
         </div>
     </div>
 	<?php endif; ?>	 

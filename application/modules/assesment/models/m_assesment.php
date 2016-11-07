@@ -45,14 +45,17 @@ class M_assesment extends CI_Model {
         return $this->db->query($querydataapplyemp)->row_array();
     }
             
-    public function get_room_by($id_sesi){
-        $query = "SELECT DISTINCT tasm.id, mr.quota, tasm.date_written_assesment, mr.id_room AS ir, mr.name_room AS nr            
+    public function get_room_by($date_assesment, $id_sesi){
+        $query = "SELECT count(tasm.personnel_number_fk) AS limit, mr.quota
                 FROM t_assesment AS tasm
                 LEFT JOIN t_apply_license_dtl AS tald ON tald.request_number_fk = tasm.request_number_fk
-                LEFT JOIN t_apply_license AS tal ON tal.request_number = tald.request_number_fk
                 LEFT JOIN m_assesment_scope AS masmc ON tald.id_assesment_scope_fk = masmc.id
-                LEFT JOIN m_room AS mr ON tasm.id_room_fk = mr.id_room
-                WHERE tasm.id_sesi = '$id_sesi'";
+                LEFT JOIN m_room AS mr ON tasm.id_written_room_fk = mr.id_room 
+                WHERE tasm.id_written_sesi = '$id_sesi'
+                AND (CONVERT(varchar(10), CONVERT(datetime,date_assesment,120),105)) = '$date_assesment'
+                -- AND tasm.id_written_room_fk = '1'
+                GROUP BY mr.quota
+                ";
         $data_room = $this->db->query($query)->row();
         $data_room_json = json_encode($data_room);
         die($data_room_json);                

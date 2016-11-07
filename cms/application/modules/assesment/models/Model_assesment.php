@@ -160,7 +160,7 @@ class Model_assesment extends CI_Model {
     public function by_request_number($id='', $id_scope=''){
         $subQuery_pic_written = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_written')->get_compiled_select();
 
-		$datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.pic_written, TAS.score_written, TAS.result_written, TAS.score_oral, TAS.result_oral, (" . $subQuery_pic_written . ") AS name_pic_written FROM t_assesment AS TAS
+		$datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.pic_written, TAS.score_written, TAS.result_written, TAS.score_oral, TAS.result_oral, TAS.note_written, TAS.note_oral, (" . $subQuery_pic_written . ") AS name_pic_written FROM t_assesment AS TAS
                     LEFT JOIN UNION_EMP AS TSH ON TSH.personnel_number = TAS.personnel_number_fk
                     LEFT JOIN m_assesment_scope AS masc ON TAS.id_assesment_scope_fk = masc.id WHERE request_number_fk = '$id' AND id_assesment_scope_fk = '$id_scope'";
 		return $this->db->query($datasrc)->num_rows() > 0 ? $this->db->query($datasrc)->row() : $this;
@@ -168,7 +168,7 @@ class Model_assesment extends CI_Model {
 
     public function by_request_number_oral($id='', $id_scope=''){
         $subQuery_pic_oral = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_oral')->get_compiled_select();
-        $datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.pic_oral, TAS.score_oral, TAS.result_oral, (" . $subQuery_pic_oral . ") AS name_pic_oral FROM t_assesment AS TAS
+        $datasrc = "SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.pic_oral, TAS.score_oral, TAS.result_oral, TAS.note_written, TAS.note_oral, (" . $subQuery_pic_oral . ") AS name_pic_oral FROM t_assesment AS TAS
                     LEFT JOIN UNION_EMP AS TSH ON TSH.personnel_number = TAS.personnel_number_fk
                     LEFT JOIN m_assesment_scope AS masc ON TAS.id_assesment_scope_fk = masc.id WHERE request_number_fk = '$id' AND id_assesment_scope_fk = '$id_scope'";
         return $this->db->query($datasrc)->num_rows() > 0 ? $this->db->query($datasrc)->row() : $this;

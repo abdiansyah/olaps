@@ -185,6 +185,31 @@ $(document).ready(function(){
   </div>
 </div>
 <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
+<br/>
+<?php 
+if($this->session->flashdata('msg_assesment')!= ''){ 
+echo '<div class="col-xs-12 col-center-block">
+<div class="box box-info box-solid">
+<div class="box-header with-border text-center">
+    <h3 class="box-title">
+      <b>';   
+        $msg_assesment = $this->session->flashdata('msg_assesment');                     
+        echo $msg_assesment;                                        
+        unset($msg_assesment);                        
+echo '</b>                
+    </h3>
+    <div class="box-tools pull-right">
+    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div>               
+</div>
+</div>
+</div>';        
+}else{
+    $msg_assesment = $this->session->flashdata('msg_assesment');                                                
+    unset($msg_assesment); 
+}
+
+?>
 <div class="col-md-12"> 
     <form action="#" method="POST">
     <h3>Written Assesment&nbsp; &nbsp; &nbsp;<button type="button" class="btn btn-flat bg-light-blue color-palette btn-sm" data-toggle="modal" data-target="#FormSearch_written">Search</button>    

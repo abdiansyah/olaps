@@ -24,19 +24,32 @@
 // -- Function Name : schedule_event
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
-        function schedule_event($request_number_approved='',$personnel_number=''){                                
-            $data['get_data_apply_personnel_by']    = $this->m_assesment->get_emp_assesment($request_number_approved);
-            $data['get_data_emp_personnel_by']      = $this->m_assesment->get_emp_for_assesment($personnel_number);            
-            $data['data_assesment']                 = $this->m_assesment->get_data_assesment($personnel_number,$request_number_approved);            
-            $this->page->view('schedule_assesment',$data);
+       function schedule_event($request_number_approved='',$personnel_number=''){ 
+        $user_data              = $this->session->userdata('users');
+        $sess_personnel         = $user_data->PERNR;
+        $sess_report_to         = $this->m_apply_license->get_data_row_personnel_by($personnel_number);
+        $sess_data_gm            = $this->m_apply_license->get_gm_personnel_by($personnel_number)->row_array();
+        $report_to              = $sess_report_to['REPORT_TO'];
+        $report_gm              = $sess_data_gm['personnel_number'];
+        
+            if ($sess_personnel == $personnel_number || $sess_personnel == $report_to || $sess_personnel == $report_gm) {
+
+                $data['get_data_apply_personnel_by']    = $this->m_assesment->get_emp_assesment($request_number_approved);
+                $data['get_data_emp_personnel_by']      = $this->m_assesment->get_emp_for_assesment($personnel_number);            
+                $data['data_assesment']                 = $this->m_assesment->get_data_assesment($personnel_number,$request_number_approved);            
+                $this->page->view('schedule_assesment',$data);
+            } else {
+                $this->session->set_flashdata('content_not_valid', 'Have not Assesment Schedule.');
+                redirect(base_url('home/index'));
+            }
         }
         
         public
 // -- Function Name : assesment_event
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
-        function cek_room($id_sesi){             
-            $this->m_assesment->get_room_by($id_sesi);                                                                     
+        function cek_room($date_assesment, $id_sesi){             
+            $this->m_assesment->get_room_by($date_assesment, $id_sesi);                                                                     
         } 
         
         function cek_one_room(){

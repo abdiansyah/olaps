@@ -157,19 +157,17 @@ class Assesment extends MX_Controller {
 	    $sess_data_gm           = $this->model_assesment->get_gm_personnel_by($personnel_number)->row_array();
 	    $name_applicant   		= $data_applicant['name'];
         $email_applicant   		= $data_applicant['email'];
-        // die($email_applicant);
         $email_superior  		= $data_applicant['email_superior'];  
         $email_gm               = $sess_data_gm['email'];           
-        $config         = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'mail.gmf-aeroasia.co.id',
-            'smtp_port' => 25,
-            'smtp_user' => 'app.notif',
-            'smtp_pass' => 'app.notif',
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE
-        );
+        $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.googlemail.com',
+        'smtp_port' => 465,
+        'smtp_user' => 'devlicensetq@gmail.com',
+        'smtp_pass' => 'Bismillah1995', 
+        'mailtype' => 'html',
+        'charset' => 'iso-8859-1',
+        'wordwrap' => TRUE);  
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
@@ -224,11 +222,11 @@ class Assesment extends MX_Controller {
                 $pesan .= '<p>Fax: +62-21-550 1257</p>';
                 $this->email->message($pesan);                    
                 if ($this->email->send()) {
-                        $this->session->set_flashdata('msg', 'Sending result writen assesment successfull.');
-                        redirect(site_url('assesment'));                                
+                        $this->session->set_flashdata('msg_assesment', 'Sending result writen assesment successfull.');
+                        redirect(base_url('index.php/assesment/index'));                                
                     } else {
-                    	$this->session->set_flashdata('msg', 'Sending result written assesment failed.');
-                        redirect(site_url('assesment'));
+                    	$this->session->set_flashdata('msg_assesment', 'Sending result written assesment failed.');
+                        redirect(base_url('index.php/assesment/index'));                                
                 }   		
 	}
     
@@ -245,16 +243,15 @@ class Assesment extends MX_Controller {
         $email_applicant   		= $data_applicant['email'];
         $email_superior  		= $data_applicant['email_superior'];  
         $email_gm               = $sess_data_gm['email'];           
-        $config         = Array(
-            'protocol'  => 'smtp',
-            'smtp_host' => 'mail.gmf-aeroasia.co.id',
-            'smtp_port' => 25,
-            'smtp_user' => 'app.notif',
-            'smtp_pass' => 'app.notif',
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE
-        );
+        $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'ssl://smtp.googlemail.com',
+        'smtp_port' => 465,
+        'smtp_user' => 'devlicensetq@gmail.com',
+        'smtp_pass' => 'Bismillah1995', 
+        'mailtype' => 'html',
+        'charset' => 'iso-8859-1',
+        'wordwrap' => TRUE);  
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
@@ -310,10 +307,10 @@ class Assesment extends MX_Controller {
                 $this->email->message($pesan);                 
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg', 'Sending result oral assesment successfull.');
-                        redirect(site_url('assesment'));                                
+                        redirect(site_url('quality_control'));                                
                     } else {
                     	$this->session->set_flashdata('msg', 'Sending result oral assesment failed.');
-                        redirect(site_url('assesment'));
+                        redirect(site_url('quality_control'));
                 }  
 	}
 

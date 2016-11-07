@@ -424,9 +424,7 @@ class Quality_control extends MX_Controller
                 );
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
-            }
-                                   
-            redirect(site_url('quality_control'));                    
+            }            
             return true;
         }
         if (isset($_POST['saveoralassesment'])) {
@@ -809,9 +807,8 @@ class Quality_control extends MX_Controller
             $this->email->set_newline("\r\n");
             $this->email->from($email);
             $this->email->to($email_personnel);
-            $this->email->cc($email_superior);
-            $this->email->cc($email_gm);
-                
+            // $this->email->to($email_superior);
+            // $this->email->to($email_gm);
             // $this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject('APPLY LICENSE');
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
@@ -932,7 +929,7 @@ class Quality_control extends MX_Controller
                     $this->db->insert('t_file_requirement', $data_requirement);
                     if($send){
                         $this->session->set_flashdata('msg', 'Upload document successfully.');
-                        redirect(site_url('quality_control/index'));                    
+                       redirect(site_url('quality_control/index'));                    
                     }else{
                         $this->session->set_flashdata('msg', 'Document failed upload, please check network.');
                         redirect(site_url('quality_control/index'));                    

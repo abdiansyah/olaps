@@ -50,10 +50,10 @@ $().ready(function(){
                 $('td', nRow).css('background-color', '#FFA500');        
             };  
         },
-		
-		"ajax": {
-			"url"	: "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf'); ?>",
-			"type"	: "POST" ,
+        
+        "ajax": {
+            "url"   : "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf'); ?>",
+            "type"  : "POST" ,
             "data"  : {
                 request_number : request_number,
                 personnel_number : personnel_number,
@@ -77,18 +77,18 @@ $().ready(function(){
                 take_authorization : take_authorization,
                 referral_authorization : referral_authorization,                                
             }           
-		},
+        },
 
-		
-		"columnDefs" : [
-			{ 
-				"targets"	: [],
-				"orderable"	: false,
-			},
-		],
-	});
+        
+        "columnDefs" : [
+            { 
+                "targets"   : [],
+                "orderable" : false,
+            },
+        ],
+    });
     
-	$('#datatables_normal').dataTable({
+    $('#datatables_normal').dataTable({
         "scrollY"           : "342px", 
         "searching"         : false, 
         "bPaginate"         : false,  
@@ -117,10 +117,10 @@ $().ready(function(){
             };    
 
         },
-		// Load data for the table's content from an Ajax source
-		"ajax": {
-			"url"	: "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf_normal'); ?>",
-			"type"	: "POST",
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+            "url"   : "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf_normal'); ?>",
+            "type"  : "POST",
             "data"  : {
                 request_number : request_number,
                 personnel_number : personnel_number,
@@ -144,20 +144,20 @@ $().ready(function(){
                 take_authorization : take_authorization,
                 referral_authorization : referral_authorization,                                
             }                
-		},
+        },
 
-		//Set column definition initialisation properties.
-		"columnDefs" : [
-			{ 
-				"targets"	: [], //first column / numbering column
-				"orderable"	: false, //set not orderable                            
-			},
-		],
-	});     
+        //Set column definition initialisation properties.
+        "columnDefs" : [
+            { 
+                "targets"   : [], //first column / numbering column
+                "orderable" : false, //set not orderable                            
+            },
+        ],
+    });     
 });
 </script>
 <section class="content-header">
-	<h1>List Data <small><i class="fa fa-fw fa-angle-double-right"></i> All</small></h1>
+    <h1>List Data <small><i class="fa fa-fw fa-angle-double-right"></i> All</small></h1>
 </section>
 <div class="block-table table-sorting clearfix"><!-- block-fluid table-sorting clearfix -->
 <br/>
@@ -197,11 +197,11 @@ echo '</b>
       <div>                          
             <div class="form-group col-sm-12">
             <table class="table table-bordered">            
-           	<tbody class="data-search-authorization-high">
+            <tbody class="data-search-authorization-high">
                 <tr>
                 <br/>
                 </tr>                
-          		<tr class="text-authorization-high">
+                <tr class="text-authorization-high">
                     <td>
                         <select id="tab-search-high" name="tab-search-high" class="col-md-12 form-control"> 
                         <optgroup label="Apply License">                       
@@ -240,9 +240,9 @@ echo '</b>
                 </tr>                                               
             </tbody>
             </table>            
-        	</div>                	
+            </div>                  
       </div>                                     
-      <div class="modal-footer">            			        			
+      <div class="modal-footer">                                            
       <button type="button" class="btn btn-flat btn-danger color-palette btn-sm" data-dismiss="modal"><span class="fa fa-sign-out"></span> &nbsp;Cancel</button>      
       <button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-search"></span> &nbsp;Find </button>     
       </div>
@@ -257,12 +257,12 @@ echo '</b>
     <button type="submit" class="btn btn-flat bg-light-blue color-palette btn-sm">Reset</button>
     </form>
     </h3>             
-	<table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_high">
-		<thead>                                    			
-				<th width="5%" rowspan="2">Date of Application</th>
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_high">
+        <thead>                                             
+                <th width="5%" rowspan="2">Date of Application</th>
                 <th width="7%" rowspan="2">Priority</th>
-				<th width="15%" rowspan="2">Request Number</th>
-				<th width="15%" rowspan="2">Name</th>
+                <th width="15%" rowspan="2">Request Number</th>
+                <th width="15%" rowspan="2">Name</th>
                 <th width="10%" rowspan="2">ID Number</th>
                 <th width="13%" rowspan="2">Disposition</th>
                 <th width="7%" rowspan="2">Location</th>
@@ -272,23 +272,23 @@ echo '</b>
                 <th width="3%" rowspan="2">Duration</th>                
                 <th width="5%" colspan="2">Deadline</th>                
                 <th width="8%" rowspan="2">Remarks</th>
-                <th width="5%" rowspan="2">Action</th>   				
-			</tr>
-            <tr>                				
+                <th width="5%" rowspan="2">Action</th>                  
+            </tr>
+            <tr>                                
                 <th width="5%">Date</th>
-                <th width="5%">Time</th>                   				
-			</tr>
-		</thead>
-	</table>
+                <th width="5%">Time</th>                                
+            </tr>
+        </thead>
+    </table>
     </div> 
     <div class="col-md-12">
     <h3>Normal Priority </h3>   
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_normal">
-		<thead>			
+        <thead>         
             <tr>
-				<th width="5%">Date of Application</th>
-				<th width="10%">Request Number</th>
-				<th width="15%">Name</th>
+                <th width="5%">Date of Application</th>
+                <th width="10%">Request Number</th>
+                <th width="15%">Name</th>
                 <th width="10%">ID Number</th>
                 <th width="17%">Disposition</th>
                 <th width="7%">Location</th>
@@ -297,10 +297,10 @@ echo '</b>
                 <th width="5%">Time</th>
                 <th width="8%">Duration</th>                                                
                 <th width="8%">Remarks</th>
-                <th width="5%">Action</th>   				
-			</tr>            
-		</thead>
-	</table>
+                <th width="5%">Action</th>                  
+            </tr>            
+        </thead>
+    </table>
     </div>
     <div class="col-md-12">    
     </div>
@@ -320,8 +320,8 @@ $('#tab-search-high').change(function(){
     
 $('.add-box-high').click(function(){    
         var n_search_high          = $('.box-number-search-high').length+1;
- 		var tab_search_high        = $('#tab-search-high :selected').val();
- 		var tab_search_high_text   = $('#tab-search-high :selected').text();
+        var tab_search_high        = $('#tab-search-high :selected').val();
+        var tab_search_high_text   = $('#tab-search-high :selected').text();
         var input_tab_search_high  = $('#input-tab-search-high').val();          
                                                            
         var box_html_authorization_search_high = $('<tr class="text-authorization-high">' +                            
@@ -332,7 +332,7 @@ $('.add-box-high').click(function(){
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_search_high.hide();
-        $('tr.text-authorization-high:last').before(box_html_authorization_search_high);  			            
+        $('tr.text-authorization-high:last').before(box_html_authorization_search_high);                        
         $('#tab-search-high')[0].selectedIndex = 0;
         $('#input-tab-search-high').val('');         
         box_html_authorization_search_high.fadeIn('slow');
