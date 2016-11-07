@@ -99,34 +99,34 @@
                         ?>
                         </td>                        
     					<td width="10%">
-                        <?php if($value->sesi_written_assesment!=''){
+                        <?php 
+                        if($value->sesi_written_assesment!='') {
                         ?>
-                        <input type="hidden" id="id_sesi_<?php echo $no; ?>" name="id_sesi[]" value="<?php echo $value->id_sesi_written_assesment;?>"/><input type="text" value="<?php echo $value->sesi_written_assesment; ?>" class="form-control id_sesi" disabled/>
+                            <input type="hidden" id="id_sesi_<?php echo $no; ?>" name="id_sesi[]" value="<?php echo $value->id_sesi_written_assesment;?>"/><input type="text" value="<?php echo $value->sesi_written_assesment; ?>" class="form-control id_sesi" disabled/>
                         <?php                        
-                        }
-                        else
-                        {
+                        } else {
                         ?>
-                        <select id="id_sesi_<?php echo $no; ?>" name="id_sesi[]" class="form-control id_sesi"> 
-                        <option value="" data-date-format="hh:ii"><a>00:00</a></option>                       
-                        <option value="1" data-date-format="hh:ii"><a>09:00-11:00</a></option>
-                        <option value="2" data-date-format="hh:ii"><a>13:00-15:00</a></option>
-                        </select>  
+                            <select id="id_sesi_<?php echo $no; ?>" name="id_sesi[]" class="form-control id_sesi"> 
+                            <option value="" data-date-format="hh:ii"><a>00:00</a></option>                       
+                            <option value="1" data-date-format="hh:ii"><a>09:00-11:00</a></option>
+                            <option value="2" data-date-format="hh:ii"><a>13:00-15:00</a></option>
+                            </select>  
                         <?php 
                         }
                         ?>                                            			                                                    
                         </td>
                         <td width="20%">
                         <?php 
-                        if($value->room_written_assesment!=''){
+                        if ($value->room_written_assesment!='') {
                         ?>
-                        <input type="hidden" name="id_room[]" value="<?php echo $value->id_room_written_assesment;?>" id="id_room_<?php echo $no;?>"/><input type="text" value="<?php echo $value->room_written_assesment; ?>" class="form-control" disabled/>
+                            <input type="hidden" name="id_room[]" value="<?php echo $value->id_room_written_assesment;?>" id="id_room_<?php echo $no;?>"/><input type="text" value="<?php echo $value->room_written_assesment; ?>" class="form-control" disabled/>
                         <?php 
-                        }else{
-                        ?>
-                        <input class="form-control" name="id_room[]" class="id_room" id="id_room_<?php echo $no;?>" type="hidden"/>
-                        <input class="form-control" id="name_room_<?php echo $no; ?>" type="text" readonly />
-                        <input class="form-control" name="kuota_room[]" id="kuota_room_<?php echo $no; ?>" type="hidden" />
+                        } else {
+                        ?>            
+                            <select class="form-control id_room" id="id_room_<?php echo $no;?>" name="id_room[]" >
+                            <option value="">--- Choose room ---</option>
+                            <?php echo modules::run('assesment/assesment/get_all_room');?>
+                            </select>                                                                                     
                         <?php
                         }
                         ?>                        
@@ -202,7 +202,7 @@ $(function(){
     $('.date_written_assesment').datepicker().on('changeDate', function(){
         $(this).datepicker('hide');
     });
-  $('.tab-schedule-assesment').on('change', '.id_sesi', function(e){    
+  $('.tab-schedule-assesment').on('change', '.id_room', function(e){    
     var id = this.id;
     var data_id_sesi = id.split("_"); 
     var row_id_sesi = data_id_sesi[2]; 
@@ -212,42 +212,21 @@ $(function(){
     var id_room = $('#id_room_'+ row_id_sesi).val(); 
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
-    if(id_sesi!=''){        
-        $.getJSON("<?php echo base_url();?>index.php/assesment/cek_room/" + date_written_assesment + "/" +  id_sesi, function(data) {
-            $('#name_room_'+ row_id_sesi).val(data.limit);                                                
-        });
-        // $.getJSON("<?php echo base_url();?>index.php/assesment/cek_one_room/", function(data) {            
-        //     $('#name_room_'+ row_id_sesi).val(data.nr);
-        //     $('#id_room_'+ row_id_sesi).val(data.ir);                                          
-        // });         
-    };                      
+    if(id_room!='') {    
+        $.getJSON("<?php echo base_url();?>assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {            
+                // $('#kuota_room_'+ row_id_sesi).val(data.jumlah_sesi);
+                // if(data.limit =)
+            });    
+        }                     
        
   });
   
-  $('.tab-schedule-assesment').on('mouseover', '.id_sesi', function(e){    
-    var id = this.id;
-    var data_id_sesi = id.split("_"); 
-    var row_id_sesi = data_id_sesi[2]; 
-    
-    var date_written_assesment = $('#date_written_assesment_'+ row_id_sesi).val();
-    var id_sesi = $('#id_sesi_'+ row_id_sesi).val();        
-    var id_room = $('#id_room_'+ row_id_sesi).val();      
-    if(id_room!='') {    
-        $.getJSON("<?php echo base_url();?>assesment/get_room_kuota/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {            
-                $('#kuota_room_'+ row_id_sesi).val(data.jumlah_sesi);
-            });    
-        }
-  });
              
-  $('.date_written_assesment').mouseover(function(){        
-    var jumlah_sesi = $('.id_sesi').length;           
-    var kuota_room = $('#kuota_room_1').val();               
-  });  
   $('[name=next-summary-assesment]').click(function(){        
     var n_sesi = $('.id_sesi').length;   
     var id_sesi = $("[name^='id_sesi']");
     var id_assesment = $("input[name^='id_assesment']");
-    var id_room = $("input[name^='id_room']");
+    var id_room = $("[name^='id_room']");
     var id_date_written_assesment = $("input[name^='date_written_assesment']");
         for(i=0;i<n_sesi;i++){
             sesi = id_sesi[i].value;

@@ -4,7 +4,7 @@
 // -- Class Name : Apply_license
 // -- Purpose : 
 // -- Created On : 
-    class Assesment extends CI_Controller {
+    class Assesment extends MX_Controller {
         
 
 // -- Function Name : __construct
@@ -18,6 +18,11 @@
             $this->load->helper('form');
             $this->load->model('m_assesment');
             $this->load->model('apply_license/m_apply_license');            
+        }
+
+        public function get_all_room(){
+            $m_room = $this->db->query("SELECT id_room, name_room FROM m_room");
+            return options($m_room, 'id_room', 'name_room');
         }
 
         public
@@ -43,13 +48,15 @@
                 redirect(base_url('home/index'));
             }
         }
+
+        
         
         public
 // -- Function Name : assesment_event
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
-        function cek_room($date_assesment, $id_sesi){             
-            $this->m_assesment->get_room_by($date_assesment, $id_sesi);                                                                     
+        function cek_room($date_assesment, $id_sesi, $id_room){             
+            $this->m_assesment->get_room_by($date_assesment, $id_sesi, $id_room);                                                                     
         } 
         
         function cek_one_room(){
