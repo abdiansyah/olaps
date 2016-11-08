@@ -132,7 +132,7 @@ class M_apply_license extends CI_Model {
 
     public function get_gm_personnel_by($personnel_number)
     {
-        $query   = "SELECT personnel_number, email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
+        $query   = "SELECT personnel_number, email FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = (SELECT DISTINCT SUBSTRING(departement,1,3) FROM UNION_EMP WHERE personnel_number = '$personnel_number')";
         return $this->db->query($query);
     }
     

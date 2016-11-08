@@ -709,16 +709,14 @@ class Apply_license extends CI_Controller
                     }
                 }
                 // COFC
-                // License with COFC
-                $check_c_of_c   = $this->input->post('check_c_of_c');
-                $type_cofc      = $this->input->post('type_cofc');
+                // License with COFC                
                 $sess_with_cofc = array(
-                    'check_cofc' => $this->input->post('check_c_of_c'),
-                    'type_cofc' => $this->input->post('type_cofc'),
-                    'tab_spec_cofc_s' => $this->input->post('tab-spec-cofc'),
-                    'tab_category_cofc_s' => $this->input->post('tab-category-cofc'),
-                    'tab_scope_cofc_s' => $this->input->post('tab-scope-cofc'),
-                    'tab_scope_assesment_cofc_s' => $this->input->post('tab-scope-assesment-cofc'),                    
+                    'check_cofc'                    => $this->input->post('check_c_of_c'),
+                    'type_cofc'                     => $this->input->post('type_cofc'),
+                    'tab_spec_cofc_s'               => $this->input->post('tab-spec-cofc'),
+                    'tab_category_cofc_s'           => $this->input->post('tab-category-cofc'),
+                    'tab_scope_cofc_s'              => $this->input->post('tab-scope-cofc'),
+                    'tab_scope_assesment_cofc_s'    => $this->input->post('tab-scope-assesment-cofc'),                    
                 );
                 //print_r($sess_with_cofc);
                 //            die();            
@@ -1073,8 +1071,8 @@ class Apply_license extends CI_Controller
                    $data_cofc = array(
                        'date_training_cofc'                 => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
                        'expiration_date_cofc'               => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b])),                
-                       'id_auth_license_cofc_fk'           => @$license_cofc,
-                       'id_auth_type_cofc_fk'              => @$type_cofc                                
+                       'id_auth_license_cofc_fk'            => @$license_cofc,
+                       'id_auth_type_cofc_fk'               => @$type_cofc                                
                    );
 
                    $this->db->where('personnel_number_fk',$personnel_number);
@@ -1313,7 +1311,9 @@ class Apply_license extends CI_Controller
                 'date_training_easa'      => date('Y-m-d', strtotime($date_training_req_spec_certificate_easa_s[$g])),
                 'expiration_date_easa'    => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_easa_s[$g])),
                 'id_auth_license_easa_fk' => @$license_easa,
-                'id_auth_type_easa_fk'    => @$type_easa                                
+                'id_auth_type_easa_fk'    => @$type_easa,        
+                'status_license'          => $status_license,                        
+                'date_upload'             => date('Y-m-d'),
                 );                                
                                                                                               
                 $this->db->insert('t_file_requirement',$data_easa);           
@@ -1348,7 +1348,9 @@ class Apply_license extends CI_Controller
                     'date_training_special'        => date('Y-m-d', strtotime($date_training_req_spec_certificate_special_s[$h])),
                     'expiration_date_special'      => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_special_s[$h])),
                     'id_auth_license_special_fk'   => @$license_special,
-                    'id_auth_type_special_fk'      => @$type_special                                
+                    'id_auth_type_special_fk'      => @$type_special,
+                    'status_license'               => $status_license,
+                    'date_upload'                  => date('Y-m-d'),                                
                 );
                                                               
                 $this->db->insert('t_file_requirement',$data_special);
@@ -1382,7 +1384,9 @@ class Apply_license extends CI_Controller
                     'date_training_garuda'         => date('Y-m-d', strtotime($date_training_req_spec_certificate_garuda_s[$i])),
                     'expiration_date_garuda'       => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_garuda_s[$i])),
                     'id_auth_license_garuda_fk'    => @$with_license_garuda,
-                    'id_auth_type_garuda_fk'       => @$with_type_garuda                                
+                    'id_auth_type_garuda_fk'       => @$with_type_garuda,
+                    'status_license'               => $status_license,
+                    'date_upload'                  => date('Y-m-d'),                                
                 );
                         
                 $this->db->insert('t_file_requirement',$data_garuda);                                            
@@ -1416,7 +1420,9 @@ class Apply_license extends CI_Controller
                 'date_training_citilink'       => date('Y-m-d', strtotime($date_training_req_spec_certificate_citilink_s[$j])),
                 'expiration_date_citilink'     => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_citilink_s[$j])),
                 'id_auth_license_citilink_fk'  => @$with_license_citilink,
-                'id_auth_type_citilink_fk'     => @$with_type_citilink                                
+                'id_auth_type_citilink_fk'     => @$with_type_citilink,
+                'status_license'               => $status_license,
+                'date_upload'                  => date('Y-m-d'),                                
                 );
 
                 $this->db->insert('t_file_requirement',$data_citilink);                                  
@@ -1428,7 +1434,7 @@ class Apply_license extends CI_Controller
         $date_training_req_spec_certificate_sriwijaya_s               = $this->input->post('date_training_req_spec_certificate_sriwijaya');
         $save_result_expiration_date_req_spec_certificate_sriwijaya_s = $this->input->post('save_result_expiration_date_req_spec_certificate_sriwijaya');                                                                          
         for($k = 0; $k<$file_req_spec_certificate_sriwijaya_s; $k++){                 
-            if($_FILES['file_req_spec_certificate_sriwijaya']['size'][$g] != 0){                                               
+            if($_FILES['file_req_spec_certificate_sriwijaya']['size'][$k] != 0){                                               
                 $code_req_spec_certificate_sriwijaya                          = $code_req_spec_certificate_sriwijaya_s[$k]; 
                 @$cd_folder_by = $this->m_apply_license->get_code_file_by($code_req_spec_certificate_sriwijaya);                       
                 $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
@@ -1449,7 +1455,9 @@ class Apply_license extends CI_Controller
                     'date_training_sriwijaya'      => date('Y-m-d', strtotime($date_training_req_spec_certificate_sriwijaya_s[$k])),
                     'expiration_date_sriwijaya'    => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_sriwijaya_s[$k])),
                     'id_auth_license_sriwijaya_fk' => @$with_license_sriwijaya,
-                    'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya                                
+                    'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya,
+                    'status_license'               => $status_license,
+                    'date_upload'                  => date('Y-m-d'),                                                                
                 );
            
                 $this->db->insert('t_file_requirement',$data_sriwijaya);                                  
@@ -1482,7 +1490,9 @@ class Apply_license extends CI_Controller
                     'date_training_cofc'            => date('Y-m-d', strtotime($date_training_req_spec_certificate_cofc_s[$l])),
                     'expiration_date_cofc'          => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_cofc_s[$l])),
                     'id_auth_license_cofc_fk'       => @$license_cofc,
-                    'id_auth_type_cofc_fk'          => @$type_cofc                                
+                    'id_auth_type_cofc_fk'          => @$type_cofc,
+                    'status_license'                => $status_license,
+                    'date_upload'                   => date('Y-m-d'),                                                                
                 );                 
                 $this->db->insert('t_file_requirement',$data_cofc);                                                                            
             }                
@@ -1795,6 +1805,7 @@ class Apply_license extends CI_Controller
                         <td>' . $value_cofc->name_spect . '</td>
                         <td>' . $value_cofc->name_category . '</td>
                         <td>' . $value_cofc->name_scope . '</td>
+                        <td></td>
                         </tr>';
                     }
                 }
@@ -2057,7 +2068,7 @@ class Apply_license extends CI_Controller
             }
             $sess_data_personnel     = $this->session->userdata('sess_data_personnel');
             // Send Notification Email To Atasan  
-            $$config = Array(
+            $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
@@ -2065,7 +2076,7 @@ class Apply_license extends CI_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
+            'wordwrap' => TRUE);             
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
