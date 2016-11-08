@@ -424,8 +424,10 @@ class Quality_control extends MX_Controller
                 );
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
-            }            
-            return true;
+            } 
+            $this->session->set_flashdata('msg', 'Update current status successfull.');
+            redirect(site_url('quality_control'));           
+            
         }
         if (isset($_POST['saveoralassesment'])) {
             $request_number               = $this->input->post('request_number');

@@ -1093,7 +1093,8 @@ class Apply_license extends CI_Controller
                        'date_training'           => date('Y-m-d', strtotime($date_training_req_spec_certificate_s[$c])),
                        'expiration_date'         => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_s[$c])),
                        'id_auth_license_fk'      => $license,
-                       'id_auth_type_fk'         => $type                
+                       'id_auth_type_fk'         => $type,                
+                       'status_license'          => $status_license                
                        );                                                     
                        $this->db->insert('t_file_requirement',$data_spec_certificate);                                                 
                                        

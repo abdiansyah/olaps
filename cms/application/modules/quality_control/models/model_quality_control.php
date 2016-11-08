@@ -399,7 +399,7 @@ class model_quality_control extends CI_Model
             get_compiled_select();
             
         if(!empty($id)) {
-            $where = "t_apply_license.request_number = '$id'";
+            $where = "CONVERT(VARCHAR(20),t_apply_license.request_number) = '$id'";
         };
         
         $datasrc = $this->db->query("SELECT TOP 1  TSH.name, TSH.personnel_number, TSH.departement, TSH.presenttitle, TSH.mobilephone, TSH.businessphone, t_apply_license.request_number,
