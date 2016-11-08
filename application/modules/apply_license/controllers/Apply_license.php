@@ -990,7 +990,7 @@ class Apply_license extends CI_Controller
                 $data_general_certificate = array(
                     'personnel_number_fk'  => $personnel_number,                
                     'date_training'        => date('Y-m-d', strtotime($date_training_req_general_certificate_s[$b])),
-                    'expiration_date'      => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b]),
+                    'expiration_date'      => date('Y-m-d', strtotime($save_result_expiration_date_req_general_certificate_s[$b])),
                     'code_file'            => $code_req_document_certificate_s[$b],                
                     'name_file'            => $fileNameNew,
                     'id_auth_license_fk'   => $license,
