@@ -81,8 +81,11 @@ class Menu_management extends MX_Controller {
 			'id_menu_induk' => $this->input->post('id_menu_induk'),
 			'change_date' 	   	=> date('Y-m-d'),
 			'change_time'	 	=> date('H:i:s'),
-			'id_users_fk'		=> $this->session->userdata('users_quality')->id_users,
+			'personnel_number_fk'		=> $this->session->userdata('users_quality')->PERNR,
+			'flag'			=> '1'
 		);
+		// print_r($data);
+		// die();
 		$this->db->insert('menu', $data);
 		
 		redirect($this->page->base_url());
@@ -95,7 +98,7 @@ class Menu_management extends MX_Controller {
 			'id_menu_induk' => $this->input->post('id_menu_induk'),
 			'change_date' 	   	=> date('Y-m-d'),
 			'change_time'	 	=> date('H:i:s'),
-			'id_users_fk'		=> $this->session->userdata('users_quality')->id_users,
+			'personnel_number_fk'		=> $this->session->userdata('users_quality')->PERNR
 		);		
 		$this->db->where('id_menu', $id);
 		$this->db->update('menu', $data);
@@ -113,9 +116,9 @@ class Menu_management extends MX_Controller {
 		redirect($this->agent->referrer());
 	}
 	
-	public function options_menu_management($id){
+	public function options_menu_management(){
 		$menu_management = $this->db->get_where('menu', array('id_menu_induk' => 0));
-		return options($menu_management, 'id_menu', $id, 'nama');
+		return options($menu_management, 'id_menu', 'nama');
 	}
 
 }

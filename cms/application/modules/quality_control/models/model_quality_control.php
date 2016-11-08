@@ -197,7 +197,8 @@ class model_quality_control extends CI_Model
         if(!empty($take_authorization)){
            $this->db->where('t_apply_license.take_authorization', $take_authorization);    
         }
-        $this->db->where('t_apply_license.finished', null);        
+
+        $this->db->where('t_apply_license.finished', null);                                      
         $this->db->where('t_apply_license.priority', 'High');        
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
@@ -316,9 +317,9 @@ class model_quality_control extends CI_Model
         if(!empty($take_authorization)){
            $this->db->where('t_apply_license.take_authorization', $take_authorization);    
         }
-          
-        $this->db->where('t_apply_license.priority', 'Normal'); 
-        $this->db->where('t_apply_license.finished', null);        
+
+        $this->db->where('t_apply_license.finished', null);                                                       
+        $this->db->where('t_apply_license.priority', 'Normal');        
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query_normal = $this->db->get();
@@ -327,7 +328,7 @@ class model_quality_control extends CI_Model
     }
     
 
-    public function get_quality_control_finish()
+   public function get_quality_control_finish()
     {        
     
         $personnel_number           = $this->input->post('personnel_number');

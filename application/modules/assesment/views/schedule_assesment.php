@@ -1,45 +1,45 @@
 <?php if(@$data_assesment[0]!=''){ ?>
 <div class="row">
 <div class="col-md-10 col-md-offset-1 col-center-block table-responsive">
-<div class="box box-info box-center" id="halaman5">	   
-	<div class="box-header with-border">
-		<h3 class="box-title"><strong>SCHEDULE OF ASSESMENT</strong></h3>
-	</div>
+<div class="box box-info box-center" id="halaman5">    
+    <div class="box-header with-border">
+        <h3 class="box-title"><strong>SCHEDULE OF ASSESMENT</strong></h3>
+    </div>
     <form method="POST" action="<?php echo site_url('assesment/save_assesment');?>">   
-	<div class="box-body" id="sum-assesment-first">
+    <div class="box-body" id="sum-assesment-first">
             <div class="col-md-8">                                     
-				<div class="box-body table-responsive no-padding">                    
+                <div class="box-body table-responsive no-padding">                    
                     <table id="detail_personnel" class="table">                    
-                    <tbody>	                    
-					<tr>                        
-						<td class="col-md-2">Name</td>                        
-						<td class="col-md-4">: <input type="hidden" name="request_number" value="<?php echo @$get_data_apply_personnel_by['request_number'];?>"/><input type="hidden" name="personnel_number" value="<?php echo @$get_data_emp_personnel_by['personnel_number'];?>"/><input type="hidden" name="name_applicant" value="<?php echo @$get_data_emp_personnel_by['name'];?>"/><?php echo @$get_data_emp_personnel_by['name'];?></td>                        						
-					</tr>                    
+                    <tbody>                     
                     <tr>                        
-						<td class="col-md-2">Unit</td>                        
-						<td class="col-md-4">: <?php echo @$get_data_emp_personnel_by['departement'];?></td>                        						
-					</tr>
+                        <td class="col-md-2">Name</td>                        
+                        <td class="col-md-4">: <input type="hidden" name="request_number" value="<?php echo @$get_data_apply_personnel_by['request_number'];?>"/><input type="hidden" name="personnel_number" value="<?php echo @$get_data_emp_personnel_by['personnel_number'];?>"/><input type="hidden" name="name_applicant" value="<?php echo @$get_data_emp_personnel_by['name'];?>"/><?php echo @$get_data_emp_personnel_by['name'];?></td>                                               
+                    </tr>                    
                     <tr>                        
-						<td class="col-md-2">Date Request</td>                        
-						<td class="col-md-4">: <?php echo date('d-M-Y',strtotime(@$data_assesment[0]->date_request));?></td>                        						
-					</tr>                                                                                               
+                        <td class="col-md-2">Unit</td>                        
+                        <td class="col-md-4">: <?php echo @$get_data_emp_personnel_by['departement'];?></td>                                                
+                    </tr>
+                    <tr>                        
+                        <td class="col-md-2">Date Request</td>                        
+                        <td class="col-md-4">: <?php echo date('d-M-Y',strtotime(@$data_assesment[0]->date_request));?></td>                                                
+                    </tr>                                                                                               
                     </tbody>                     
-					</table>
-                    <br/>				
-			     </div>
+                    </table>
+                    <br/>               
+                 </div>
             </div>                                    
-			<div class="col-md-12">                        
-				<div class="box-body table-responsive no-padding">                    
+            <div class="col-md-12">                        
+                <div class="box-body table-responsive no-padding">                    
                     <table class="table table-bordered tab-schedule-assesment">                    
                     <thead>
                     <tr>                        
-						<th>No</th>
-                        <th>Status</th>                        						                       
+                        <th>No</th>
+                        <th>Status</th>                                                                    
                         <th>Scope</th>  
                         <th>Date of Written Assesment</th>
                         <th>Time</th>
                         <th>Location</th>                                              
-					</tr>    
+                    </tr>    
                     </thead>
                     <tbody>                                        
                     <?php
@@ -98,7 +98,7 @@
                         } 
                         ?>
                         </td>                        
-    					<td width="10%">
+                        <td width="10%">
                         <?php 
                         if($value->sesi_written_assesment!='') {
                         ?>
@@ -113,7 +113,7 @@
                             </select>  
                         <?php 
                         }
-                        ?>                                            			                                                    
+                        ?>                                                                                                          
                         </td>
                         <td width="20%">
                         <?php 
@@ -135,13 +135,13 @@
                     <?php
                     $no++;
                     endforeach;
-                    ?>                    					                                     
+                    ?>                                                                           
                     </tbody>                     
-					</table>
-				</div>
+                    </table>
+                </div>
             </div>
             <div class="box-footer col-md-12">
-    			<button type="button" class="btn btn-info pull-right btn-sm next-summary-assesment" name="next-summary-assesment"><strong>NEXT</strong></button>    		
+                <button type="button" class="btn btn-info pull-right btn-sm next-summary-assesment" name="next-summary-assesment"><strong>NEXT</strong></button>            
             </div>  
             </div> 
             <div class="box body col-md-12" id="summary-assesment">
@@ -156,14 +156,14 @@
             </thead>
             <tbody id="body-summary-assesment">
             </tbody>
-            </table>                                			
+            </table>                                            
             </div>            
             <div class="box-footer col-md-12">
-    			<button type="submit" class="btn btn-info pull-right btn-sm" name="submitassesmentevent"><strong>ACCEPT</strong></button>
-    			<button type="button" class="btn btn-warning pull-right btn-sm" name="previous"><strong>CANCEL</strong></button>
+                <button type="submit" class="btn btn-info pull-right btn-sm" name="submitassesmentevent"><strong>ACCEPT</strong></button>
+                <button type="button" class="btn btn-warning pull-right btn-sm" name="previous"><strong>CANCEL</strong></button>
             </div>
             </div>  
-            </form>                      	              
+            </form>                                       
     </div>
 </div>
 </div> 
@@ -246,18 +246,7 @@ $(function(){
     $('#summary-assesment').show();
     $('#sum-assesment-first').hide();                                               
   });
-  
-            
-// $('[name=check_agree_atasan]').on('change',function(){
-//    if(this.checked){
-//    $('[name=submitapproved]').attr('disabled',false);
-//    $('[name=submitdisapproved]').attr('disabled',false);      
-//    }else
-//    {
-//    $('[name=submitapproved]').attr('disabled',true);
-//    $('[name=submitdisapproved]').attr('disabled',true);        
-//    }
-//  });  
+          
 });
 </script>   
             

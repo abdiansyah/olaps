@@ -127,7 +127,7 @@ class Quality_control extends MX_Controller
         //output to json format
         echo json_encode($output);
     }
-    
+
     public function ajax_get_history_inf_finish()
     {
         $list = $this->model_quality_control->get_quality_control_finish();
@@ -168,7 +168,7 @@ class Quality_control extends MX_Controller
         //output to json format
         echo json_encode($output);
     }
-
+    
     private function form($action = '', $id = '')
     {
         if ($this->agent->referrer() == '')
@@ -465,10 +465,9 @@ class Quality_control extends MX_Controller
                 );
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
-            } 
-            $this->session->set_flashdata('msg', 'Update current status successfull.');
-            redirect(site_url('quality_control'));           
-            
+            }            
+             $this->session->set_flashdata('msg', 'Update current status successfull.');
+            redirect(site_url('quality_control'));
         }
         if (isset($_POST['saveoralassesment'])) {
             $request_number               = $this->input->post('request_number');

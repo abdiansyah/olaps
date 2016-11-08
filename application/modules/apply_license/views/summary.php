@@ -100,14 +100,14 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                                <div class="col-sm-9">
                                <input type="hidden" class="form-control" name="sumpersonnelnumber" value="<?php echo $sess_data_personnel['personnel_number']; 
                                ?>"> 
-                               <input type="text" class="form-control" value="<?php echo $sess_data_personnel['personnel_number']; ?>" disabled>                                
+                               <input type="text" class="form-control" value="<?php echo $sess_data_personnel['personnel_number']; ?>" disabled>                                                                 
                                </div>                               
                                </div>
                                <div class="form-group">
                                <label class="col-sm-3 control-label">Unit</label>
                                <div class="col-sm-9">
                                <input type="hidden" class="form-control" name="sumunit" value="<?php echo $sess_data_personnel['departement']; ?>">
-                               <input type="text" class="form-control" value="<?php echo $sess_data_personnel['departement']; ?>" disabled/>
+                               <input type="text" class="form-control" value="<?php echo $sess_data_personnel['departement']; ?>" disabled/>                               
                                </div>                               
                                </div>
                                <div class="form-group">

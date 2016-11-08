@@ -2,12 +2,12 @@
 
 <script type="text/javascript">
 $().ready(function(){
-	$('[name=id_menu_induk]').select2({width : '75%'});
+	$('[name=id_menu_induk]').select2({width : '100%'});
 });
 </script>
 
 <section class="content-header">
-	<h1>Management Menu <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl; ?></small></h1>
+	<h1>Management Menu <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl.'+'.$action; ?></small></h1>
 </section>
 
 <div class="alert alert-warning alert-dismissible" role="alert">
@@ -36,7 +36,7 @@ $().ready(function(){
 		<div class="col-sm-4">
 			<select name="id_menu_induk">
 				<option value="0">--- Kosongkan ---</option>
-				<?php echo modules::run('setting/menu_management/options_menu_management', $rc->id_menu_induk); ?>
+				<?php echo modules::run('setting/menu_management/options_menu_management'); ?>
 			</select>
 		</div>
 	</div>
@@ -56,14 +56,13 @@ $().ready(function(){
 	<div class="form-group">
 		<label class="col-sm-2 control-label input-sm">User</label>
 		<div class="col-sm-4">
-			<input type="text" name="user" class="form-control input-sm" placeholder="User" value="<?php echo $rc->name_users; ?>" disabled />
+			<input type="text" name="user" class="form-control input-sm" placeholder="User" value="<?php echo $rc->EMPLNAME; ?>" disabled />
 		</div>
 	</div>
 	<?php endif; ?>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-6">
-			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Save </button>
-			<button type="reset" class="btn btn-flat btn-danger color-palette btn-sm"><span class="fa fa-circle-o-notch"></span> &nbsp;Reset </button>
+			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Save </button>		
 			<a class="btn btn-flat bg-olive color-palette btn-sm" href="<?php echo $back; ?>"><span class="fa  fa-arrow-left"></span>&nbsp;&nbsp;Back</a>
 		</div>
 	</div>
