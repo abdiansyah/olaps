@@ -26,6 +26,73 @@ $().ready(function(){
     var take_authorization          = '<?php echo $take_authorization; ?>'; 
     // alert(date_request)
     
+    $('#datatables_finish').dataTable({
+        "scrollY"           : "342px", 
+        "searching"         : false, 
+        "bPaginate"         : false,  
+        "bSort"             : false,
+        "select"            : true,      
+        "scrollCollapse"    : true,
+        "processing"        : true, //Feature control the processing indicator.
+        "serverSide"        : true, //Feature control DataTables' server-side processing mode.
+        "order"             : [], //Initial no order. 
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        switch(aData[6]){
+            case 'Approved Superior':
+                $(nRow).css('color', 'white');
+                $('td', nRow).css('background-color', 'Red');
+                break;        
+            };
+        switch(aData[6]){
+            case 'Success':
+                $(nRow).css('color', 'white');                
+                $('td', nRow).css('background-color', 'green');
+            break;
+            case 'Failed':
+                $(nRow).css('color', 'white');                
+                $('td', nRow).css('background-color', 'green');
+            break;
+            };    
+
+        },
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+            "url"   : "<?php echo site_url('quality_control/quality_control/ajax_get_history_inf_finish'); ?>",
+            "type"  : "POST",                
+            "data"  : {
+                    request_number : request_number,
+                    personnel_number : personnel_number,
+                    reason_apply_license : reason_apply_license,
+                    code_unit : code_unit,
+                    priority : priority,
+                    datetime_priority : datetime_priority,
+                    personnel_number_superior : personnel_number_superior,
+                    personnel_number_quality : personnel_number_quality,
+                    id_disposition_user_fk : id_disposition_user_fk,
+                    id_location_user_fk : id_location_user_fk,
+                    date_request : date_request,
+                    date_approved_superior : date_approved_superior,
+                    date_approved_quality : date_approved_quality,
+                    date_referral_authorization : date_referral_authorization,
+                    date_take_authorization : date_take_authorization,                
+                    status_submit : status_submit,
+                    status_approved_superior : status_approved_superior,
+                    status_approved_quality : status_approved_quality,
+                    status_assesment : status_assesment,
+                    take_authorization : take_authorization,
+                    referral_authorization : referral_authorization,                                
+            } 
+        },
+
+        //Set column definition initialisation properties.
+        "columnDefs" : [
+            { 
+                "targets"   : [], //first column / numbering column
+                "orderable" : false, //set not orderable                            
+            },
+        ],
+    });        
+
    $('#datatables_high').dataTable({
         "scrollY"           : "342px",
         "searching"         : false, 
@@ -284,6 +351,27 @@ echo '</b>
     <div class="col-md-12">
     <h3>Normal Priority </h3>   
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_normal">
+        <thead>         
+            <tr>
+                <th width="5%">Date of Application</th>
+                <th width="10%">Request Number</th>
+                <th width="15%">Name</th>
+                <th width="10%">ID Number</th>
+                <th width="17%">Disposition</th>
+                <th width="7%">Location</th>
+                <th width="10%">Current Status</th>
+                <th width="10%">Last update</th>
+                <th width="5%">Time</th>
+                <th width="8%">Duration</th>                                                
+                <th width="8%">Remarks</th>
+                <th width="5%">Action</th>                  
+            </tr>            
+        </thead>
+    </table>
+    </div>
+    <div class="col-md-12">
+    <h3>Finished </h3>   
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_finish">
         <thead>         
             <tr>
                 <th width="5%">Date of Application</th>

@@ -197,7 +197,7 @@ class model_quality_control extends CI_Model
         if(!empty($take_authorization)){
            $this->db->where('t_apply_license.take_authorization', $take_authorization);    
         }
-                       
+        $this->db->where('t_apply_license.finished', null);        
         $this->db->where('t_apply_license.priority', 'High');        
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
@@ -317,12 +317,134 @@ class model_quality_control extends CI_Model
            $this->db->where('t_apply_license.take_authorization', $take_authorization);    
         }
           
-        $this->db->where('t_apply_license.priority', 'Normal');        
+        $this->db->where('t_apply_license.priority', 'Normal'); 
+        $this->db->where('t_apply_license.finished', null);        
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query_normal = $this->db->get();
 
         return $query_normal->result();        
+    }
+    
+
+    public function get_quality_control_finish()
+    {        
+    
+        $personnel_number           = $this->input->post('personnel_number');
+        $request_number              = $this->input->post('request_number');
+        $code_unit                   = $this->input->post('code_unit');
+        $reason_apply_license        = $this->input->post('reason_apply_license');
+        $priority                    = $this->input->post('priority');
+        $datetime_priority           = $this->input->post('datetime_priority');
+        $personnel_number_superior   = $this->input->post('personnel_number_superior');
+        $personnel_number_quality    = $this->input->post('personnel_number_quality');
+        $id_disposition_user_fk      = $this->input->post('id_disposition_user_fk');
+        $id_location_user_fk         = $this->input->post('id_location_user_fk');
+        $date_request                = $this->input->post('date_request');
+        $date_approved_superior      = $this->input->post('date_approved_superior');
+        $date_approved_quality       = $this->input->post('date_approved_quality');
+        $date_referral_authorization = $this->input->post('date_referral_authorization');
+        $date_take_authorization     = $this->input->post('date_take_authorization');
+        $status_submit               = $this->input->post('status_submit');        
+        $status_approved_superior    = $this->input->post('status_approved_superior');
+        $status_approved_quality     = $this->input->post('status_approved_quality');
+        $status_assesment            = $this->input->post('status_assesment');
+        $referral_authorization      = $this->input->post('referral_authorization');
+        $take_authorization          = $this->input->post('take_authorization');    
+        $this->_get_query();
+        if(!empty($personnel_number)){
+           $this->db->where('personnel_number', $personnel_number);    
+        }
+                
+        if(!empty($request_number)){
+           $this->db->where('t_apply_license.request_number', $request_number);    
+        }
+        
+        if(!empty($code_unit)){
+           $this->db->where('t_apply_license.code_unit', $code_unit);    
+        }
+         
+        if(!empty($reason_apply_license)){
+           $this->db->where('t_apply_license.reason_apply_license', $reason_apply_license);    
+        }
+                
+        if(!empty($priority)){
+           $this->db->where('t_apply_license.priority', $priority);    
+        }
+        
+        if(!empty($datetime_priority)){
+           $this->db->LIKE('t_apply_license.datetime_priority', date('Y-m-d',strtotime($datetime_priority)));    
+        }
+        
+        if(!empty($personnel_number_superior)){
+           $this->db->where('t_apply_license.personnel_number_superior', $personnel_number_superior);    
+        }
+        
+        
+        if(!empty($personnel_number_quality)){
+           $this->db->where('t_apply_license.personnel_number_quality', $personnel_number_quality);    
+        }        
+        
+        if(!empty($id_disposition_user_fk)){
+           $this->db->where('t_apply_license.id_disposition_user_fk', $id_disposition_user_fk);    
+        }
+        
+        if(!empty($id_location_user_fk)){
+           $this->db->where('t_apply_license.id_location_user_fk', $id_location_user_fk);    
+        }
+        
+        if(!empty($date_request)){
+           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));   
+        }
+        
+        if(!empty($date_approved_superior)){
+           $this->db->LIKE('t_apply_license.date_approved_superior', $date_approved_superior);    
+        }
+                
+        if(!empty($date_approved_quality)){
+           $this->db->LIKE('t_apply_license.date_approved_quality', $date_approved_quality);    
+        }
+        
+        if(!empty($date_referral_authorization)){
+           $this->db->LIKE('t_apply_license.date_refferal_authorization', $date_referral_authorization);    
+        }
+        
+        if(!empty($date_take_authorization)){
+           $this->db->LIKE('t_apply_license.date_take_authorization', $date_take_authorization);    
+        }
+        
+        if(!empty($status_submit)){
+            $this->db->where('t_apply_license.status_approved_quality', null);
+            $this->db->where('t_apply_license.status_approved_superior', null);
+            $this->db->where('t_apply_license.status_submit', $status_submit);                      
+        }        
+        
+        if(!empty($status_approved_superior)){
+           $this->db->where('t_apply_license.status_approved_superior', $status_approved_superior);    
+        }
+                
+        if(!empty($status_approved_quality)){
+           $this->db->where('t_apply_license.status_approved_quality', $status_approved_quality);    
+        }
+        
+        if(!empty($status_assesment)){
+           $this->db->where('t_apply_license.status_assesment', $status_assesment);    
+        }
+        
+        if(!empty($referral_authorization)){
+           $this->db->where('t_apply_license.referral_authorization', $referral_authorization);    
+        }
+        
+        if(!empty($take_authorization)){
+           $this->db->where('t_apply_license.take_authorization', $take_authorization);    
+        }
+
+        $this->db->where('t_apply_license.finished', '1');        
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query_finish = $this->db->get();
+
+        return $query_finish->result();        
     }
     
 
@@ -342,6 +464,13 @@ class model_quality_control extends CI_Model
         $query = $this->db->get();
         return $query->num_rows();
     }
+
+    public function count_filtered_finish()
+    {
+        $this->_get_query();
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
     
     
     public function count_all_high()
@@ -352,6 +481,12 @@ class model_quality_control extends CI_Model
     }
 
     public function count_all()
+    {
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
+    public function count_all_finish()
     {
         $this->db->from($this->table);
         return $this->db->count_all_results();

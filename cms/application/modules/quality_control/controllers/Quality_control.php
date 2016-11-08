@@ -128,6 +128,47 @@ class Quality_control extends MX_Controller
         echo json_encode($output);
     }
     
+    public function ajax_get_history_inf_finish()
+    {
+        $list = $this->model_quality_control->get_quality_control_finish();
+        $data = array();
+        $no   = $_POST['start'];
+        
+        foreach ($list as $grid) {
+            $row   = array();
+            $row[] = $grid->date_request;
+            $row[] = $grid->request_number;
+            $row[] = $grid->name;
+            $row[] = $grid->personnel_number;
+            $row[] = $grid->name_disposition;
+            $row[] = $grid->name_location;
+            $row[] = $grid->current_status;
+            $row[] = $grid->last_update;
+            $row[] = $grid->time;
+            @$date_submited = $grid->date_request;
+            if ($grid->date_finish != null) {
+                @$date_until = $grid->date_finish;
+                };
+            if ($grid->date_finish == null) {
+                @$date_until = date('d-m-Y');
+                };
+            $row[]  = round(abs(strtotime($date_until) - strtotime($date_submited)) / 86400);
+            $row[]  = $grid->remark;
+            $row[]  = '<a href="' . site_url('quality_control/view/' . $grid->request_number) . '" title="Edit Data"><button class="btn-info btn-sm btn-flat">View</button></a>';
+            $data[] = $row;
+        }
+        
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->model_quality_control->count_all_finish(),
+            "recordsFiltered" => $this->model_quality_control->count_filtered_finish(),
+            "data" => $data
+        );
+        
+        //output to json format
+        echo json_encode($output);
+    }
+
     private function form($action = '', $id = '')
     {
         if ($this->agent->referrer() == '')

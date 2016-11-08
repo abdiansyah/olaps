@@ -213,9 +213,14 @@ $(function(){
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
     if(id_room!='') {    
-        $.getJSON("<?php echo base_url();?>assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {            
-                // $('#kuota_room_'+ row_id_sesi).val(data.jumlah_sesi);
-                // if(data.limit =)
+        $.getJSON("<?php echo base_url();?>assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {                            
+                if(data.limit >= data.quota) {
+                    $('[name=next-summary-assesment]').attr('disabled',true);
+                    alert('Room for this session full.');
+
+                } else { 
+                    $('[name=next-summary-assesment]').attr('disabled',false);
+                };
             });    
         }                     
        

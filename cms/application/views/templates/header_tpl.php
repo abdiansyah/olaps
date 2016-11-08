@@ -23,17 +23,16 @@
 				<li class="dropdown user user-menu">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<?php 						    
-//						if ($this->session->userdata('users_quality')->EMPL_PHOTO != '') {@$img_photo = $this->session->userdata('users_quality')->EMPL_PHOTO;						 											                                                
-//                        header('Cache-control: public');                                                
-//                        }
+						if ($this->session->userdata('users_quality')->PERNR != '') {@$img_photo = $this->session->userdata('users_quality')->PERNR.'.jpg';
+						}
                         ?> 
-                        <!--img src="data:image/jpg;base64,<?php //echo @$img_photo ?>" class="user-image" alt="User Image"-->
+                        <img src="https://talentlead.gmf-aeroasia.co.id/images/avatar/<?php echo $img_photo;?>" class="user-image" alt="User Image">
 						<span class="hidden-xs"><?php echo $this->session->userdata('users_quality')->EMPLNAME; ?></span>
 					</a>
 					<ul class="dropdown-menu">
 						<!-- User image -->
 						<li class="user-header">
-							<!--img src="data:image/jpg;base64,<?php //echo @$img_photo ?>" class="user-image" alt="User Image"-->
+							 <img src="https://talentlead.gmf-aeroasia.co.id/images/avatar/<?php echo $img_photo;?>" class="user-image" alt="User Image">
 							<p>
 								<?php echo $this->session->userdata('users_quality')->EMPLNAME; ?>								
 							</p>
