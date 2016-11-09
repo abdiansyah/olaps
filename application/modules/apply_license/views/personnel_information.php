@@ -169,7 +169,7 @@ echo bootstrap_datepicker();
         });
     $('[name=businessphone],[name=mobilephone]').keyup(function()
         {
-            this.value = this.value.replace(/(\d{3})\-?/g,'$1-');
+            this.value = this.value.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, "$1-$2-$3");
         });
     $('#msg,.data-superior').hide();
             

@@ -89,7 +89,7 @@ class Model_users extends CI_Model {
 			FROM menu AS m 
 			LEFT JOIN (SELECT * FROM menu_akses WHERE id_group_fk = '{$id}') AS ma  
 				ON ma.id_menu_fk = m.id_menu 
-			WHERE m.id_menu_induk = 0
+			WHERE m.id_menu_induk = 0 AND m.flag = 1
 			ORDER BY m.id_menu			
 		";
 		return $this->db->query($query);
@@ -102,7 +102,7 @@ class Model_users extends CI_Model {
 			FROM menu AS m 
 			LEFT JOIN (SELECT * FROM menu_akses WHERE id_group_fk = '{$id}') AS ma 
 				ON ma.id_menu_fk = m.id_menu 
-			WHERE m.id_menu_induk > 0 
+			WHERE m.id_menu_induk > 0 AND m.flag = 1
 			ORDER BY m.id_menu		
 		";
 		return $this->db->query($query);

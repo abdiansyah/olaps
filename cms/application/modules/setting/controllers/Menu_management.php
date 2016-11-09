@@ -76,13 +76,13 @@ class Menu_management extends MX_Controller {
 	
 	public function insert(){		
 		$data = array(
-			'nama' 			=> $this->input->post('nama'),
-			'uri' 	   		=> $this->input->post('uri'),
-			'id_menu_induk' => $this->input->post('id_menu_induk'),
-			'change_date' 	   	=> date('Y-m-d'),
-			'change_time'	 	=> date('H:i:s'),
-			'personnel_number_fk'		=> $this->session->userdata('users_quality')->PERNR,
-			'flag'			=> '1'
+			'nama' 					=> $this->input->post('nama'),
+			'uri' 	   				=> $this->input->post('uri'),
+			'id_menu_induk' 		=> $this->input->post('id_menu_induk'),
+			'change_date' 	   		=> date('Y-m-d'),
+			'change_time'	 		=> date('H:i:s'),
+			'personnel_number_fk'	=> $this->session->userdata('users_quality')->PERNR,
+			'flag'					=> '1'
 		);
 		// print_r($data);
 		// die();
@@ -93,12 +93,12 @@ class Menu_management extends MX_Controller {
 	
 	public function update($id){		
 		$data = array(
-			'nama' 			=> $this->input->post('nama'),
-			'uri' 	   		=> $this->input->post('uri'),
-			'id_menu_induk' => $this->input->post('id_menu_induk'),
-			'change_date' 	   	=> date('Y-m-d'),
-			'change_time'	 	=> date('H:i:s'),
-			'personnel_number_fk'		=> $this->session->userdata('users_quality')->PERNR
+			'nama' 					=> $this->input->post('nama'),
+			'uri' 	   				=> $this->input->post('uri'),
+			'id_menu_induk' 		=> $this->input->post('id_menu_induk'),
+			'change_date' 	   		=> date('Y-m-d'),
+			'change_time'	 		=> date('H:i:s'),
+			'personnel_number_fk'	=> $this->session->userdata('users_quality')->PERNR
 		);		
 		$this->db->where('id_menu', $id);
 		$this->db->update('menu', $data);

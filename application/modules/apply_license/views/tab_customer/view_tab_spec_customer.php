@@ -12,7 +12,7 @@
             });
             $.get("<?php echo base_url();?>index.php/apply_license/cek_etops/" + spec_customer_garuda , function(data, status){                 
                if(data=='1') {
-                  $('#etops_garuda').show();k
+                  $('#etops_garuda').show();
                } else {
                   $('#etops_garuda').hide();
                };

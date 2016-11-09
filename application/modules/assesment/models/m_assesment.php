@@ -5,7 +5,7 @@ class M_assesment extends CI_Model {
     {        
         parent::__construct();        
     }         
-    public function get_data_assesment($personnel_number,$request_number)
+    public function get_data_assesment($personnel_number, $request_number)
     {
         $query = "SELECT tal.reason_apply_license, tald.is_etops, masc.id, masc.name_t, tal.date_request, 
                 (SELECT TOP 1 ta.date_written_assesment FROM t_assesment AS ta WHERE ta.request_number_fk = tal.request_number AND ta.id_assesment_scope_fk = tald.id_assesment_scope_fk AND tald.id_auth_license_fk = ta.id_auth_license_fk AND tald.id_auth_type_fk = ta.id_auth_type_fk AND tald.id_auth_spect_fk = ta.id_auth_spec_fk AND tald.id_auth_category_fk = ta.id_auth_category_fk AND tald.id_auth_scope_fk = ta.id_auth_scope_fk) AS date_written_assesment,
@@ -48,7 +48,7 @@ class M_assesment extends CI_Model {
     public function get_room_by($date_assesment, $id_sesi, $id_room){
         $query = "SELECT count(tasm.personnel_number_fk) AS limit,
                 (SELECT mr.quota FROM m_room AS mr WHERE mr.id_room = '$id_room') AS quota
-                FROM t_assesment AS tasm LEFT JOIN t_apply_license_dtl AS tald ON tald.request_number_fk = tasm.request_number_fk 
+                FROM t_assesment AS tasm 
                 WHERE tasm.id_written_sesi = '$id_sesi' AND (CONVERT(varchar(10), CONVERT(datetime,date_written_assesment,120),105)) = '$date_assesment' AND
                 tasm.id_written_room_fk = '$id_room'
                 ";

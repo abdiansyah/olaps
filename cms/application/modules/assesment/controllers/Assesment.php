@@ -173,9 +173,9 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        $this->email->to($email_superior);
-        $this->email->to($email_gm);
-        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        // $this->email->to($email_superior);
+        // $this->email->to($email_gm);
+        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
         $this->email->subject('Result written assesment');
 
 		$data = array(									
@@ -258,9 +258,9 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        $this->email->to($email_superior);
-        $this->email->to($email_gm);
-        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        // $this->email->to($email_superior);
+        // $this->email->to($email_gm);
+        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
         $this->email->subject('Result oral assesment');
 
 		$data = array(									

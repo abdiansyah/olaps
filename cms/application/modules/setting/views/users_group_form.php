@@ -17,7 +17,7 @@ $(document).ready(function(){
     <div class="form-group">
         <label class="col-sm-2 control-label input-sm">Group Name</label>
 		<div class="col-sm-4">
-		  <input class="form-control input-sm" type="text" name="name_group" placeholder="Group Name" value="<?php echo $users_group->name_group; ?>" required />
+		  <input class="form-control input-sm" type="text" name="name_group" placeholder="Group Name" value="<?php echo @$users_group->name_group; ?>" required />
 		</div>
 	</div>
 	<div class="form-group">

@@ -4,7 +4,7 @@
 // -- Class Name : Apply_license
 // -- Purpose : 
 // -- Created On : 
-    class Assesment extends CI_Controller {
+    class Assesment extends MX_Controller {
         
 
 // -- Function Name : __construct
@@ -28,7 +28,7 @@
         $user_data              = $this->session->userdata('users');
         $sess_personnel         = $user_data->PERNR;
         $sess_report_to         = $this->m_apply_license->get_data_row_personnel_by($personnel_number);
-        $sess_data_gm            = $this->m_apply_license->get_gm_personnel_by($personnel_number)->row_array();
+        $sess_data_gm           = $this->m_apply_license->get_gm_personnel_by($personnel_number)->row_array();
         $report_to              = $sess_report_to['REPORT_TO'];
         $report_gm              = $sess_data_gm['personnel_number'];
         
@@ -68,7 +68,7 @@
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
         function get_room_kuota($date_written_assesment, $id_sesi, $id_room){             
-            $this->m_assesment->get_room_kuota($date_written_assesment, $id_sesi, $id_room);                                    
+            $this->m_assesment->get_room_kuota($date_written_assesment, $id_sesi, $id_room);
         }
         
         public

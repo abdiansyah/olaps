@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class model_menu_management extends CI_Model {
 	
 	private $table 			= 'menu';
-	private $column_order 	= array('nama','uri','id_menu_induk','change_date','change_time','name_users');
-	private $column_search 	= array('nama','uri','id_menu_induk','change_date','change_time','name_users');  
+	private $column_order 	= array('nama','uri','id_menu_induk','change_date','change_time','EMPLNAME');
+	private $column_search 	= array('nama','uri','id_menu_induk','change_date','change_time','EMPLNAME');  
 	private $order 			= array('id_menu' => 'asc'); 
 	
 	public	$nama  	  		= '';

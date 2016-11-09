@@ -1,9 +1,8 @@
 <?php
-if (!isset($data_completing_data['submitcompletingdata'])) {
+if(!isset($data_completing_data['submitcompletingdata'])){
         redirect('apply_license/index');
-    } else
+    }else
     {
-      error_reporting(0);
 ?>
 <script type="text/javascript">
     window.history.forward();

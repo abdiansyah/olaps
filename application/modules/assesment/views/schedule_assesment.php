@@ -213,7 +213,7 @@ $(function(){
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
     if(id_room!='') {    
-        $.getJSON("<?php echo base_url();?>assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {                            
+        $.getJSON("<?php echo site_url();?>/assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {                            
                 if(data.limit >= data.quota) {
                     $('[name=next-summary-assesment]').attr('disabled',true);
                     alert('Room for this session full.');
@@ -239,7 +239,7 @@ $(function(){
             room = id_room[i].value;
             date_written_assesment = id_date_written_assesment[i].value;   
                     
-            $.get("<?php echo $this->page->base_url();?>/get_summary_assesment/" + sesi + "/" + assesment + "/" + room + "/" + date_written_assesment, function(data, status){                                    
+            $.get("<?php echo site_url();?>/assesment/get_summary_assesment/" + sesi + "/" + assesment + "/" + room + "/" + date_written_assesment, function(data, status){                                    
                 $('#body-summary-assesment').append(data);                                       
             });
         };

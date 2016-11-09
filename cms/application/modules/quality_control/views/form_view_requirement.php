@@ -29,7 +29,7 @@
 </div>
 <div class="col-md-12 col-md-offset-2">
 
-<iframe src="<?php echo "ftp://yayas:Bismillah@127.0.0.1/TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS/".$personnel_number."/".$code_folder."/".$name_file_ftp; ?>"  height="600px" width="70%"></iframe>
+<iframe src="<?php echo "ftp://usr-olaps:p@ssw0rd@192.168.40.107/TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS/".$personnel_number."/".$code_folder."/".$name_file_ftp; ?>"  height="600px" width="70%"></iframe>
 <br/>
 <br/>
 <form action="<?php echo base_url()."index.php/quality_control/process_document"; ?>" method="post">            

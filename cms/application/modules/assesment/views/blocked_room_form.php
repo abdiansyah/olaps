@@ -14,8 +14,8 @@ $().ready(function(){
         <label class="col-sm-2 control-label input-sm">Room</label>
 		<div class="col-sm-4">
             <select name="id_room" required>
-                	<option value="<?php echo $rc->id_room_fk; ?>">--- Choose Roomm ---</option>
-					<?php echo modules::run('assesment/blocked_room/options_room', $rc->id_room); ?>
+                	<option value="<?php echo @$rc->id_room_fk; ?>">--- Choose Room ---</option>
+					<?php echo modules::run('assesment/blocked_room/options_room'); ?>
             </select>
 		</div>
 	</div>
