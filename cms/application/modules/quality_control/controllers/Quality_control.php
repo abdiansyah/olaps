@@ -222,7 +222,8 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);
+            'wordwrap' => TRUE);  
+
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -494,7 +495,8 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);
+            'wordwrap' => TRUE);  
+
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -617,7 +619,8 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);
+            'wordwrap' => TRUE);  
+
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -830,7 +833,8 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);
+            'wordwrap' => TRUE);  
+
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
