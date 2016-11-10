@@ -322,7 +322,7 @@ class Apply_license extends CI_Controller
                         <input type="hidden" name="code_req_spec_certificate_license_garuda[]" value="' . $value->code_t . '"/>
                         <div class="progressbox"><div id="progressbar_certificate_license_garuda_' . $no . '" class="progress"></div><div id="statustxt_certificate_license_garuda_' . $no . '" class="statustxt_certificate_license_garuda">0%</div ></div>                                                                                                     
                         </td>
-                        <td><img class="status_file_certificate_license_garuda" id="status_file_certificate_license_garuda' . $no . '" height="30"/> &nbsp; <img class="empty_file_certificate_license_garuda" id="empty_file_certificate_license_garuda' . $no . '" height="30"/></td> 
+                        <td><img class="status_file_certificate_license_garuda" id="status_file_certificate_license_garuda_' . $no . '" height="30"/> &nbsp; <img class="empty_file_certificate_license_garuda" id="empty_file_certificate_license_garuda' . $no . '" height="30"/></td> 
                         </tr>';
                             $no++;
                         }
@@ -813,10 +813,7 @@ class Apply_license extends CI_Controller
 
         $license                        = $sess_license['license'];
         $status_license                 = $sess_license['status_license'];
-        $type                           = $sess_license['type'];
-        $type_check_23                  = $sess_license_garuda['type_check_23'];
-        $type_check_24                  = $sess_license_garuda['type_check_24'];
-        $type_check_25                  = $sess_license_garuda['type_check_25'];
+        $type                           = $sess_license['type'];        
 
         if(!empty($sess_license_easa['check_easa']) && !empty($sess_license_easa['type_easa'])){
             $license_easa                   = $sess_license_easa['check_easa'];
@@ -954,6 +951,9 @@ class Apply_license extends CI_Controller
         $license                        = $sess_license['license'];
         $status_license                 = $sess_license['status_license'];
         $type                           = $sess_license['type'];
+        $type_check_23                  = $sess_license_garuda['type_check_23'];
+        $type_check_24                  = $sess_license_citilink['type_check_24'];
+        $type_check_25                  = $sess_license_sriwijaya['type_check_25'];
 
         if(!empty($sess_license_easa['check_easa']) && !empty($sess_license_easa['type_easa'])){
             $license_easa                   = $sess_license_easa['check_easa'];
@@ -1117,7 +1117,7 @@ class Apply_license extends CI_Controller
                     'name_file'               => @$fileNameNew,
                     'code_file'               => @$code_req_spec_certificate_license_garuda_s[$d],
                     'id_auth_license_fk'      => $license,
-                    'id_auth_type_fk'         => $type_check_24,
+                    'id_auth_type_fk'         => $type_check_23,
                     'status_license'          => $status_license,
                     'date_upload'             => date('Y-m-d'),
                 );                                                     
@@ -1126,7 +1126,7 @@ class Apply_license extends CI_Controller
             }
         }
            
-        $code_req_spec_certificate_lincese_citilink_s                        = $this->input->post('code_req_spec_certificate_license_citilink');                                                                              
+        $code_req_spec_certificate_license_citilink_s                        = $this->input->post('code_req_spec_certificate_license_citilink');                                                                              
         @$file_req_spec_certificate_license_citilink_s                       = count($_FILES['file_req_spec_certificate_license_citilink']['name']);
         $date_training_req_spec_certificate_license_citilink_s               = $this->input->post('date_training_req_spec_certificate_license_citilink');
         $save_result_expiration_date_req_spec_certificate_license_citilink_s = $this->input->post('save_result_expiration_date_req_spec_certificate_license_citilink');                                                                          
@@ -1152,8 +1152,10 @@ class Apply_license extends CI_Controller
                     'expiration_date'         => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_license_citilink_s[$e])),
                     'name_file'               => @$fileNameNew,
                     'code_file'               => @$code_req_spec_certificate_license_citilink_s[$e],
-                    'status_license'         => $status_license,
-                    'date_upload'            => date('Y-m-d'),
+                    'status_license'          => $status_license,
+                    'id_auth_license_fk'      => $license,
+                    'id_auth_type_fk'         => $type_check_24,
+                    'date_upload'             => date('Y-m-d'),
                );                                                     
                $this->db->insert('t_file_requirement',$data_spec_certificate_license_citilink);
                $this->get_sess_id_authorization($code_req_spec_certificate_license_citilink);
@@ -1161,7 +1163,7 @@ class Apply_license extends CI_Controller
         }
            
            
-        $code_req_spec_certificate_lincese_sriwijaya_s                        = $this->input->post('code_req_spec_certificate_license_sriwijaya');
+        $code_req_spec_certificate_license_sriwijaya_s                        = $this->input->post('code_req_spec_certificate_license_sriwijaya');
         @$file_req_spec_certificate_license_sriwijaya_s                       = count($_FILES['file_req_spec_certificate_license_sriwijaya']['name']);
         $date_training_req_spec_certificate_license_sriwijaya_s               = $this->input->post('date_training_req_spec_certificate_license_sriwijaya');
         $save_result_expiration_date_req_spec_certificate_license_sriwijaya_s = $this->input->post('save_result_expiration_date_req_spec_certificate_license_sriwijaya');                                                                          
@@ -1188,6 +1190,8 @@ class Apply_license extends CI_Controller
                     'name_file'                 => @$fileNameNew,
                     'code_file'                 => @$code_req_spec_certificate_license_sriwijaya_s[$f],
                     'status_license'            => $status_license,
+                    'id_auth_license_fk'        => $license,
+                    'id_auth_type_fk'           => $type_check_25,
                     'date_upload'               => date('Y-m-d'),
                 );                                                     
                 $this->db->insert('t_file_requirement',$data_spec_certificate_license_sriwijaya);

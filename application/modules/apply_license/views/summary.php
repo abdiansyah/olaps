@@ -3,6 +3,7 @@ if(!isset($data_completing_data['submitcompletingdata'])){
         redirect('apply_license/index');
     }else
     {
+      error_reporting(0);
 ?>
 <script type="text/javascript">
     window.history.forward();
@@ -172,7 +173,7 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                                     </thead>                                    
                                     <tbody id="sum_license_authorization">
                                      <?php
-                                     if(@$data_license!=''){
+                                     if (is_array(@$data_license) || is_object(@$data_license)) {
                                           echo @$data_license;
                                         }
                                      ?>   
