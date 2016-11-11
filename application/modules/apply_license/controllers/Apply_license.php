@@ -251,18 +251,24 @@ class Apply_license extends CI_Controller
                         $additional_specification = $this->m_apply_license->query_specification($personnel_number, $license, $type, $tab_spec, $tab_category, $tab_scope, $field)->result();
                         foreach ($additional_specification as $value) {
                             @$data_req_specific .= '<tr class="label_req_spec">
-                        <td><label>' . $no . '</label> </td>
-                        <td><label class="label_req_spec">' . $value->name_t . '</label></td>';
-                            if ($value->category_continous == 'Recurrent') {
-                                @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
-                        <td><input type="hidden" class="expiration_date_req_spec_certificate" id="expiration_date_req_spec_certificate_' . $no . '" name="expiration_date_req_spec_certificate[]" value="' . $value->age_requirement . '"/>                        
-                        <input type="text" class="label_result_expiration_date_req_spec_certificate" id="label_result_expiration_date_req_spec_certificate_' . $no . '" disabled/>
-                        </td>
-                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
+                            <td><label>' . $no . '</label> </td>
+                            <td><label class="label_req_spec">' . $value->name_t . '</label></td>';
+                                if ($value->category_continous == 'Recurrent') {
+                                    @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
+                            <td><input type="hidden" class="expiration_date_req_spec_certificate" id="expiration_date_req_spec_certificate_' . $no . '" name="expiration_date_req_spec_certificate[]" value="' . $value->age_requirement . '"/>                        
+                            <input type="text" class="label_result_expiration_date_req_spec_certificate" id="label_result_expiration_date_req_spec_certificate_' . $no . '" disabled/>
+                            </td>
+                            <td>';
+                                if (!empty($value->date_upload)) {
+                                    $data_req_specific .= '<input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]" disabled/></td>';
+                                    } else {
+                                    $data_req_specific .= '<input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
+                                    }
+
                             } else if ($value->category_continous == 'Non Recurrent') {
                                 @$data_req_specific .= '<td><input type="text" class="date_training_req_spec_certificate" id="' . $no . '" name="date_training_req_spec_certificate[]" /></td>
                                 <td>&nbsp;</td>
-                        <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
+                                <td><input type="file" class="file_req_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             } else if ($value->category_continous == 'New') {
                                 @$data_req_specific .= '<td></td>
                                 <td></td>
@@ -272,13 +278,18 @@ class Apply_license extends CI_Controller
                                 <td></td>
                                 <td><input type="file" class="file_general_spec_certificate" id="file_req_spec_certificate_' . $no . '" name="file_req_spec_certificate[]"/></td>';
                             };
-                            @$data_req_specific .= '<td width="20%">
-                            <input type="hidden" name="code_req_spec_certificate[]" value="' . $value->code_t . '"/>
-                            <input type="hidden" class="save_result_expiration_date_req_spec_certificate" id="save_result_expiration_date_req_spec_certificate_' . $no . '" name="save_result_expiration_date_req_spec_certificate[]"/>
-                            <div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">0%</div ></div>                                                                                                     
-                            </td>
-                            <td><img class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/></td> 
-                            </tr>';
+                                @$data_req_specific .= '<td width="20%">
+                                <input type="hidden" name="code_req_spec_certificate[]" value="' . $value->code_t . '"/>
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate" id="save_result_expiration_date_req_spec_certificate_' . $no . '" name="save_result_expiration_date_req_spec_certificate[]"/>';
+                                    if (!empty($value->date_upload)) {
+                                        $data_req_specific .= '<div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">100%</div ></div></td>
+                                        <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/></td> 
+                                        </tr>';
+                                    } else {
+                                        $data_req_specific .= '<div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">0%</div ></div></td>
+                                        <td><img class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/></td> 
+                                        </tr>';
+                                    }
                             $no++;
                         }
                     }
@@ -1005,8 +1016,7 @@ class Apply_license extends CI_Controller
                    'name_file'               => $fileNameNew,
                    'code_file'               => $code_req_general_document,
                    'id_auth_license_fk'      => $license,
-                   'id_auth_type_fk'         => $type,
-                   'status_license'          => $status_license,
+                   'id_auth_type_fk'         => $type,                   
                    'date_upload'             => date('Y-m-d'),
                 );                                                     
                 $this->db->insert('t_file_requirement',$data_license);                  
@@ -1028,7 +1038,7 @@ class Apply_license extends CI_Controller
                 $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);
                 $fileNameOld  = $_FILES['file_req_document_certificate']['name'][$b];
                 @$ext         = end(explode('.',$_FILES['file_req_document_certificate']['name'][$b]));                          
-                $fileNameNew  = $personnel_number.'_'.$code_req_document_certificate_s[$b].'.'.$ext;
+                $fileNameNew  = $personnel_number.'_'.$code_req_document_certificate_s[$b]. '_' . date('YmdHis') . '.' .$ext;
                 $sourceFileName      = $_FILES['file_req_document_certificate']['tmp_name'][$b];                     
                 @$destination        = $fileNameOld;                                   
                 @$destinationnew     = $fileNameNew;                                                          
@@ -1042,9 +1052,9 @@ class Apply_license extends CI_Controller
                     'code_file'            => $code_req_document_certificate_s[$b],                
                     'name_file'            => $fileNameNew,
                     'id_auth_license_fk'   => $license,
-                    'id_auth_type_fk'      => $type,
-                    'status_license'       => $status_license,
+                    'id_auth_type_fk'      => $type,                    
                     'date_upload'          => date('Y-m-d'),
+                    'time_upload'          => date('H:i:s'),
                 );
 
                 $this->db->insert('t_file_requirement',$data_general_certificate);
@@ -1066,7 +1076,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate   = $save_result_expiration_date_req_spec_certificate_s[$c];
                 $fileNameOld                                        = $_FILES['file_req_spec_certificate']['name'][$c];
                 @$ext                                               = end(explode('.',$_FILES['file_req_spec_certificate']['name'][$c]));
-                $fileNameNew                                        = $personnel_number.'_'.$code_req_spec_certificate_s[$c].'.'.$ext;
+                $fileNameNew                                        = $personnel_number.'_'.$code_req_spec_certificate_s[$c]. '_' . date('YmdHis') . '.' .$ext;
                 $sourceFileName                                     = $_FILES['file_req_spec_certificate']['tmp_name'][$c];
                 @$destination                                       = $fileNameOld;                                   
                 @$destinationnew                                    = $fileNameNew;                                            
@@ -1080,9 +1090,9 @@ class Apply_license extends CI_Controller
                     'date_training'           => date('Y-m-d', strtotime($date_training_req_spec_certificate_s[$c])),
                     'expiration_date'         => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_s[$c])),
                     'id_auth_license_fk'      => $license,
-                    'id_auth_type_fk'         => $type,
-                    'status_license'          => $status_license,
-                    'date_upload'             => date('Y-m-d'),               
+                    'id_auth_type_fk'         => $type,                    
+                    'date_upload'             => date('Y-m-d'),   
+                    'time_upload'             => date('H:i:s'),            
                 );                                                     
                 $this->db->insert('t_file_requirement',$data_spec_certificate);                                                 
                 $this->get_sess_id_authorization($code_req_spec_certificate);
@@ -1103,7 +1113,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_license_garuda   = $save_result_expiration_date_req_spec_certificate_license_garuda_s[$d];                                                       
                 $fileNameOld = $_FILES['file_req_spec_certificate_license_garuda']['name'][$d];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_license_garuda']['name'][$d]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_garuda_s[$d].'.'.$ext;
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_garuda_s[$d]. '_' . date('YmdHis') . '.' .$ext;
                 $sourceFileName = $_FILES['file_req_spec_certificate_license_garuda']['tmp_name'][$d];
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1117,9 +1127,9 @@ class Apply_license extends CI_Controller
                     'name_file'               => @$fileNameNew,
                     'code_file'               => @$code_req_spec_certificate_license_garuda_s[$d],
                     'id_auth_license_fk'      => $license,
-                    'id_auth_type_fk'         => $type_check_23,
-                    'status_license'         => $status_license,
-                    'date_upload'            => date('Y-m-d'),
+                    'id_auth_type_fk'         => $type_check_23,                    
+                    'date_upload'             => date('Y-m-d'),
+                    'time_upload'             => date('H:i:s'),
                 );                                                     
                 $this->db->insert('t_file_requirement',$data_spec_certificate_license_garuda);                
             }
@@ -1138,7 +1148,7 @@ class Apply_license extends CI_Controller
                $save_result_expiration_date_req_spec_certificate_license_citilink   = $save_result_expiration_date_req_spec_certificate_license_citilink_s[$e];                                                       
                $fileNameOld = $_FILES['file_req_spec_certificate_license_citilink']['name'][$e];                                                    
                @$ext = end(explode('.',$_FILES['file_req_spec_certificate_license_citilink']['name'][$e]));                          
-               $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_citilink_s[$e].'.'.$ext;                                                                                                                  
+               $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_citilink_s[$e]. '_' . date('YmdHis') . '.' .$ext;                                                                                                                  
                $sourceFileName = $_FILES['file_req_spec_certificate_license_citilink']['tmp_name'][$e];                                                                                                                                             
                @$destination = $fileNameOld;                                   
                @$destinationnew = $fileNameNew;                                            
@@ -1152,9 +1162,9 @@ class Apply_license extends CI_Controller
                     'name_file'               => @$fileNameNew,
                     'code_file'               => @$code_req_spec_certificate_license_citilink_s[$e],
                     'id_auth_license_fk'      => $license,
-                    'id_auth_type_fk'         => $type_check_24,
-                    'status_license'          => $status_license,
+                    'id_auth_type_fk'         => $type_check_24,                    
                     'date_upload'             => date('Y-m-d'),
+                    'time_upload'             => date('H:i:s'),
                );                                                     
                $this->db->insert('t_file_requirement',$data_spec_certificate_license_citilink);
                
@@ -1175,7 +1185,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_license_sriwijaya = $save_result_expiration_date_req_spec_certificate_license_sriwijaya_s[$f];                                                       
                 $fileNameOld = $_FILES['file_req_spec_certificate_license_sriwijaya']['name'][$f];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_license_sriwijaya']['name'][$f]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_sriwijaya_s[$f].'.'.$ext;                                                                                                                  
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_license_sriwijaya_s[$f]. '_' . date('YmdHis') . '.' .$ext;                                                                                                                  
                 $sourceFileName = $_FILES['file_req_spec_certificate_license_sriwijaya']['tmp_name'][$f];                                                                                                                                             
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1189,9 +1199,9 @@ class Apply_license extends CI_Controller
                     'name_file'                 => @$fileNameNew,
                     'code_file'                 => @$code_req_spec_certificate_license_sriwijaya_s[$f],
                     'id_auth_license_fk'        => $license,
-                    'id_auth_type_fk'           => $type_check_25,
-                    'status_license'            => $status_license,
+                    'id_auth_type_fk'           => $type_check_25,                    
                     'date_upload'               => date('Y-m-d'),
+                    'time_upload'               => date('H:i:s'),
                 );                                                     
                 $this->db->insert('t_file_requirement',$data_spec_certificate_license_sriwijaya);
                 $this->get_sess_id_authorization($code_req_spec_certificate_license_sriwijaya);                                                             
@@ -1211,7 +1221,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_easa   = $save_result_expiration_date_req_spec_certificate_easa_s[$g];
                 $fileNameOld = $_FILES['file_req_spec_certificate_easa']['name'][$g];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_easa']['name'][$g]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_easa_s[$g].'.'.$ext;                                                                                                                  
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_easa_s[$g]. '_' . date('YmdHis') . '.' .$ext;                                                                                                                  
                 $sourceFileName = $_FILES['file_req_spec_certificate_easa']['tmp_name'][$g];                                                                                                                                             
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1222,10 +1232,12 @@ class Apply_license extends CI_Controller
                 'personnel_number_fk'     => @$personnel_number,                
                 'name_file'               => @$fileNameNew,
                 'code_file'               => @$code_req_spec_certificate_easa,
+                'id_auth_license_fk'      => $license,
+                'id_auth_type_fk'         => $type, 
                 'id_auth_license_easa_fk' => @$license_easa,
                 'id_auth_type_easa_fk'    => @$type_easa,        
-                'status_license'          => $status_license,                        
                 'date_upload'             => date('Y-m-d'),
+                'time_upload'             => date('H:i:s'),
                 );                                
                                                                                               
                 $this->db->insert('t_file_requirement',$data_easa);           
@@ -1246,7 +1258,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_special   = $save_result_expiration_date_req_spec_certificate_special_s[$h];                                                       
                 $fileNameOld = $_FILES['file_req_spec_certificate_special']['name'][$h];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_special']['name'][$h]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_special_s[$h].'.'.$ext;                                                                                                                  
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_special_s[$h]. '_' . date('YmdHis') . '.' .$ext;                                                                                                                  
                 $sourceFileName = $_FILES['file_req_spec_certificate_special']['tmp_name'][$h];                                                                                                                                             
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1259,10 +1271,12 @@ class Apply_license extends CI_Controller
                     'code_file'                    => @$code_req_spec_certificate_special,
                     'date_training_special'        => date('Y-m-d', strtotime($date_training_req_spec_certificate_special_s[$h])),
                     'expiration_date_special'      => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_special_s[$h])),
+                    'id_auth_license_fk'           => $license,
+                    'id_auth_type_fk'              => $type, 
                     'id_auth_license_special_fk'   => @$license_special,
-                    'id_auth_type_special_fk'      => @$type_special,
-                    'status_license'               => $status_license,
+                    'id_auth_type_special_fk'      => @$type_special,                    
                     'date_upload'                  => date('Y-m-d'),                                
+                    'time_upload'                  => date('H:i:s'),
                 );
                                                               
                 $this->db->insert('t_file_requirement',$data_special);
@@ -1283,7 +1297,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_garuda   = $save_result_expiration_date_req_spec_certificate_garuda_s[$i];                                                       
                 $fileNameOld = $_FILES['file_req_spec_certificate_garuda']['name'][$i];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_garuda']['name'][$i]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_garuda_s[$i].'.'.$ext;
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_garuda_s[$i]. '_' . date('YmdHis') . '.' .$ext;
                 $sourceFileName = $_FILES['file_req_spec_certificate_garuda']['tmp_name'][$i];
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1295,10 +1309,12 @@ class Apply_license extends CI_Controller
                     'code_file'                    => @$code_req_spec_certificate_garuda,
                     'date_training_garuda'         => date('Y-m-d', strtotime($date_training_req_spec_certificate_garuda_s[$i])),
                     'expiration_date_garuda'       => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_garuda_s[$i])),
+                    'id_auth_license_fk'           => $license,
+                    'id_auth_type_fk'              => $type, 
                     'id_auth_license_garuda_fk'    => @$with_license_garuda,
-                    'id_auth_type_garuda_fk'       => @$with_type_garuda,
-                    'status_license'               => $status_license,
+                    'id_auth_type_garuda_fk'       => @$with_type_garuda,                    
                     'date_upload'                  => date('Y-m-d'),                                
+                    'time_upload'                  => date('H:i:s'),
                 );
                         
                 $this->db->insert('t_file_requirement',$data_garuda);                                            
@@ -1318,7 +1334,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_citilink   = $save_result_expiration_date_req_spec_certificate_citilink_s[$j];                                                       
                 $fileNameOld = $_FILES['file_req_spec_certificate_citilink']['name'][$j];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_citilink']['name'][$j]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_citilink_s[$j].'.'.$ext;                                                                                                                  
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_citilink_s[$j]. '_' . date('YmdHis') . '.' .$ext;                                                                                                                  
                 $sourceFileName = $_FILES['file_req_spec_certificate_citilink']['tmp_name'][$j];                                                                                                                                             
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1331,10 +1347,12 @@ class Apply_license extends CI_Controller
                 'code_file'                    => @$code_req_spec_certificate_citilink,
                 'date_training_citilink'       => date('Y-m-d', strtotime($date_training_req_spec_certificate_citilink_s[$j])),
                 'expiration_date_citilink'     => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_citilink_s[$j])),
+                'id_auth_license_fk'           => $license,
+                'id_auth_type_fk'              => $type, 
                 'id_auth_license_citilink_fk'  => @$with_license_citilink,
-                'id_auth_type_citilink_fk'     => @$with_type_citilink,
-                'status_license'               => $status_license,
+                'id_auth_type_citilink_fk'     => @$with_type_citilink,                
                 'date_upload'                  => date('Y-m-d'),                                
+                'time_upload'                  => date('H:i:s'),
                 );
 
                 $this->db->insert('t_file_requirement',$data_citilink);                                  
@@ -1354,7 +1372,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_sriwijaya   = $save_result_expiration_date_req_spec_certificate_sriwijaya_s[$k];
                 $fileNameOld = $_FILES['file_req_spec_certificate_sriwijaya']['name'][$k];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_sriwijaya']['name'][$k]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_sriwijaya_s[$k].'.'.$ext;
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_sriwijaya_s[$k]. '_' . date('YmdHis') . '.' .$ext;
                 $sourceFileName = $_FILES['file_req_spec_certificate_sriwijaya']['tmp_name'][$k];
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1366,10 +1384,12 @@ class Apply_license extends CI_Controller
                     'code_file'                    => @$code_req_spec_certificate_sriwijaya,
                     'date_training_sriwijaya'      => date('Y-m-d', strtotime($date_training_req_spec_certificate_sriwijaya_s[$k])),
                     'expiration_date_sriwijaya'    => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_sriwijaya_s[$k])),
+                    'id_auth_license_fk'           => $license,
+                    'id_auth_type_fk'              => $type, 
                     'id_auth_license_sriwijaya_fk' => @$with_license_sriwijaya,
-                    'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya,
-                    'status_license'               => $status_license,
-                    'date_upload'                  => date('Y-m-d'),                                                                
+                    'id_auth_type_sriwijaya_fk'    => @$with_type_sriwijaya,                    
+                    'date_upload'                  => date('Y-m-d'),   
+                    'time_upload'                  => date('H:i:s'),                                                             
                 );
            
                 $this->db->insert('t_file_requirement',$data_sriwijaya);                                  
@@ -1389,7 +1409,7 @@ class Apply_license extends CI_Controller
                 $save_result_expiration_date_req_spec_certificate_cofc   = $save_result_expiration_date_req_spec_certificate_cofc_s[$l];
                 $fileNameOld = $_FILES['file_req_spec_certificate_cofc']['name'][$l];                                                    
                 @$ext = end(explode('.',$_FILES['file_req_spec_certificate_cofc']['name'][$l]));                          
-                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_cofc_s[$l].'.'.$ext;
+                $fileNameNew = $personnel_number.'_'.$code_req_spec_certificate_cofc_s[$l]. '_' . date('YmdHis') . '.' .$ext;       
                 $sourceFileName = $_FILES['file_req_spec_certificate_cofc']['tmp_name'][$l];
                 @$destination = $fileNameOld;                                   
                 @$destinationnew = $fileNameNew;                                            
@@ -1401,10 +1421,12 @@ class Apply_license extends CI_Controller
                     'code_file'                     => @$code_req_spec_certificate_cofc,
                     'date_training_cofc'            => date('Y-m-d', strtotime($date_training_req_spec_certificate_cofc_s[$l])),
                     'expiration_date_cofc'          => date('Y-m-d', strtotime($save_result_expiration_date_req_spec_certificate_cofc_s[$l])),
+                    'id_auth_license_fk'            => $license,
+                    'id_auth_type_fk'               => $type, 
                     'id_auth_license_cofc_fk'       => @$license_cofc,
-                    'id_auth_type_cofc_fk'          => @$type_cofc,
-                    'status_license'                => $status_license,
-                    'date_upload'                   => date('Y-m-d'),                                                                
+                    'id_auth_type_cofc_fk'          => @$type_cofc,                    
+                    'date_upload'                   => date('Y-m-d'), 
+                    'time_upload'                   => date('H:i:s'),                                                               
                 );                 
                 $this->db->insert('t_file_requirement',$data_cofc);                                                                            
             }                

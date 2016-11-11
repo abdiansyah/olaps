@@ -241,20 +241,24 @@ class M_apply_license extends CI_Model {
     return $this->db->query($query_general_certificate); 
     }
     
-    
-    
+      
     public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){
     $not_file = $this->db->select("tfr.code_file")->from("t_file_requirement AS tfr")->
                     WHERE("tfr.code_file = maars.code_t AND tfr.personnel_number_fk = '$personnel_number'")->get_compiled_select();
-    $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
+    $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, 
+                            mgsc.age_requirement, REPLACE(tfr.date_upload,'-','') AS date_upload,
+                            SUBSTRING(REPLACE(tfr.time_upload, ':',''),1,6) AS time_upload FROM m_group_scope_category mgsc
                             LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                             LEFT JOIN  m_auth_license mal ON mgsc.id_auth_license_fk = mal.id
+                            LEFT JOIN t_file_requirement AS tfr ON maars.code_t = tfr.code_file
                             WHERE mgsc.id_auth_license_fk = '$license'                    
                             AND mgsc.id_auth_type_fk = '$type'                    
                             AND mgsc.id_auth_spect_fk = '$tab_spec'
                             AND mgsc.id_auth_category_fk = '$tab_category'
-                            AND mgsc.id_auth_scope_fk = '$tab_scope' " . $field . " 
-                            AND mgsc.category_admin = 'User'";
+                            AND mgsc.id_auth_scope_fk = '$tab_scope'
+                            AND mgsc.category_admin = 'User'
+                            ORDER BY date_upload DESC
+                            ";
     return $this->db->query($query_specification);
     }
     
