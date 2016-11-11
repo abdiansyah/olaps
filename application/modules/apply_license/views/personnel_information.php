@@ -17,7 +17,7 @@
             <?php if(validation_errors()!=''){echo '<div class="alert alert-danger"><b>'.validation_errors().'</b></div>';}?>
             <br/>
             <?php 
-            $user_data = $this->session->userdata('users'); 
+            $user_data = $this->session->userdata('users_applicant'); 
             $sess_personnel_number = $user_data->PERNR;
             $sess_employee_group = $user_data->id_employee_group;                        
             if(@$sess_employee_group == '1'){                                

@@ -45,17 +45,17 @@ class Page {
 			if($cek2 == 'logout') {
 				
 			}
-			elseif($this->_CI->session->userdata('users') != '') {
+			elseif($this->_CI->session->userdata('users_applicant') != '') {
 				redirect(site_url('/dashboard/'));
 			}
 		}
 		else {
-			if($this->_CI->session->userdata('users') == '') {
+			if($this->_CI->session->userdata('users_applicant') == '') {
 				redirect(base_url());
 			}
 			else{
 				$uri = $this->_CI->uri->uri_string();
-				//$id_grup_users = $this->_CI->session->userdata('users')->id_grup_users;
+				//$id_grup_users = $this->_CI->session->userdata('users_applicant')->id_grup_users;
 				if($uri != 'dashboard')	{
 
 				}				

@@ -25,7 +25,7 @@
 // -- Params : $request_number_approved,$personnel_number_superior
 // -- Purpose :
        function schedule_event($request_number_approved='',$personnel_number=''){ 
-        $user_data              = $this->session->userdata('users');
+        $user_data              = $this->session->userdata('users_applicant');
         $sess_personnel         = $user_data->PERNR;
         $sess_report_to         = $this->m_apply_license->get_data_row_personnel_by($personnel_number);
         $sess_data_gm           = $this->m_apply_license->get_gm_personnel_by($personnel_number)->row_array();

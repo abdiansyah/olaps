@@ -32,7 +32,7 @@
 				<li class="dropdown user user-menu">                
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<?php                             
-                        if ($this->session->userdata('users')->PERNR != '') {@$img_photo = $this->session->userdata('users')->PERNR.'.jpg';
+                        if ($this->session->userdata('users_applicant')->PERNR != '') {@$img_photo = $this->session->userdata('users_applicant')->PERNR.'.jpg';
                         }
                         ?> 
                         <img src="https://talentlead.gmf-aeroasia.co.id/images/avatar/<?php echo $img_photo;?>" class="user-image" alt="User Image">                        
@@ -43,7 +43,7 @@
 						<li class="user-header">
 								<img src="https://talentlead.gmf-aeroasia.co.id/images/avatar/<?php echo $img_photo;?>" class="user-image" alt="User Image">
 							<p>
-								<?php echo $this->session->userdata('users')->EMPLNAME; ?>								
+								<?php echo $this->session->userdata('users_applicant')->EMPLNAME; ?>								
 							</p>
 						</li>
 						<!-- Menu Footer-->

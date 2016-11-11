@@ -13,7 +13,7 @@ class Home extends CI_Controller
 
     public function index()
     {
-        $user_data                          = $this->session->userdata('users'); 
+        $user_data                          = $this->session->userdata('users_applicant'); 
         $personnel_number                   = $user_data->PERNR;       
         $unit                               = $user_data->UNIT;  
         $presenttitle                       = SUBSTR($user_data->JOBTITLE,0,2); 
@@ -31,7 +31,7 @@ class Home extends CI_Controller
     }
     
     public function get_ajax_home(){
-        $user_data = $this->session->userdata('users');
+        $user_data = $this->session->userdata('users_applicant');
         $sess_personnel_number  = $user_data->PERNR;                                                                          
         $sess_employee_group = $user_data->id_employee_group;
         $cek_superior = $this->m_home->cek_superior($sess_personnel_number);
