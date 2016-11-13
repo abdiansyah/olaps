@@ -211,14 +211,13 @@ class M_apply_license extends CI_Model {
     }
     
     public function query_general_document($personnel_number, $license='',$type='',$type_check_23='',$type_check_24='',$type_check_25='',$check_easa='',$type_easa='',$check_special=''){        
-    $cek_file_general_document = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = '-' OR mglrg.category_continous = 'New')";
-    $not_file = $this->db->select("tfr.code_file")->from("t_file_requirement AS tfr")->
-                        WHERE("tfr.code_file = maarg.code_t AND tfr.personnel_number_fk = '$personnel_number'")->get_compiled_select();
+    $cek_file_general_document = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = '-' OR mglrg.category_continous = 'New')";    
     $query_general_document = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous, 
-                        mglrg.category_admin,mglrg.age_requirement FROM m_group_license_req_general AS mglrg 
+                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file FROM m_group_license_req_general AS mglrg 
                         LEFT JOIN m_auth_additional_req_general AS maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license AS mal ON mglrg.id_auth_license_fk = mal.id 
-                        LEFT JOIN m_auth_type AS mat ON mglrg.id_auth_type_fk = mat.id                                                                         
+                        LEFT JOIN m_auth_type AS mat ON mglrg.id_auth_type_fk = mat.id
+                        LEFT JOIN t_file_requirement AS tfr ON maarg.code_t = tfr.code_file
                         WHERE mal.id = '$license' AND (mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_document."
                         OR (mal.id = '$check_easa'
                         AND mat.id = '$type_easa' ".$cek_file_general_document.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_document.")";
@@ -227,8 +226,6 @@ class M_apply_license extends CI_Model {
     
     public function query_general_certificate($personnel_number, $license='',$type='',$type_check_23='',$type_check_24='',$type_check_25='',$check_easa='',$type_easa='',$check_special=''){
     $cek_file_general_certificate = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = 'Non Recurrent' OR mglrg.category_continous = 'Recurrent')";
-    $not_file = $this->db->select("tfr.code_file")->from("t_file_requirement AS tfr")->
-                        WHERE("tfr.code_file = maarg.code_t AND tfr.personnel_number_fk = '$personnel_number'")->get_compiled_select();
     $query_general_certificate = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous, tfr.code_file,
                         mglrg.category_admin,mglrg.age_requirement FROM m_group_license_req_general mglrg 
                         LEFT JOIN m_auth_additional_req_general maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
@@ -243,8 +240,7 @@ class M_apply_license extends CI_Model {
     
       
     public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){
-    $not_file = $this->db->select("tfr.code_file")->from("t_file_requirement AS tfr")->
-                    WHERE("tfr.code_file = maars.code_t AND tfr.personnel_number_fk = '$personnel_number'")->get_compiled_select();
+    
     $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
                             mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                             LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
