@@ -8,7 +8,7 @@ class Ubah_password extends MX_Controller {
 		parent::__construct();
 		
 		$this->page->use_directory();
-		$this->load->model('back_office/model_pengguna');
+		$this->load->model('model_personnel');
 	}
 	
 	public function index() {
