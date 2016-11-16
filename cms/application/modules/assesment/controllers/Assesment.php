@@ -159,15 +159,16 @@ class Assesment extends MX_Controller {
         $email_applicant   		= $data_applicant['email'];
         $email_superior  		= $data_applicant['email_superior'];  
         $email_gm               = $sess_data_gm['email'];           
-        $config = Array(
-        'protocol' => 'smtp',
-        'smtp_host' => 'ssl://smtp.googlemail.com',
-        'smtp_port' => 465,
-        'smtp_user' => 'devlicensetq@gmail.com',
-        'smtp_pass' => 'Bismillah1995', 
-        'mailtype' => 'html',
-        'charset' => 'iso-8859-1',
-        'wordwrap' => TRUE);
+        $config         = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'mail.gmf-aeroasia.co.id',
+            'smtp_port' => 25,
+            'smtp_user' => 'app.notif',
+            'smtp_pass' => 'app.notif',
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE
+        );
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
@@ -243,15 +244,16 @@ class Assesment extends MX_Controller {
         $email_applicant   		= $data_applicant['email'];
         $email_superior  		= $data_applicant['email_superior'];  
         $email_gm               = $sess_data_gm['email'];           
-        $config = Array(
-        'protocol' => 'smtp',
-        'smtp_host' => 'ssl://smtp.googlemail.com',
-        'smtp_port' => 465,
-        'smtp_user' => 'devlicensetq@gmail.com',
-        'smtp_pass' => 'Bismillah1995', 
-        'mailtype' => 'html',
-        'charset' => 'iso-8859-1',
-        'wordwrap' => TRUE);
+        $config         = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'mail.gmf-aeroasia.co.id',
+            'smtp_port' => 25,
+            'smtp_user' => 'app.notif',
+            'smtp_pass' => 'app.notif',
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE
+        );
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');

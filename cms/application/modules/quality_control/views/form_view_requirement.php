@@ -21,7 +21,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" name="not_valid">Not Valid</button>
+                    <button type="submit" class="btn btn-primary" name="not_valid" >Not Valid</button>
                 </div> 
             <?=form_close();?>                       
         </div>

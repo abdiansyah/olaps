@@ -61,11 +61,12 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                             <?php 
                             if($row->category_continous == '-' || $row->category_continous =='New') { ?>
                                 <td><input type="hidden" class="type_continous_general_document" value="<?php echo $row->category_continous; ?>" /></td>
-                                <td><input type="hidden" id="code_req_general_document_<?php echo $row->code_t;?>" name="code_req_general_document[]" value="<?php echo $row->code_t; ?>" />
-                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general" name="file_req_document_general[]"/>
+                                <td><input type="hidden" id="code_req_general_document_<?php echo $row->code_t;?>" value="<?php echo $row->code_t; ?>" />
+                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general""/>
+                                <b id="msg_<?php echo $i;?>"></b>
                                 </td>                                   
                             <?php 
-                            }                             
+                                }                             
                             ?> 
                             
                                 <?php if (!empty($row->code_file)) { ?>
@@ -74,7 +75,7 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                                     <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
                                     
                                 </td>
-                                    <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> 
+                                    <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
                                     </td> 
                                 <?php 
                                 } else {
@@ -141,13 +142,21 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
 </div>
 </div>
 <?php 
-};
+    };
 echo bootstrap_datepicker(); 
 ?>
-
 <script type="text/javascript">
-    var image_check = "<?php echo base_url('/assets/images/property/check.png'); ?>",
-        image_cross_check = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>";
+    var image_check                         = "<?php echo base_url('/assets/images/property/check.png'); ?>",
+        image_cross_check                   = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>",
+        upload_file_general                 = "<?php echo site_url().'/apply_license/upload_file_general/';?>",
+        delete_file_general                 = "<?php echo site_url().'/apply_license/delete_file_general/';?>",
+        cek_date_file_current               = "<?php echo site_url().'/apply_license/cek_date_file_current/';?>",
+        cek_time_file_current               = "<?php echo site_url().'/apply_license/cek_time_file_current/';?>",
+        cek_expiration_file_current         = "<?php echo site_url().'/apply_license/cek_expiration_file_current/';?>",
+        upload_file_document_certificate    = "<?php echo site_url().'/apply_license/upload_file_document_certificate/';?>",
+        delete_file_document_certificate    = "<?php echo site_url().'/apply_license/delete_file_document_certificate/';?>",
+        upload_file_spec_certificate        = "<?php echo site_url().'/apply_license/upload_file_spec_certificate/';?>",
+        delete_file_spec_certificate        = "<?php echo site_url().'/apply_license/delete_file_spec_certificate/';?>";        
 </script>
 <script src="<?php echo base_url('assets/plugins/js/completing_data.js');?>" type="text/javascript"></script>        
             

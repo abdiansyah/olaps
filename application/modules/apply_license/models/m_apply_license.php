@@ -217,35 +217,58 @@ class M_apply_license extends CI_Model {
                         LEFT JOIN m_auth_additional_req_general AS maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license AS mal ON mglrg.id_auth_license_fk = mal.id 
                         LEFT JOIN m_auth_type AS mat ON mglrg.id_auth_type_fk = mat.id
-                        LEFT JOIN t_file_requirement AS tfr ON maarg.code_t = tfr.code_file
+                        LEFT JOIN t_file_requirement AS tfr ON maarg.code_t = tfr.code_file AND tfr.personnel_number_fk = '$personnel_number' 
                         WHERE mal.id = '$license' AND (mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_document."
                         OR (mal.id = '$check_easa'
                         AND mat.id = '$type_easa' ".$cek_file_general_document.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_document.")";
     return $this->db->query($query_general_document);                        
     }
-    
+
+    public function cek_date_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 tfr.date_upload, tfr.time_upload  FROM t_file_requirement AS tfr
+                    WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                    ORDER BY tfr.date_upload, tfr.time_upload  DESC";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function cek_time_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 tfr.date_upload, tfr.time_upload FROM t_file_requirement AS tfr
+                    WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                    ORDER BY tfr.date_upload, tfr.time_upload DESC";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function cek_expiration_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105)) AS expiration_date, tfr.date_upload, tfr.time_upload FROM t_file_requirement AS tfr
+                    WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                    ORDER BY tfr.date_upload, tfr.time_upload DESC";
+        return $this->db->query($query)->row_array();
+    }
+        
     public function query_general_certificate($personnel_number, $license='',$type='',$type_check_23='',$type_check_24='',$type_check_25='',$check_easa='',$type_easa='',$check_special=''){
-    $cek_file_general_certificate = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = 'Non Recurrent' OR mglrg.category_continous = 'Recurrent')";
-    $query_general_certificate = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous, tfr.code_file,
-                        mglrg.category_admin,mglrg.age_requirement FROM m_group_license_req_general mglrg 
+    $cek_file_general_certificate = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = 'Non Recurrent' OR mglrg.category_continous = 'Recurrent')";    
+    $query_general_certificate = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous,
+                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date
+                        FROM m_group_license_req_general mglrg 
                         LEFT JOIN m_auth_additional_req_general maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license mal ON mglrg.id_auth_license_fk = mal.id 
                         LEFT JOIN m_auth_type mat ON mglrg.id_auth_type_fk = mat.id
-                        LEFT JOIN t_file_requirement AS tfr ON maarg.code_t = tfr.code_file 
-                        WHERE mal.id = '$license' AND(mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_certificate."  
+                        LEFT JOIN t_file_requirement AS tfr ON maarg.code_t = tfr.code_file AND tfr.personnel_number_fk = '$personnel_number'
+                        WHERE mal.id = '$license' AND (mat.id = '$type' OR mat.id = '$type_check_23' OR mat.id = '$type_check_24' OR mat.id = '$type_check_25') ".$cek_file_general_certificate."  
                         OR (mal.id = '$check_easa'
-                        AND mat.id = '$type_easa' ".$cek_file_general_certificate.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_certificate.")";
+                        AND mat.id = '$type_easa' ".$cek_file_general_certificate.") OR (mal.id = '$license' AND mat.id = '$check_special' ".$cek_file_general_certificate.") GROUP BY maarg.name_t, maarg.code_t, mglrg.category_continous,
+                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file
+                        ";
     return $this->db->query($query_general_certificate); 
     }
     
       
-    public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){
-    
+    public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){    
     $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
                             mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                             LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                             LEFT JOIN  m_auth_license mal ON mgsc.id_auth_license_fk = mal.id
-                            LEFT JOIN t_file_requirement AS tfr ON maars.code_t = tfr.code_file
+                            LEFT JOIN t_file_requirement AS tfr ON maars.code_t = tfr.code_file AND tfr.personnel_number_fk = '$personnel_number'
                             WHERE mgsc.id_auth_license_fk = '$license'                    
                             AND mgsc.id_auth_type_fk = '$type'                    
                             AND mgsc.id_auth_spect_fk = '$tab_spec'

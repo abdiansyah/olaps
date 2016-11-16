@@ -554,4 +554,4 @@
         get_license_customer = "<?php echo site_url().'/apply_license/get_license_customer/'; ?>",
         get_license_cofc = "<?php echo site_url().'/apply_license/get_license_cofc/'; ?>";            
 </script>
-<script src="<?php echo base_url('assets/plugins/js/authorization_request.js');?>" type="text/javascript"></script>     
+<script src="<?php echo base_url('assets/plugins/js/authorization_request.js');?>" type="text/javascript"></script> 

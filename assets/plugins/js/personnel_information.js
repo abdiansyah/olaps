@@ -128,7 +128,9 @@ $('[name=personnel_number]').on('keyup',function() {
     cari_personnel();
 });
 
-
+$('[name=cari_id]').on('click',function() {
+    cari_personnel();
+});
 
 $('[name=cari_id_emp_gmf]').click(function(){
 $('[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
