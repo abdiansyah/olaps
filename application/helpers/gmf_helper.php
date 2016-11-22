@@ -27,6 +27,43 @@ function excel_header($filename){
 	header("Expires: 0");
 }
 
+function connection_ftp() {
+	$CI =& get_instance();
+	$CI->load->library('ftp');                
+	$ftp_config['hostname'] = '127.0.0.1'; 
+	$ftp_config['username'] = 'yayas';
+	$ftp_config['password'] = 'Bismillah';
+	$ftp_config['debug']    = TRUE;    
+	$CI->ftp->connect($ftp_config);  
+}
+
+function destroy_all_session_applicant () {
+	$CI =& get_instance();
+    $CI->session->unset_userdata('sess_data_personnel');
+    $CI->session->unset_userdata('sess_license');
+    $CI->session->unset_userdata('sess_license_garuda');
+    $CI->session->unset_userdata('sess_license_citilink');
+    $CI->session->unset_userdata('sess_license_sriwijaya');
+    $CI->session->unset_userdata('sess_license_easa');
+    $CI->session->unset_userdata('sess_license_special');
+    $CI->session->unset_userdata('sess_with_garuda');
+    $CI->session->unset_userdata('sess_with_citilink');
+    $CI->session->unset_userdata('sess_with_sriwijaya');
+}
+
+function destroy_all_session_authorization_applicant () {
+	$CI =& get_instance();    
+    $CI->session->unset_userdata('sess_license');
+    $CI->session->unset_userdata('sess_license_garuda');
+    $CI->session->unset_userdata('sess_license_citilink');
+    $CI->session->unset_userdata('sess_license_sriwijaya');
+    $CI->session->unset_userdata('sess_license_easa');
+    $CI->session->unset_userdata('sess_license_special');
+    $CI->session->unset_userdata('sess_with_garuda');
+    $CI->session->unset_userdata('sess_with_citilink');
+    $CI->session->unset_userdata('sess_with_sriwijaya');
+}
+
 function form_data($names){
 	$CI =& get_instance();
 
@@ -174,24 +211,11 @@ function tgl_sql($date){
 }
 
 function kode_auto_apply($personnel_number='', $unit=''){
-	$CI 	=& get_instance();    
-	$query_data_emp ="SELECT TSH.PERNR,  TSH.UNIT FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH 
-                  WHERE TSH.PERNR = '$personnel_number'";
-                
-    $data = $CI->db->query($query_data_emp)->row_array();
-    $data_personnel = $data['PERNR'];
-    $data_departement = $unit;           
-    $date_time = new DateTime();        
-    $date_now = $date_time->format('dmY');
-    
-    $query_date_apply = "SELECT request_number FROM t_apply_license";
-    $data_apply = $CI->db->query($query_date_apply)->row_array();
-    $request_number = $data_apply['request_number'];
-   	//$kode = $data_departement.$data_personnel.$date_now;
-    $kode = $data_departement;
+	$CI 	=& get_instance();    	
+    $kode 	= $unit;
                             
-	$query      ="SELECT MAX(request_number) AS kode 
-                  FROM t_apply_license";
+	$query 	= "SELECT MAX(request_number) AS kode 
+                  FROM t_apply_license WHERE code_unit = '$unit'";
                   
 	$row = $CI->db->query($query)->row_array();
     //   
@@ -214,55 +238,31 @@ function kode_auto_apply($personnel_number='', $unit=''){
 	return $kode;
 }
 
-function kode_auto_deduction(){
-	$CI =& get_instance();
-	
-	$query = "
-		SELECT 
-		MAX(id_deduction) AS kode 
-		FROM deduction
-	";
+function no_upload($personnel_number='', $code_file=''){
+	$CI 		=& get_instance();        
+                            
+	$query      ="SELECT MAX(no_upload) AS no_upload 
+                  FROM t_file_requirement WHERE personnel_number_fk = '$personnel_number' AND code_file = '$code_file'";
+                  
 	$row = $CI->db->query($query)->row_array();
-	$id = $row['kode'];
-	$max_id = substr($id, 1,3);
-	$plus = $max_id+1;
-	if($plus<10){
-		$kode = "D00".$plus;
-	}
-	else{
-		$kode = "D0".$plus;
-	}	
-	
+    //   
+	$id     = $row['no_upload'];            
+	$max_id = substr($id,-6);
+	$plus = $max_id+1;           
+    	if($plus<10){                
+    		$kode = "00000".$plus;
+    	}else if($plus<100){                
+    		$kode = "0000".$plus;
+    	}else if($plus<1000){                
+    		$kode = "000".$plus;
+    	}else if($plus<10000){                
+    		$kode = "00".$plus;
+    	}else if($plus<100000){                
+    		$kode = "0".$plus;
+    	}else if($plus<1000000){                
+    		$kode = $plus;
+    	}	    
 	return $kode;
-}
-
-function employee_number_auto(){
-	$CI 	=& get_instance();			
-	$reg 	= "";
-	
-	$CI->db->select('employee_number');
-	$CI->db->from('employee');
-	$CI->db->order_by('employee_number', 'desc');
-	$CI->db->limit(1);
-	$query = $CI->db->get();
-	
-	if ($query->num_rows()>0) {
-		$rows = $query->row();
-		$row_id = $rows->employee_number;
-		$id_row = substr($row_id,8);
-		$reg = $id_row+1;
-		
-		if (strlen($reg)==1){$reg='000'.$reg;} 
-		elseif(strlen($reg)==2){$reg='00'.$reg;}
-		elseif(strlen($reg)==3){$reg='0'.$reg;}
-		else {$reg=$reg;}
-		
-		$reg=date("y").date("m").date("d").$reg;
-	} 
-	else{
-		$reg=date("y").date("m").date("d").'0001';
-	}
-	return $reg;
 }
 
 /************************************ call JS *************************************************/

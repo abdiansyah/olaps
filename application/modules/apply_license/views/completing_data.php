@@ -51,17 +51,18 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                     <tbody class="body_general_requirement" id="content_general_requirement" >  
                     <?php 
                     $i=1;
-                        if (is_array(@$additional_general_document) || is_object(@$additional_general_document))
+                        if (is_array(@$additional_document_general) || is_object(@$additional_document_general))
                         { 
-                            foreach($additional_general_document as $row): 
+                            foreach($additional_document_general as $row): 
                             ?>
                             <tr>                                        
                             <td align="center"><?php echo $i;?></td>                                               
-                            <td><?php echo $row->name_t;?><input type="hidden" class="no_row_general_document" value="<?php echo $i;?>"/></td>
+                            <td><?php echo $row->name_t;?></td>
                             <?php 
                             if($row->category_continous == '-' || $row->category_continous =='New') { ?>
-                                <td><input type="hidden" class="type_continous_general_document" value="<?php echo $row->category_continous; ?>" /></td>
-                                <td><input type="hidden" id="code_req_general_document_<?php echo $row->code_t;?>" value="<?php echo $row->code_t; ?>" />
+                                <td><input type="hidden" class="type_continous_document_general" value="<?php echo $row->category_continous; ?>" /></td>
+                                <td>
+                                <input type="hidden" id="code_req_document_general_<?php echo $i;?>" value="<?php echo $row->code_t; ?>" />
                                 <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general""/>
                                 <b id="msg_<?php echo $i;?>"></b>
                                 </td>                                   
@@ -73,9 +74,13 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                                 <td width="20%">
                                     <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress" style="background:blue"></div>
                                     <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
+                                    <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                    <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
                                     
                                 </td>
-                                    <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
+                                    <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/>
+                                    <br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
                                     </td> 
                                 <?php 
                                 } else {

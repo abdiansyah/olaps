@@ -98,11 +98,14 @@ $().ready(function(){
                         </a>
                         <a id="head_nav">Take Authorization</a>
                     </li>
-                    <?php
+                    <?php                    
                     if(!empty($rc[0]->status_finish)){
-                    $class_take_authorization = "active";
-                    }else{
-                    $class_take_authorization = "disabled";    
+                        $rc = "active";
+                    } else if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) {
+                        $class_status_finish = "active";
+                    }
+                    else{
+                        $class_status_finish = "disabled";    
                     }
                     ?>
                     <li role="presentation" class="<?php echo $class_take_authorization?>">

@@ -94,9 +94,12 @@ if(@$data_history[0]!=''){
                     </li>
                     <?php
                     if(!empty($data_history[0]->status_finish)){
-                    $class_status_finish = "active";
-                    }else{
-                    $class_status_finish = "disabled";    
+                        $class_status_finish = "active";
+                    } else if($data_history[0]->approved_superior != null && $data_history[0]->approved_superior != 'Approved Superior' || $data_history[0]->approved_quality != null && $data_history[0]->approved_quality != 'Data Validated' ) {
+                        $class_status_finish = "active";
+                    }
+                    else{
+                        $class_status_finish = "disabled";    
                     }
                     ?>
                     <li role="presentation" class="<?php echo $class_status_finish?>">

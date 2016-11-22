@@ -752,16 +752,39 @@ class Quality_control extends MX_Controller
             $this->page->view('quality_control/form_data_requirement', $data);
         }
     }
+
+    public function cek_date_file_current() {
+        $personnel_number       = $this->input->post('personnel_number'); 
+        $code_current           = $this->input->post('code_data_requirement'); 
+        $date_current           = $this->model_quality_control->cek_date_current($personnel_number, $code_current);
+        echo $date_current['date_upload'];
+    }
+
+    public function cek_time_file_current() {
+        $personnel_number       = $this->input->post('personnel_number'); 
+        $code_current           = $this->input->post('code_data_requirement'); 
+        $time_current           = $this->model_quality_control->cek_time_current($personnel_number, $code_current);
+        echo $time_current['time_upload'];
+    }
+
+    public function cek_expiration_file_current() {
+        $personnel_number       = $this->input->post('personnel_number'); 
+        $code_current           = $this->input->post('code_req_document_certificate'); 
+        $expiration_current     = $this->model_quality_control->cek_expiration_current($personnel_number, $code_current);
+        echo $expiration_current['expiration_date'];
+    }
     
     public function action_document()
     {
         if (isset($_POST['action_view_document'])) {
             $personnel_number = $this->input->post('personnel_number');
             $request_number   = $this->session->userdata('request_number');
-            $name_file        = $this->input->post('name_file');
-            $name_file_ftp    = $this->input->post('name_file_ftp');                                
+            $name_file        = $this->input->post('name_file');                                        
             $code_file        = $this->input->post('code_file');
+            $date_upload      = $this->input->post('date_upload');
+            $time_upload      = $this->input->post('time_upload');            
             @$cd_folder_by    = $this->model_quality_control->get_code_file_by($code_file); 
+            $name_file_ftp    = $personnel_number.'_'.$code_file.'_'.$date_upload.$time_upload.'.pdf';
             @$code_folder     = $cd_folder_by->name;
             
             $data = array(
@@ -941,9 +964,7 @@ class Quality_control extends MX_Controller
             @$file_req_spec_document_quality = count($_FILES['file_req_spec_document_quality']['name']);
             $expiration_date_spec_quality = $this->input->post('expiration_date_spec_quality');
             $subfolder               = $personnel_number;
-            
-            //print_r(date('YmdHis'));
-            //        die();       
+              
             $this->ftp->connect($ftp_config);
             $this->ftp->close();
             $this->ftp->connect($ftp_config);
@@ -1086,6 +1107,10 @@ class Quality_control extends MX_Controller
         $m_unit = $this->db->query("SELECT DISTINCT UNIT FROM db_hrm.dbo.TBL_SOE_HEAD");
         return options($m_unit, 'UNIT', 'UNIT');
     }
+
+    public function cek_room($date_assesment, $id_sesi, $id_room){             
+        $this->model_quality_control->get_room_by($date_assesment, $id_sesi, $id_room);                                                                     
+    } 
     
     public function cek_room_written($date_written_assesment, $id_sesi, $id_room){
         $this->model_quality_control->get_room_written_by($date_written_assesment,$id_sesi,$id_room);

@@ -686,21 +686,21 @@ class model_quality_control extends CI_Model
     }
     
     public function get_data_requirement($personnel_number){
-    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.personnel_number_fk, tfr.code_file, (m_req.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
-            LEFT JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t            
-            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by = ''";
+    $query = "SELECT DISTINCT tfr.personnel_number_fk, tfr.code_file, (m_req.name_t) AS name_file FROM t_file_requirement AS tfr
+        LEFT JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t            
+        WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by = ''";
     return $this->db->query($query)->result();
     } 
 
     public function get_data_requirement_revision($personnel_number){
-    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.personnel_number_fk, tfr.code_file, (maarg.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
+    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.personnel_number_fk, tfr.code_file, (maarg.name_t) AS name_file, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
             LEFT JOIN m_auth_additional_req_general AS maarg ON tfr.code_file = maarg.code_t            
             WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by != ''";
     return $this->db->query($query)->result();
     } 
     
     public function cek_data_document($personnel_number){
-    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.code_file, (maadrg.name_t) AS name_file, tfr.id_auth_license_fk, tfr.id_auth_type_fk, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
+    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.code_file, (maadrg.name_t) AS name_file, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
             LEFT JOIN UNION_REQUIREMENT AS maadrg ON tfr.code_file = maadrg.code_t
             WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.status_valid = '2'";
             // status_valid 2 (not_valid)
@@ -814,19 +814,7 @@ class model_quality_control extends CI_Model
         $data_room_json = json_encode($data_room);
         die($data_room_json);                
     }
-    
-    public function get_room_by($id_sesi){
-        $query = "SELECT DISTINCT tasm.id, mr.quota, tasm.date_written_assesment, mr.id_room AS ir, mr.name_room AS nr            
-                FROM t_assesment AS tasm
-                LEFT JOIN t_apply_license_dtl AS tald ON tald.request_number_fk = tasm.request_number_fk
-                LEFT JOIN t_apply_license AS tal ON tal.request_number = tald.request_number_fk
-                LEFT JOIN m_assesment_scope AS masmc ON tald.id_assesment_scope_fk = masmc.id
-                LEFT JOIN m_room AS mr ON tasm.id_written_room_fk = mr.id_room
-                WHERE tasm.id_written_sesi = '$id_sesi'";
-        $data_room = $this->db->query($query)->row();
-        $data_room_json = json_encode($data_room);
-        die($data_room_json);                
-    }
+
 
     public function get_room_oral_by($date_oral_assesment, $id_sesi, $id_room){
         $date_oral_assesment = date('Y-m-d',strtotime($date_oral_assesment));
@@ -835,6 +823,20 @@ class model_quality_control extends CI_Model
                 LEFT JOIN m_room AS mr ON tasm.id_oral_room_fk = mr.id_room
                 WHERE tasm.id_oral_sesi = '$id_sesi' AND tasm.date_oral_assesment = '$date_oral_assesment'
                 AND tasm.id_oral_room_fk = '$id_room'
+                ";
+        $data_room = $this->db->query($query)->row();
+        $data_room_json = json_encode($data_room);
+        die($data_room_json);                
+    }
+
+    public function get_room_by($date_assesment, $id_sesi, $id_room){
+        $query = "SELECT count(tasm.personnel_number_fk) AS limit,
+                (SELECT mr.quota FROM m_room AS mr WHERE mr.id_room = '$id_room') AS quota,
+                tasm.id_written_room_fk, tasm.id_oral_room_fk         
+                FROM t_assesment AS tasm 
+                WHERE tasm.id_written_sesi = '$id_sesi' AND (CONVERT(varchar(10), CONVERT(datetime,date_written_assesment,120),105)) = '$date_assesment' AND
+                tasm.id_written_room_fk = '$id_room'
+                GROUP BY tasm.id_written_room_fk, tasm.id_oral_room_fk
                 ";
         $data_room = $this->db->query($query)->row();
         $data_room_json = json_encode($data_room);
@@ -872,6 +874,27 @@ class model_quality_control extends CI_Model
                         WHERE code_t = '$code'"; 
         return $this->db->query($querycode)->row();          
     } 
+
+    public function cek_date_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
+            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function cek_time_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
+            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
+        return $this->db->query($query)->row_array();
+    }
+
+    public function cek_expiration_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105)) AS expiration_date, tfr.date_upload, tfr.time_upload FROM t_file_requirement AS tfr
+                    WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                    ORDER BY tfr.date_upload, tfr.time_upload DESC";
+        return $this->db->query($query)->row_array();
+    }
     
 
 

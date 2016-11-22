@@ -135,7 +135,7 @@ $('[name=cari_id]').on('click',function() {
 $('[name=cari_id_emp_gmf]').click(function(){
 $('[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
 var personnel_number_superior = $('[name=personnel_number_superior]').val();  
-var jqxhr = $.getJSON("" + personnel_number_superior, function(data) {
+var jqxhr = $.getJSON(get_data_gmf + personnel_number_superior, function(data) {
         $('[name=name_superior]').val(data.EMPLNAME);                
         $('[name=jobtitle_superior]').val(data.JOBTITLE);
         $('[name=email_superior]').val(data.EMAIL);        
