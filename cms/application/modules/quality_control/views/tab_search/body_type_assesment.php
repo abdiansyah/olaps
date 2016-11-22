@@ -186,7 +186,7 @@ endif;
 endif;
 
 if($p_type_assesment =='18') :
-if(@$data_assesment[0]!='') :
+if(@$data_assesment_practical[0]!='') :
 ?>
 <div class="col-md-12">                        
     <div class="box-body table-responsive no-padding">                    
@@ -204,7 +204,7 @@ if(@$data_assesment[0]!='') :
         <tbody>                                        
         <?php
         $no=1;
-        foreach ($data_assesment as $value):                    
+        foreach ($data_assesment_practical as $value):                    
         ?> 
         <tr> 
             <td><input type="checkbox" class="check_assesment" name="check_assesment[]"/></td>                                              
@@ -218,7 +218,7 @@ if(@$data_assesment[0]!='') :
             </td>                        
             <td>
             <?php
-            $status = @$data_assesment[0]->reason_apply_license;                          
+            $status = @$data_assesment_practical[0]->reason_apply_license;                          
             switch ($status){
                     case 1 :
                         $reason_apply_license = 'New Authorization';
@@ -234,7 +234,7 @@ if(@$data_assesment[0]!='') :
                         break;
                 }
             echo $reason_apply_license;
-            $is_etops = @$data_assesment[0]->is_etops;                          
+            $is_etops = @$data_assesment_practical[0]->is_etops;                          
             switch ($is_etops){
                     case 1 :
                         $status_etops = ' + ETOPS';

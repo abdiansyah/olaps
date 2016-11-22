@@ -250,7 +250,6 @@ echo '</b>
     $msg = $this->session->flashdata('msg');                                                
     unset($msg); 
 }
-
 ?>
 <div id="FormSearch" class="modal fade" role="dialog">
   <div class="modal-dialog">

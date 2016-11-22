@@ -9,14 +9,22 @@ $(document).ready(function(){
     var score_written               = '<?php echo @$score_written; ?>'; 
     var result_written              = '<?php echo @$result_written; ?>';
     
-    var request_number_oral      = '<?php echo @$request_number_oral; ?>';
-    var personnel_number_oral    = '<?php echo @$personnel_number_oral; ?>'; 
-    var status_assesment_oral    = '<?php echo @$status_assesment_oral; ?>'; 
-    var date_assesment_oral      = '<?php echo @$date_assesment_oral; ?>'; 
-    var id_oral_sesi             = '<?php echo @$id_oral_sesi; ?>'; 
-    var id_oral_room             = '<?php echo @$id_oral_room; ?>';
-    var score_oral               = '<?php echo @$score_oral; ?>'; 
-    var result_oral              = '<?php echo @$result_oral; ?>';        
+    var request_number_oral         = '<?php echo @$request_number_oral; ?>';
+    var personnel_number_oral       = '<?php echo @$personnel_number_oral; ?>'; 
+    var status_assesment_oral       = '<?php echo @$status_assesment_oral; ?>'; 
+    var date_assesment_oral         = '<?php echo @$date_assesment_oral; ?>'; 
+    var id_oral_sesi                = '<?php echo @$id_oral_sesi; ?>'; 
+    var id_oral_room                = '<?php echo @$id_oral_room; ?>';
+    var score_oral                  = '<?php echo @$score_oral; ?>'; 
+    var result_oral                 = '<?php echo @$result_oral; ?>';        
+
+    var request_number_practical    = '<?php echo @$request_number_practical; ?>';
+    var personnel_number_practical  = '<?php echo @$personnel_number_practical; ?>'; 
+    var status_assesment_practical  = '<?php echo @$status_assesment_practical; ?>'; 
+    var date_assesment_practical    = '<?php echo @$date_assesment_practical; ?>'; 
+    var id_practical_sesi           = '<?php echo @$id_practical_sesi; ?>';     
+    var score_practical             = '<?php echo @$score_practical; ?>'; 
+    var result_practical            = '<?php echo @$result_practical; ?>';   
     
 	$('#written_assesment').dataTable({
         "searching"         : false, 	   
@@ -87,6 +95,41 @@ $(document).ready(function(){
 			},
 		],
 	});        
+
+    $('#practical_assesment').dataTable({
+        "searching"         : false, 
+        "scrollY"           : "342px",
+        "scrollCollapse"    : true,
+        "bPaginate"         : false,  
+        "bSort"             : false,
+        "processing"        : true, //Feature control the processing indicator.
+        "serverSide"        : true, //Feature control DataTables' server-side processing mode.
+        "order"             : [], //Initial no order.
+
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+            "url"   : "<?php echo site_url('assesment/assesment/ajax_get_practical_assesment'); ?>",
+            "type"  : "POST",
+            "data"  : {
+                request_number_practical      : request_number_practical,
+                personnel_number_practical    : personnel_number_practical,
+                status_assesment_practical    : status_assesment_practical,
+                date_assesment_practical      : date_assesment_practical,
+                id_practical_sesi             : id_practical_sesi,                
+                score_practical               : score_practical,
+                result_practical              : result_practical                
+            }            
+        },
+
+        //Set column definition initialisation properties.
+        "columnDefs" : [
+            { 
+                "targets"   : [], //first column / numbering column
+                "orderable" : false, //set not orderable
+            },
+        ],
+    });        
+
 });
 </script>
 <div id="FormSearch_written" class="modal fade" role="dialog">
@@ -141,46 +184,98 @@ $(document).ready(function(){
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Form Search Oral</h4>
-      </div>
-      <form method="POST" action="#" name="form_list_search">      
-      <div>                          
-            <div class="form-group col-sm-12">
-            <table class="table table-bordered">            
-           	<tbody class="data-search-authorization-oral">
-                <tr>
-                <br/>
-                </tr>                
-          		<tr class="text-authorization-oral">
-                    <td>
-                        <select id="tab-search-oral" name="tab-search-oral" class="col-md-12 form-control">                                                
-                        <option value="request_number_oral">Request Number</option>
-                        <option value="personnel_number_oral">Personnel Number</option> 
-                        <option value="status_assesment_oral">Status</option>
-                        <option value="date_assesment_oral">Date Assesment</option>   
-                        <option value="id_oral_sesi">Sesi</option>
-                        <option value="id_oral_room">Room</option>
-                        <option value="score_oral">Score</option>
-                        <option value="result_oral">Result</option>                                                                                                                                                                                           
-                        </select>                   
-                    </td>  
-                    <td id="box-type-search-oral">
-                     <input name="input-tab-search-oral" id="input-tab-search-oral" class="col-md-12 form-control" type="text"/>
-                     <span style="display:none;" class="box-number-search-oral"></span>
-                    </td>                                                         
-                    <td style="text-align: center; width: 5px;"><a class="btn btn-info pull-right add-box-oral"><i class="fa fa-plus"></i></a></td>
-                </tr>                                               
-            </tbody>
-            </table>            
-        	</div>                	
-      </div>                                     
-      <div class="modal-footer">            			        			
-      <button type="button" class="btn btn-flat btn-danger color-palette btn-sm" data-dismiss="modal"><span class="fa fa-sign-out"></span> &nbsp;Cancel</button>      
-      <button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-search"></span> &nbsp;Find </button>     
-      </div>
-      </form>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Form Search Oral</h4>
+        </div>
+            <form method="POST" action="#" name="form_list_search">      
+            <div>                          
+                <div class="form-group col-sm-12">
+                <table class="table table-bordered">            
+               	<tbody class="data-search-authorization-oral">
+                    <tr>
+                    <br/>
+                    </tr>                
+              		<tr class="text-authorization-oral">
+                        <td>
+                            <select id="tab-search-oral" name="tab-search-oral" class="col-md-12 form-control">
+                            <option value="request_number_oral">Request Number</option>
+                            <option value="personnel_number_oral">Personnel Number</option> 
+                            <option value="status_assesment_oral">Status</option>
+                            <option value="date_assesment_oral">Date Assesment</option>   
+                            <option value="id_oral_sesi">Sesi</option>
+                            <option value="id_oral_room">Room</option>
+                            <option value="score_oral">Score</option>
+                            <option value="result_oral">Result</option>                                                                                </select>                   
+                        </td>  
+                        <td id="box-type-search-oral">
+                         <input name="input-tab-search-oral" id="input-tab-search-oral" class="col-md-12 form-control" type="text"/>
+                         <span style="display:none;" class="box-number-search-oral"></span>
+                        </td>                                                         
+                        <td style="text-align: center; width: 5px;"><a class="btn btn-info pull-right add-box-oral"><i class="fa fa-plus"></i></a></td>
+                    </tr>                                               
+                </tbody>
+                </table>            
+            	</div>                	
+            </div>                                     
+            <div class="modal-footer">            			        			
+              <button type="button" class="btn btn-flat btn-danger color-palette btn-sm" data-dismiss="modal"><span class="fa fa-sign-out"></span> &nbsp;Cancel</button>      
+              <button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-search"></span> &nbsp;Find </button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div id="FormSearch_practical" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Form Search practical</h4>
+        </div>
+            <form method="POST" action="#" name="form_list_search">      
+            <div>                          
+                <div class="form-group col-sm-12">
+                <table class="table table-bordered">            
+                <tbody class="data-search-authorization-practical">
+                    <tr>
+                    <br/>
+                    </tr>                
+                    <tr class="text-authorization-practical">
+                        <td>
+                            <select id="tab-search-practical" name="tab-search-practical" class="col-md-12 form-control">
+                            <option value="request_number_practical">Request Number</option>
+                            <option value="personnel_number_practical">Personnel Number</option> 
+                            <option value="status_assesment_practical">Status</option>
+                            <option value="date_assesment_practical">Date Assesment</option>   
+                            <option value="id_practical_sesi">Sesi</option>                            
+                            <option value="score_practical">Score</option>
+                            <option value="result_practical">Result</option>
+                            </select>                   
+                        </td>  
+                        <td id="box-type-search-practical">
+                            <input name="input-tab-search-practical" id="input-tab-search-practical" class="col-md-12 form-control" type="text"/>
+                            <span style="display:none;" class="box-number-search-practical"></span>
+                        </td>                                                         
+                        <td style="text-align: center; width: 5px;">
+                            <a class="btn btn-info pull-right add-box-practical"><i class="fa fa-plus"></i></a>
+                        </td>
+                    </tr>                                               
+                </tbody>
+                </table>            
+                </div>                  
+            </div>                                     
+            <div class="modal-footer">                                          
+                <button type="button" class="btn btn-flat btn-danger color-palette btn-sm" data-dismiss="modal">
+                    <span class="fa fa-sign-out"></span> &nbsp;Cancel
+                </button>      
+                <button type="submit" class="btn btn-flat btn-primary color-palette btn-sm">
+                    <span class="fa fa-search"></span> &nbsp;Find 
+                </button>
+            </div>
+        </form>
     </div>
   </div>
 </div>
@@ -234,7 +329,7 @@ echo '</b>
 			</tr>
 		</thead>
 	</table>
-    </div> 
+</div> 
 <div class="col-md-12">
     <form action="#" method="POST">
     <h3>Oral Assesment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-flat bg-light-blue color-palette btn-sm" data-toggle="modal" data-target="#FormSearch_oral">Search</button>
@@ -260,6 +355,32 @@ echo '</b>
 		</thead>
 	</table>
 </div>
+
+<div class="col-md-12">
+    <form action="#" method="POST">
+    <h3>Practical Assesment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-flat bg-light-blue color-palette btn-sm" data-toggle="modal" data-target="#FormSearch_practical">Search</button>
+    &nbsp;<button type="submit" class="btn btn-flat bg-light-blue color-palette btn-sm">Reset</button></h3>
+    </form>        
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped tabel_bootstrap" id="practical_assesment">
+        <thead>
+            <tr>
+                <th width="3%">No</th>
+                <th width="7%">Tanggal</th>
+                <th width="10%">Request number</th>
+                <th width="10%">Personnel number</th>
+                <th width="18%">Employee name</th>                
+                <th width="5%">Sesi</th>                
+                <th width="20%">Assessment scope</th>
+                <th width="10%">PIC</th>
+                <th width="5%">Score</th>
+                <th width="5%">Result</th>
+                <th width="10%">Note</th>
+                <th width="5%">Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
 </div>
 <script type="text/javascript">
 $('#tab-search-written').change(function(){            
@@ -340,5 +461,36 @@ $('.add-box-oral').click(function(){
                 return true;
     });         
 
+$('.add-box-practical').click(function(){    
+        var n_search_practical          = $('.box-number-search-practical').length+1;
+        var tab_search_practical        = $('#tab-search-practical :selected').val();
+        var tab_search_practical_text   = $('#tab-search-practical :selected').text();
+        var input_tab_search_practical  = $('#input-tab-search-practical').val();          
+                                                           
+        var box_html_authorization_search_practical = $('<tr class="text-authorization-practical">' +                            
+                            '<td><input type="text" class="form-control input-sm col-sm-12" value="' + tab_search_practical_text + '" disabled/></td>' +
+                            '<td><input name="'+ tab_search_practical +'" type="hidden" value="' + input_tab_search_practical + '"/><input name="" class="form-control input-sm col-sm-12" type="text" value="' + input_tab_search_practical + '" disabled/></td>' +                                                                
+                            '<td style="text-align: center;width: 10px;"><span style="display:none;" class="box-number-search-practical">' + n_search_practical + 
+                            '</span><a class="remove-box-search-practical btn btn-danger"><i class="fa fa-remove"></a></td>' +  
+                            '</tr>');
+                                                                                                                                                                     
+        box_html_authorization_search_practical.hide();
+        $('tr.text-authorization-practical:last').before(box_html_authorization_search_practical);                        
+        $('#tab-search-practical')[0].selectedIndex = 0;
+        $('#input-tab-search-practical').val('');         
+        box_html_authorization_search_practical.fadeIn('slow');
+        return true;
+    });
+        
+    $('.data-search-authorization-practical').on('click', '.remove-box-search-practical', function(){
+                $(this).parent().parent().css( 'background-color', '#FF6C6C' );
+                    $(this).parent().fadeOut("slow", function() {
+                        $(this).parent().remove();
+                            $('.box-number-search-practical').each(function(index){
+                                $(this).text( index + 1 );
+                            });
+                        });
+                return true;
+    });  
 </script>
 

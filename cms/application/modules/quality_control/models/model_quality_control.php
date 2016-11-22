@@ -756,6 +756,23 @@ class model_quality_control extends CI_Model
         
     }
 
+    public function get_data_assesment_practical($personnel_number,$request_number)
+    {
+        $query = "SELECT tal.reason_apply_license, masc.id, masc.name_t, tal.date_request, tald.status_practical_assesment,(mal.name_t) AS name_license, (mat.name_t) AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope,
+                (mal.id) AS id_license, (mat.id) AS id_type, (masp.id) AS id_spect, (mas.id) AS id_scope, (mac.id) AS id_category, tald.is_etops
+                FROM t_apply_license AS tal 
+                LEFT JOIN t_apply_license_dtl tald ON tald.request_number_fk = tal.request_number
+                LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id
+                LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id
+                LEFT JOIN m_auth_spect AS masp ON tald.id_auth_spect_fk = masp.id
+                LEFT JOIN m_auth_category AS mac ON tald.id_auth_category_fk = mac.id                              
+                LEFT JOIN m_auth_scope AS mas ON tald.id_auth_scope_fk = mas.id 
+                LEFT JOIN m_assesment_scope AS masc ON tald.id_assesment_scope_fk = masc.id                 
+                WHERE tald.request_number_fk = '$request_number' AND tal.personnel_number ='$personnel_number' AND CONVERT(VARCHAR(10),tald.status_practical_assesment) = '0'";                                 
+        return $this->db->query($query)->result();
+        
+    }
+
     public function get_data_assesment_oral_by($personnel_number,$request_number) {
         $query = "SELECT tal.reason_apply_license, TAS.date_oral_assesment, mr.name_room, (masses.name_t) AS name_sesi, tald.status_oral_assesment, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope,
         (mal.id) AS id_license, (mat.id) AS id_type, (masp.id) AS id_spect, (mas.id) AS id_scope, (mac.id) AS id_category, tald.is_etops
@@ -770,6 +787,22 @@ class model_quality_control extends CI_Model
         LEFT JOIN m_assesment_session AS masses ON TAS.id_oral_sesi = masses.id
         LEFT JOIN m_room AS mr ON TAS.id_oral_room_fk = mr.id_room               
         WHERE tald.request_number_fk = '$request_number' AND tal.personnel_number ='$personnel_number' AND CONVERT(VARCHAR(10),tald.status_oral_assesment) = '1'";                                 
+        return $this->db->query($query)->result();
+    }
+
+    public function get_data_assesment_practical_by($personnel_number,$request_number) {
+        $query = "SELECT tal.reason_apply_license, TAS.date_practical_assesment, (masses.name_t) AS name_sesi, tald.status_practical_assesment, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope,
+            (mal.id) AS id_license, (mat.id) AS id_type, (masp.id) AS id_spect, (mas.id) AS id_scope, (mac.id) AS id_category, tald.is_etops
+            FROM t_apply_license AS tal 
+            LEFT JOIN t_apply_license_dtl tald ON tald.request_number_fk = tal.request_number
+            LEFT JOIN t_assesment AS TAS ON tal.request_number = TAS.request_number_fk
+            LEFT JOIN m_auth_license AS mal ON tald.id_auth_license_fk = mal.id                        
+            LEFT JOIN m_auth_type AS mat ON tald.id_auth_type_fk = mat.id 
+            LEFT JOIN m_auth_spect AS masp ON tald.id_auth_spect_fk = masp.id
+            LEFT JOIN m_auth_category AS mac ON tald.id_auth_category_fk = mac.id                              
+            LEFT JOIN m_auth_scope AS mas ON tald.id_auth_scope_fk = mas.id 
+            LEFT JOIN m_assesment_session AS masses ON TAS.id_practical_sesi = masses.id         
+            WHERE tald.request_number_fk = '$request_number' AND tal.personnel_number ='$personnel_number' AND CONVERT(VARCHAR(10),tald.status_practical_assesment) = '1'";                                 
         return $this->db->query($query)->result();
     }
 

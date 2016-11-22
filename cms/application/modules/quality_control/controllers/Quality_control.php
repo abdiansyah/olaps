@@ -603,7 +603,7 @@ class Quality_control extends MX_Controller
                                 redirect(site_url('quality_control'));                                
                             } else {
                                 redirect(site_url('quality_control'));
-                        }                
+                            }                
                     }            
             }
         if (isset($_POST['savewrittenassesment'])) {
@@ -727,9 +727,143 @@ class Quality_control extends MX_Controller
                     redirect(site_url('quality_control'));
                 } else {
                     redirect(site_url('quality_control'));
-                }            
-            redirect(site_url('quality_control'));
+                }                        
         }
+
+        // Practical Assesment
+        if (isset($_POST['savepracticalassesment'])) {
+            $request_number               = $this->input->post('request_number');
+            $check_assesment              = $this->input->post('check_assesment');
+            $personnel_number             = $this->input->post('personnel_number');
+            $id_assesment                 = $this->input->post('id_assesment');
+            $date_practical_assesment     = $this->input->post('date_practical_assesment');
+            $id_practical_sesi            = $this->input->post('id_practical_sesi');            
+            $id_license                   = $this->input->post('id_license');
+            $id_type                      = $this->input->post('id_type');
+            $id_spect                     = $this->input->post('id_spect');
+            $id_category                  = $this->input->post('id_category');
+            $id_scope                     = $this->input->post('id_scope');
+            
+            $data_applicant               = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
+            $name_applicant               = $data_applicant['EMPLNAME'];
+            $email_applicant              = $data_applicant['EMAIL'];            
+            $config     = Array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'devlicensetq@gmail.com',
+            'smtp_pass' => 'Bismillah1995', 
+            'mailtype'  => 'html',
+            'charset'   => 'iso-8859-1',
+            'wordwrap'  => TRUE);  
+
+            $this->load->library('email', $config);
+            $this->email->set_newline("\r\n");
+            $this->email->from('mail.gmf-aeroasia.co.id');
+            $this->email->to($email_applicant);
+            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
+            $this->email->subject('Schedule Practical Assesment');
+
+            $data_update_status_assesment = array(
+                'status_assesment'              => '1',
+                'date_status_assesment'         => date('Y-m-d H:i:s'),
+                'personnel_number_assesment'    => $sess_personnel_number
+            );
+            
+            $this->db->where('request_number', $request_number);
+            $this->db->update('t_apply_license', $data_update_status_assesment);
+            if (@$check_assesment != '') {
+                foreach ($check_assesment as $key => $value) {
+                    $cek_practical_assesment = $this->model_quality_control->cek_assesment($request_number, $personnel_number, $id_license[$key], $id_type[$key], $id_spect[$key], $id_category[$key], $id_scope[$key]);
+                    if ($cek_practical_assesment->num_rows() > 0) {
+                            $data_practical_assesment = array(
+                                'date_practical_assesment'      => date('Y-m-d', strtotime($date_practical_assesment[$key])),
+                                'id_practical_sesi'             => $id_practical_sesi[$key],                                
+                            );
+                        $this->db->where('request_number_fk', $request_number);
+                        $this->db->where('personnel_number_fk', $personnel_number);
+                        $this->db->where('id_auth_license_fk', $id_license[$key]);
+                        $this->db->where('id_auth_type_fk', $id_type[$key]);
+                        $this->db->where('id_auth_spec_fk', $id_spect[$key]);
+                        $this->db->where('id_auth_category_fk', $id_category[$key]);
+                        $this->db->where('id_auth_scope_fk', $id_scope[$key]);
+                        $this->db->where('id_assesment_scope_fk', $id_assesment[$key]);
+                        $this->db->update('t_assesment', $data_practical_assesment);                        
+                    } else {
+                        $data_practical_assesment = array(
+                            'request_number_fk'         => $request_number,
+                            'personnel_number_fk'       => $personnel_number,
+                            'status_assesment'          => '1', //send by quality            
+                            'id_assesment_scope_fk'     => $id_assesment[$key],
+                            'date_practical_assesment'  => date('Y-m-d', strtotime($date_practical_assesment[$key])),
+                            'id_practical_sesi'         => $id_practical_sesi[$key],                            
+                            'id_auth_license_fk'        => $id_license[$key],
+                            'id_auth_type_fk'           => $id_type[$key],
+                            'id_auth_spec_fk'           => $id_spect[$key],
+                            'id_auth_category_fk'       => $id_category[$key],
+                            'id_auth_scope_fk'          => $id_scope[$key],
+                            'date_assesment'            => date('Y-m-d H:i:s')
+                        );
+                        $this->db->insert('t_assesment', $data_practical_assesment);
+                    }
+                    $this->db->query("UPDATE t_apply_license_dtl SET status_practical_assesment = '1' WHERE 
+                                request_number_fk = '$request_number' AND
+                                id_auth_license_fk = '$id_license[$key]' AND
+                                id_auth_type_fk = '$id_type[$key]' AND
+                                id_auth_spect_fk = '$id_spect[$key]' AND
+                                id_auth_category_fk = '$id_category[$key]' AND
+                                id_auth_scope_fk = '$id_scope[$key]' AND
+                                id_assesment_scope_fk = '$id_assesment[$key]'");
+                    }
+                        $cekdatapractical  = $this->model_quality_control->get_data_assesment_practical_by($personnel_number, $request_number);                    
+                        $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
+                        "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
+                        <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
+                        </head></body>';
+                        $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
+                        $pesan .= '<p>Your schedule practical assesment : </p>';
+                        $pesan .= '<table border="1">
+                                <tr>
+                                <td> No </td>
+                                <td> Authorization scope </td>                                
+                                <td> Date </td>                        
+                                <td> Sesi  </td>                        
+                                </tr>';
+                        $no = 1;
+                            foreach ($cekdatapractical as $row) {                                
+
+                                $is_etops = $row->is_etops;                                
+                                        switch ($is_etops) {
+                                            case 0:
+                                                $status_etops = '';
+                                                break;
+                                            case 1:
+                                                $status_etops = '+ ETOPS';
+                                                break;
+                                            }
+                                $pesan .= '<tr>                        
+                                        <td> ' . $no++ . ' </td>
+                                        <td> ' . $row->name_spect . ' '. $row->name_category . ' ' . $row->name_scope.' '. $status_etops.'</td>
+                                        <td> ' . date('d-m-Y',strtotime($row->date_practical_assesment)) . ' </td>
+                                        <td> ' . $row->name_sesi . ' </td>
+                                        </tr>';
+                            }
+                        $pesan .= '</table>';                        
+                        $pesan .= '<p>Best Regards</p>';
+                        $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
+                        $pesan .= '<p>PT GMF AeroAsia</p>';
+                        $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
+                        $pesan .= '<p>Fax: +62-21-550 1257</p>';
+                        // die($pesan);    
+                        $this->email->message($pesan);                    
+                        if ($this->email->send()) {                                
+                                $this->session->set_flashdata('msg', 'Sending schedule practical assesment successfully.');
+                                redirect(site_url('quality_control'));                                
+                            } else {                                
+                                redirect(site_url('quality_control'));
+                            }                
+                    }            
+            }
     }
     
     public function view($id)
@@ -1088,11 +1222,12 @@ class Quality_control extends MX_Controller
     
     function get_type_assesment($p_type_assesment, $request_number, $personnel_number)
     {
-        $data['p_type_assesment']            = $p_type_assesment;
-        $data['get_data_apply_personnel_by'] = $this->model_quality_control->get_emp_assesment($request_number);
-        $data['get_data_emp_personnel_by']   = $this->model_quality_control->get_emp_for_assesment($personnel_number);
-        $data['data_assesment']              = $this->model_quality_control->get_data_assesment($personnel_number, $request_number);
-        $data['data_assesment_oral']         = $this->model_quality_control->get_data_assesment_oral($personnel_number, $request_number);
+        $data['p_type_assesment']               = $p_type_assesment;
+        $data['get_data_apply_personnel_by']    = $this->model_quality_control->get_emp_assesment($request_number);
+        $data['get_data_emp_personnel_by']      = $this->model_quality_control->get_emp_for_assesment($personnel_number);
+        $data['data_assesment']                 = $this->model_quality_control->get_data_assesment($personnel_number, $request_number);
+        $data['data_assesment_oral']            = $this->model_quality_control->get_data_assesment_oral($personnel_number, $request_number);
+        $data['data_assesment_practical']       = $this->model_quality_control->get_data_assesment_practical($personnel_number, $request_number);
         $this->load->view('quality_control/tab_search/body_type_assesment', $data);
         return true;
     }
