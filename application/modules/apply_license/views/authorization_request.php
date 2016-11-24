@@ -537,21 +537,152 @@
             </div>
         </div>        
 		<div class="box-footer">
-			<button type="submit" class="btn btn-info pull-right open2 btn-sm" name="submitauthorizationrequest">NEXT</button>
+			<button type="submit" class="btn btn-info pull-right open2 btn-sm" name="submitauthorizationrequest" data-toggle="modal" data-target="#view-modal" onClick="return false;" data-id="<?php echo $data_personnel_information['personnel_number']; ?>">VERIFY</button>
 			<button type="button" class="btn btn-info pull-right close1 btn-sm" onClick="window.history.go(-1); return false;"name="previous">PREVIOUS</button>
 		</div>
         </form>
 </div>
 </div>
 </div>
+ <!-- Modal License History-->
+<div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog"> 
+     <div class="modal-content">         
+        <div class="modal-header"> 
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+           <h4 class="modal-title">
+           <i class="glyphicon glyphicon-user"></i> License history
+           </h4> 
+        </div>                 
+        <div class="modal-body">                     
+            <div id="modal-loader" style="display: none; text-align: center;">               
+                <img src="<?php echo base_url('/assets/images/property/hourglass.gif'); ?>">
+            </div> 
+            <div class="table-responsive">                                                          
+                <div class="col-md-12">                                        
+                    <h4>Basic License</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_basic">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Basic License</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+                    <h4>AME License</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_ame">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>                                                                                                       
+                    <h4>Certifying Staff Authorization</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_cs">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>
+                    <h4>GMF License</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_gmf">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>                 
+                    <h4>GA Authorization</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_ga">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>     
+                    <h4>Citilink Authorization</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_citilink">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>
+                    <h4>Sriwijaya Authorization</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_sriwijaya">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table>                                                                                                                     
+
+                    <h4>EASA Authorization</h4>
+                    <table class="table table-bordered table-responsive" id="datatables_easa">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                    
+                            <th width="45%">Validity</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+
+                    <h4>Stamp Data</h4>
+                    <b>No Stamp :</b>&nbsp;<b id="no_stamp"></b><br/>
+                    <b>Date Validity :</b>&nbsp;<b id="validity_cofc"></b>                     
+                    <table class="table table-bordered table-responsive" id="datatables_cofc">                    
+                        <thead>
+                        <tr>                                                    
+                            <th width="10%">No.</th>                    
+                            <th width="37%">EC Description</th>                    
+                            <th width="20%">Rating</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+
+                </div>
+            </div>
+        </div> 
+                    
+        <div class="modal-footer"> 
+            <button type="button" class="btn btn-info pull-right open2 btn-sm" name="next">NEXT</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" name="close">Close</button>  
+        </div> 
+                        
+    </div> 
+  </div>
+</div>
 <?php
     }
 ?>
 <script type="text/javascript">
-    var get_license = "<?php echo site_url().'/apply_license/get_license/'; ?>",    
-        get_license_easa = "<?php echo site_url().'/apply_license/get_license_easa/'; ?>",    
-        get_type_special = "<?php echo site_url().'/apply_license/get_type_special/'; ?>",    
-        get_license_customer = "<?php echo site_url().'/apply_license/get_license_customer/'; ?>",
-        get_license_cofc = "<?php echo site_url().'/apply_license/get_license_cofc/'; ?>";            
+    var get_license                 = "<?php echo site_url().'/apply_license/get_license/'; ?>",    
+        get_license_easa            = "<?php echo site_url().'/apply_license/get_license_easa/'; ?>",    
+        get_type_special            = "<?php echo site_url().'/apply_license/get_type_special/'; ?>",    
+        get_license_customer        = "<?php echo site_url().'/apply_license/get_license_customer/'; ?>",
+        get_license_cofc            = "<?php echo site_url().'/apply_license/get_license_cofc/'; ?>",
+        get_data_basic_license      = "<?php echo site_url().'/apply_license/get_data_basic_license/'; ?>",
+        get_data_ame_license        = "<?php echo site_url().'/apply_license/get_data_ame_license/'; ?>",
+        get_data_cs_license         = "<?php echo site_url().'/apply_license/get_data_cs_license/'; ?>",
+        get_data_gmf_license        = "<?php echo site_url().'/apply_license/get_data_gmf_license/'; ?>",
+        get_data_ga_license         = "<?php echo site_url().'/apply_license/get_data_ga_license/'; ?>",
+        get_data_citilink_license   = "<?php echo site_url().'/apply_license/get_data_citilink_license/'; ?>",
+        get_data_sriwijaya_license  = "<?php echo site_url().'/apply_license/get_data_sriwijaya_license/'; ?>",
+        get_data_easa_license       = "<?php echo site_url().'/apply_license/get_data_easa_license/'; ?>",
+        get_data_cofc_license       = "<?php echo site_url().'/apply_license/get_data_cofc_license/'; ?>"; 
 </script>
 <script src="<?php echo base_url('assets/plugins/js/authorization_request.js');?>" type="text/javascript"></script> 

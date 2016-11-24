@@ -354,7 +354,142 @@ class M_apply_license extends CI_Model {
                         WHERE id = '$id_spect' AND etops!=''"; 
         return $this->db->query($querycode)->row(); 
     }
+
+    // 
+
+    private $table_basic        = 'db_license.dbo.vw_BasicLic';
+    private $table_ame          = 'db_license.dbo.vw_amel';
+    private $table_auth         = 'db_license.dbo.vw_authl';
+    private $table_easa         = 'db_license.dbo.tbl_easa_authl';
+    private $table_license      = 'db_license.dbo.vw_license';
     
+            
+            
+    public function _get_query_basic() {                              
+        $this->db->select("*");
+        $this->db->from($this->table_basic);                              
+    }
+
+    public function get_data_basic_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_basic();        
+        $query = $this->db->get();        
+        return $query->result();
+    }        
+            
+    public function _get_query_ame() {                              
+        $this->db->select("*");
+        $this->db->from($this->table_ame);                              
+    }
+
+    public function get_data_ame_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_ame();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    public function _get_query_cs() {                              
+        $this->db->select("*");
+        $this->db->where('lic_type','CS');
+        $this->db->from($this->table_auth);                              
+    }
+
+    public function get_data_cs_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_cs();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    public function _get_query_gmf() {                              
+        $this->db->select("*");
+        $this->db->where('lic_type','GMF');
+        $this->db->from($this->table_auth);                              
+    }
+
+    public function get_data_gmf_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_gmf();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    public function _get_query_ga() {                              
+        $this->db->select("*");
+        $this->db->where('lic_type','GA');
+        $this->db->from($this->table_auth);                              
+    }
+
+    public function get_data_ga_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_ga();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    public function _get_query_citilink() {                              
+        $this->db->select("*");
+        $this->db->where('lic_type','CL');
+        $this->db->from($this->table_auth);                              
+    }
+
+    public function get_data_citilink_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_ga();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    // public function _get_query_sriwijaya() {                              
+    //     $this->db->select("*");
+    //     $this->db->where('lic_type','CL');
+    //     $this->db->from($this->table_auth);                              
+    // }
+
+    // public function get_data_sriwijaya_license() {        
+    //     $personnel_number = $this->input->post('personnel_number');
+    //     $this->db->where('empl_id',$personnel_number);
+    //     $this->_get_query_ga();        
+    //     $query = $this->db->get();        
+    //     return $query->result();
+    // }
+
+    public function _get_query_easa() {                              
+        $this->db->select("*");        
+        $this->db->from($this->table_easa);                              
+        $this->db->join('db_license.dbo.tbl_easa_category','db_license.dbo.tbl_easa_authl.easa_cat = db_license.dbo.tbl_easa_category.easa_cat','LEFT');
+    }
+
+    public function get_data_easa_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_easa();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
+    public function _get_query_cofc() {                              
+        $this->db->select('db_license.dbo.vw_license.empl_id, db_license.dbo.vw_license.stamp_no, db_license.dbo.vw_license.issued_on, db_license.dbo.vw_license.valid_until, db_license.dbo.tbl_cofc_ec.ecno, db_license.dbo.tbl_cofc_ec.ecdesc,db_license.dbo.tbl_cofc_ec.ecrating');        
+        $this->db->from('db_license.dbo.vw_license');                                      
+        $this->db->join('db_license.dbo.tbl_cofc_ec','db_license.dbo.vw_license.empl_id = db_license.dbo.tbl_cofc_ec.empl_id','LEFT');        
+    }
+
+    public function get_data_cofc_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('db_license.dbo.vw_license.LIC-TYPE','COC');
+        $this->db->where('db_license.dbo.vw_license.empl_id',$personnel_number);
+        $this->_get_query_cofc();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
+
 }
 	
 

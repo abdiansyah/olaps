@@ -174,7 +174,7 @@ class Model_assesment extends CI_Model {
 		return $this->db->count_all_results();
 	}        
 
-    // Oral assesment
+    // Practical assesment
     public function get_practical_assesment() {
         $request_number_practical        = $this->input->post('request_number_practical');                
         $personnel_number_practical      = $this->input->post('personnel_number_practical');
