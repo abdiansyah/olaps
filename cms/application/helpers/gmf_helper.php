@@ -204,6 +204,16 @@ function kode_tbl_assesment_scope(){
 	return $kode;
 }
 
+function connection_ftp() {
+	$CI =& get_instance();
+	$CI->load->library('ftp');                
+	$ftp_config['hostname'] = '127.0.0.1'; 
+	$ftp_config['username'] = 'yayas';
+	$ftp_config['password'] = 'Bismillah';
+	$ftp_config['debug']    = TRUE;    
+	$CI->ftp->connect($ftp_config);  
+}
+
 function kode_tbl_spec(){
 	$CI 	=& get_instance();	
 	$query = "

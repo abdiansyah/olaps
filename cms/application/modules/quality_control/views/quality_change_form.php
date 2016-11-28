@@ -98,9 +98,9 @@ $().ready(function(){
                         </a>
                         <a id="head_nav">Take Authorization</a>
                     </li>
-                    <?php                    
+                    <?php
                     if(!empty($rc[0]->status_finish)){
-                        $rc = "active";
+                        $class_status_finish = "active";
                     } else if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) {
                         $class_status_finish = "active";
                     }
@@ -108,11 +108,11 @@ $().ready(function(){
                         $class_status_finish = "disabled";    
                     }
                     ?>
-                    <li role="presentation" class="<?php echo $class_take_authorization?>">
+                    <li role="presentation" class="<?php echo $class_status_finish?>">
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                             <img id="status" src="<?php echo base_url('assets/images/property/finish.png'); ?>">
                         </a>
-                         <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
+                       <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
                     </li>
                     </ul>
             </div>

@@ -1,71 +1,349 @@
 $(document).ready(function () {
-    var seen = {};
-    $('.body_specification_requirement label.label_req_spec').each(function() {
-        var txt = $(this).text();        
-        if (seen[txt])
-            $(this).closest('tr').remove();            
-        else
-            seen[txt] = true;
-    }); 
+    // var seen = {};
+    // $('.body_specification_requirement label.label_req_spec').each(function() {
+    //     var txt = $(this).text();        
+    //     if (seen[txt])
+    //         $(this).closest('tr').remove();            
+    //     else
+    //         seen[txt] = true;
+    // }); 
     
     $('[name=submitcompletingdata],.body_specification_requirement').keypress(function(event){
     if (event.keyCode === 10 || event.keyCode === 13) 
         event.preventDefault();
     });  
-    
-    
-    // $('.body_general_requirement').on('change', '.file_req_document_general', function(e){           
-    //     var file_req_document_general_003     = $('#file_req_document_general_1_ARG_0003').val();
-    //     var file_req_document_general_004     = $('#file_req_document_general_2_ARG_0004').val();
-    //     var file_req_document_general_005     = $('#file_req_document_general_3_ARG_0005').val();
-    //     var file_req_document_general_006     = $('#file_req_document_general_4_ARG_0006').val();
-    //     var file_req_document_general_007     = $('#file_req_document_general_5_ARG_0007').val();
-    //     if(file_req_document_general_003 !='' || file_req_document_general_004 !=''){
-    //         $('#file_req_document_general_2_ARG_0004').attr('required',true);
-    //         $('#file_req_document_general_1_ARG_0003').attr('required',true);
-    //     };  
-    //     if(file_req_document_general_005 !='' || file_req_document_general_006 !='' || file_req_document_general_007 !=''){
-    //         $('#file_req_document_general_3_ARG_0005').attr('required',true);
-    //         $('#file_req_document_general_4_ARG_0006').attr('required',true);
-    //         $('#file_req_document_general_5_ARG_0007').attr('required',true);
-    //     };                    
-                          
-    // });
-    
+
     $('[name=submitcompletingdata]').click(function(){
-        $('.file_req_spec_certificate,.file_req_document_certificate').attr('disabled',false);
-        $('.file_req_document_certificate').attr('required',true);
+        $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
+            var file_req_document_general_003     = $('#file_req_document_general_1_ARG_0003'),
+                file_req_document_general_004     = $('#file_req_document_general_2_ARG_0004'),
+                file_req_document_general_005     = $('#file_req_document_general_3_ARG_0005'),
+                file_req_document_general_006     = $('#file_req_document_general_4_ARG_0006'),
+                file_req_document_general_007     = $('#file_req_document_general_5_ARG_0007'),
+                status_upload_document_general_1  = $('#status_upload_document_general_1').val(),
+                status_upload_document_general_2  = $('#status_upload_document_general_2').val(),
+                status_upload_document_general_3  = $('#status_upload_document_general_3').val(),
+                status_upload_document_general_4  = $('#status_upload_document_general_4').val(),
+                status_upload_document_general_5  = $('#status_upload_document_general_5').val();
+
+               if(status_upload_document_general_1 !='' || status_upload_document_general_2 !='' ){
+                    if(status_upload_document_general_1 == '') {
+                        file_req_document_general_003.attr('required',true);
+                    };
+                    if(status_upload_document_general_2 == '') {
+                        file_req_document_general_004.attr('required',true);            
+                    };
+                };               
+
+                if(status_upload_document_general_3 !='' || status_upload_document_general_4 !='' || status_upload_document_general_5 !='') {
+                    if(status_upload_document_general_3 == '') {
+                        file_req_document_general_005.attr('required',true);                
+                    };
+                    if(status_upload_document_general_4 == '') {
+                        file_req_document_general_006.attr('required',true);
+                    };
+                    if(status_upload_document_general_5 == '') {
+                        file_req_document_general_007.attr('required',true);
+                    };            
+                };
+                
+                                
 
         $('.save_result_expiration_date_req_general_certificate').each(function(){
             var expiration_date                 = $(this).val();
-            var id                              = this.id;
-            var data_row_id                     = id.split("_"); 
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
             var row_id                          = data_row_id[7];             
             var label_save_expiration_date      = $('#save_result_expiration_date_req_general_certificate_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
             var save_expiration_date            = $('#save_result_expiration_date_req_general_certificate_'+row_id).val().split("-");
+            
             var label_ex_date                   = save_expiration_date[0];
             var label_ex_month                  = save_expiration_date[1];
             var label_ex_year                   = save_expiration_date[2];
             var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
             var file_req_document_certificate   = $('#file_req_document_certificate_'+row_id);
             var date_now = new Date(); 
-            if (label_save_expiration_date == '01-01-1970' || label_save_expiration_date == '') {
+            if (label_save_expiration_date == '01-01-1970') {
                 file_req_document_certificate.attr('required', false);
             } else if (save_result_expiration_date < date_now) {
                 file_req_document_certificate.attr('required', true);                
             } else  if (save_result_expiration_date > date_now) {
                 file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
             }
-        });        
-        // $('.file_req_spec_certificate,.file_req_document_certificate').attr('required',true);
-        // $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
-        // $('.file_req_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('required',true); 
-        // $('.file_req_no_required_document_certificate,.file_general_spec_certificate').attr('required',false);       
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[7];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_license_garuda').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_license_garuda_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_license_citilink').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_license_citilink_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_license_sriwijaya').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_license_sriwijaya_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_easa').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8]; 
+        
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_easa_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_easa_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_easa_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_special').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];              
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_special_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_special_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_special_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_garuda').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_garuda_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_garuda_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_garuda_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_citilink').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_citilink_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_citilink_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_citilink_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        }); 
+
+        $('.save_result_expiration_date_req_spec_certificate_sriwijaya').each(function(){
+            var expiration_date                 = $(this).val();
+            var id                              = this.id;            
+            var data_row_id                     = id.split("_");             
+            var row_id                          = data_row_id[8];             
+            var label_save_expiration_date      = $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val();
+            var status_upload                   = $('#status_upload_'+row_id).val();              
+            var save_expiration_date            = $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val().split("-");
+            
+            var label_ex_date                   = save_expiration_date[0];
+            var label_ex_month                  = save_expiration_date[1];
+            var label_ex_year                   = save_expiration_date[2];
+            var save_result_expiration_date     = new Date(label_ex_year + '-' + label_ex_month + '-' + label_ex_date);
+            var file_req_document_certificate   = $('#file_req_spec_certificate_sriwijaya_'+row_id);
+            var date_now = new Date(); 
+            if (label_save_expiration_date == '01-01-1970') {
+                file_req_document_certificate.attr('required', false);
+            } else if (save_result_expiration_date < date_now) {
+                file_req_document_certificate.attr('required', true);                
+            } else  if (save_result_expiration_date > date_now) {
+                file_req_document_certificate.attr('required', false);
+            } else if (status_upload == '1' && label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', false);
+            } else if( label_save_expiration_date == '') {
+                file_req_document_certificate.attr('required', true);                
+            }
+
+        });         
     });
     
-    // $('[name=submitcompletingdata]').mouseout(function(){
-    //     $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);           
-    // });    
+    $('[name=submitcompletingdata]').mouseout(function(){
+        $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);           
+    });    
     
     
     $('.expiration_date_req_general,.date_training_req_general_certificate,.date_training_req_spec_certificate,.date_training_req_spec_certificate_easa,.date_training_req_spec_certificate_special,.date_training_req_spec_certificate_garuda,.date_training_req_spec_certificate_citilink,.date_training_req_spec_certificate_sriwijaya,.date_training_req_spec_certificate_license_garuda,.date_training_req_spec_certificate_license_citilink,.date_training_req_spec_certificate_license_sriwijaya,.expiration_date_req_spec_certificate_special,.expiration_date_req_spec_certificate_garuda,.expiration_date_req_spec_certificate_citilink,.expiration_date_req_spec_certificate_sriwijaya').datepicker(         
@@ -76,10 +354,6 @@ $(document).ready(function () {
     );  
     // Disabled input file     
     $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);
-    
-    // $('[name=savecompletingdata]').click(function(){
-    //     $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_general_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',false);
-    // });
     
     // Progressbar upload file           
     $('.body_general_requirement').on('change', '.file_req_document_general', function(){        
@@ -138,6 +412,7 @@ $(document).ready(function () {
                         empty_file.attr('src',image_cross_check);
                         $('#msg_'+row_id).html(response);
                         $('#msg_'+row_id).css('color','blue');
+                        $('#status_upload_document_general_'+row_id).val('1');
                         }            
                     }, 300);                      
                 }
@@ -154,7 +429,7 @@ $(document).ready(function () {
         var data_row_id     = id.split("_"); 
         var row_id          = data_row_id[4];        
         var code_file       = $('#code_req_document_general_'+ row_id).val();        
-        var loading         = $('#loadingmessage_'+row_id);
+        var loading         = $('#loading_document_general_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
@@ -210,12 +485,7 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
         var code_1 = data_row_id[5];
-        var code_2 = data_row_id[6];
-        // var file_req_document_general_003       = $('#file_req_document_general_1_ARG_0003').val();
-        // var file_req_document_general_004       = $('#file_req_document_general_2_ARG_0004').val();
-        // var file_req_document_general_005       = $('#file_req_document_general_3_ARG_0005').val();
-        // var file_req_document_general_006       = $('#file_req_document_general_4_ARG_0006').val();
-        // var file_req_document_general_007       = $('#file_req_document_general_5_ARG_0007').val();                
+        var code_2 = data_row_id[6];              
         
         var empty_file      = $('#empty_file_document_general_'+ row_id+'_'+code_1+'_'+code_2);
         var progressbar     = $('#progressbar_document_general_'+row_id); 
@@ -260,16 +530,7 @@ $(document).ready(function () {
                         statustxt.css('color','#000');  
                         status_file.hide(); 
                         empty_file.hide(); 
-                        
-                        // if(file_req_document_general_003 =='' || file_req_document_general_004 ==''){
-                        //     $('#file_req_document_general_1_ARG_0003').attr('required',false);
-                        //     $('#file_req_document_general_2_ARG_0004').attr('required',false);            
-                        // };  
-                        // if(file_req_document_general_005 == '' || file_req_document_general_006 =='' || file_req_document_general_007 ==''){
-                        //     $('#file_req_document_general_3_ARG_0005').attr('required',false);
-                        //     $('#file_req_document_general_4_ARG_0006').attr('required',false);
-                        //     $('#file_req_document_general_5_ARG_0007').attr('required',false);
-                        // }; 
+                        $('#status_upload_document_general_'+row_id).val('');
                     }
                 },
                 error: function (response) {                
@@ -1981,10 +2242,10 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];                                    
                       
-        var progressbar     = $('#progressbar_certificate_sriwijaya_'+ row_id);        
-        var statustxt       = $('#statustxt_certificate_sriwijaya_'+ row_id);                      
-        var status_file     = $('#status_file_certificate_sriwijaya_'+ row_id);
-        var empty_file      = $('#empty_file_certificate_sriwijaya_'+ row_id);            
+        var progressbar     = $('#progressbar_req_certificate_sriwijaya_'+ row_id);        
+        var statustxt       = $('#statustxt_req_certificate_sriwijaya_'+ row_id);                      
+        var status_file     = $('#status_file_req_certificate_sriwijaya_'+ row_id);
+        var empty_file      = $('#empty_file_req_certificate_sriwijaya_'+ row_id);            
         var file            = $('#file_req_spec_certificate_sriwijaya_'+row_id).prop('files')[0];                    
         var code            = $('#code_req_spec_certificate_sriwijaya_'+ row_id).val();                     
         var date_training   = $('#date_training_req_spec_certificate_sriwijaya_'+ row_id).val();                     
@@ -2049,7 +2310,7 @@ $(document).ready(function () {
         });                    
     }); 
 
-    $('.empty_file_certificate_sriwijaya').on('mouseover', function(){        
+    $('.empty_file_req_certificate_sriwijaya').on('mouseover', function(){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];      
@@ -2105,7 +2366,7 @@ $(document).ready(function () {
     });
     
 
-    $('.body_specification_requirement').on('click', '.empty_file_certificate_sriwijaya', function(e){        
+    $('.body_specification_requirement').on('click', '.empty_file_req_certificate_sriwijaya', function(e){        
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];        
@@ -2808,9 +3069,11 @@ $(document).ready(function () {
         });
         
         $('.date_training_req_spec_certificate_sriwijaya').datepicker().on('changeDate', function(e){        
-            var row_id = this.id;
-            if($('.date_training_req_spec_certificate_sriwijaya#'+row_id).val().length != 0){
-            var id_thn = $('.date_training_req_spec_certificate_sriwijaya#' + row_id).val(); 
+            var id = this.id;
+            var data_row_id = id.split("_"); 
+            var row_id = data_row_id[6];
+            if($('#date_training_req_spec_certificate_sriwijaya_'+row_id).val().length != 0){
+            var id_thn = $('#date_training_req_spec_certificate_sriwijaya_' + row_id).val(); 
             var data_thn_id = id_thn.split("-");
             var day = data_thn_id[0];
             var month = data_thn_id[1]; 

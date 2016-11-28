@@ -185,7 +185,7 @@ if(@$data_assesment[0]!='') :
 endif;
 endif;
 
-if($p_type_assesment =='18') :
+if($p_type_assesment =='19') :
 if(@$data_assesment_practical[0]!='') :
 ?>
 <div class="col-md-12">                        

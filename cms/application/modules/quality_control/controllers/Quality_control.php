@@ -686,8 +686,7 @@ class Quality_control extends MX_Controller
                             'id_auth_scope_fk' => $id_scope[$key],
                             'date_assesment' => date('Y-m-d H:i:s')
                         );
-                        //print_r($data_assesment);
-                        //            die();             
+                                    
                         $this->db->insert('t_assesment', $data_assesment);
                     }
                     $this->db->query("UPDATE t_apply_license_dtl SET status_written_assesment = '1' WHERE 
@@ -933,55 +932,11 @@ class Quality_control extends MX_Controller
             $this->page->view('quality_control/form_view_requirement', $data);
         };
         
-        if (isset($_POST['save_validation_document'])) {
-            $this->load->library('ftp');                
-            $ftp_config['hostname'] = '127.0.0.1'; 
-            $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismillah';
-            $ftp_config['debug']    = TRUE;                
-            $this->load->library('upload');                                                              
-            $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
+        if (isset($_POST['save_validation_document'])) {                    
             $personnel_number        = $this->input->post('personnel_number');
             $request_number          = $this->input->post('request_number');
             $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
-            $code_data_requirement_s = $this->input->post('code_data_requirement');
-            @$file_data_requirement = count($_FILES['file_data_requirement']['name']);
-            $save_result_expiration_data_requirement = $this->input->post('save_result_expiration_data_requirement');
-            $subfolder                               = $personnel_number;
             
-            $this->ftp->connect($ftp_config);
-            $this->ftp->close();
-            $this->ftp->connect($ftp_config);
-            if ($this->ftp->list_files('/' . $mainfolder . '/' . $subfolder) == '') {
-                $this->ftp->mkdir('/' . $mainfolder . '/' . $subfolder);
-            };
-            $this->ftp->close();
-            $this->ftp->connect($ftp_config);
-            $this->ftp->changedir('/' . $mainfolder . '/' . $subfolder);
-            
-            for ($g = 0; $g < $file_data_requirement; $g++) {
-                if ($_FILES['file_data_requirement']['size'][$g] != 0) {
-                    $code_data_requirement = $code_data_requirement_s[$g];
-                    $fileNameOld           = $_FILES['file_data_requirement']['name'][$g];
-                    @$ext = end(explode('.', $_FILES['file_data_requirement']['name'][$g]));
-                    $fileNameNew    = $personnel_number . '_' . $code_data_requirement . '_' . date('YmdHis') . '.' . $ext;
-                    $sourceFileName = $_FILES['file_data_requirement']['tmp_name'][$g];
-                    @$destination = $fileNameOld;
-                    @$destinationnew = $fileNameNew;
-                    $send = $this->ftp->upload($sourceFileName, $destination);
-                    $this->ftp->rename($destination, $destinationnew);
-                    
-                    $data_requirement = array(
-                        'personnel_number_fk' => @$personnel_number,
-                        'name_file' => @$fileNameNew,
-                        'code_file' => @$code_data_requirement,
-                        'update_by' => @$sess_personnel_number
-                    );
-                    $this->db->insert('t_file_requirement', $data_requirement);
-                }
-            }
-            $this->ftp->close();
-                                    
             $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -1053,7 +1008,7 @@ class Quality_control extends MX_Controller
             $pesan .= '<p>PT GMF AeroAsia</p>';
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
             $pesan .= '<p>Fax: +62-21-550 1257</p>';            
-            if(!empty($cek_data_document)){ 
+            if(!empty($cek_data_document)){                    
                     $this->email->message($pesan);
                     $this->email->send();  
                     $data = array(
@@ -1061,7 +1016,8 @@ class Quality_control extends MX_Controller
                         'date_approved_quality' => date('Y-m-d H:i:s'),
                         'personnel_number_quality' => $sess_personnel_number,
                         'finished' => '1',
-                        'date_finish' => date('Y-m-d H:i:s')
+                        'date_finish' => date('Y-m-d H:i:s'),
+                        'personnel_number_finish' => $sess_personnel_number,
                     );
                     $this->db->where('request_number', $request_number);
                     $this->db->update('t_apply_license', $data);                                             
@@ -1150,8 +1106,74 @@ class Quality_control extends MX_Controller
     }
 }
 
-    
-     public function process_document()
+    function upload_file_data_requirement() {
+        $this->load->library('ftp');                            
+        $this->load->library('upload');                                                         
+        $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
+        $sess_personnel_number  = $this->session->userdata('users_quality')->PERNR;
+        $personnel_number       = $sess_personnel_number;
+        $subfolder              = $sess_personnel_number;        
+        connection_ftp();     
+        $code_data_requirement                          = $this->input->post('code_data_requirement');                    
+        $date_training_data_requirement                 = $this->input->post('date_training_data_requirement');            
+        $save_result_expiration_date_data_requirement   = $this->input->post('save_result_expiration_date_data_requirement');            
+        if(isset($_FILES['file_data_requirement']['name'])) {
+            if ($_FILES['file_data_requirement']['size'] > 5120000) {  
+                echo 'File too large, max 5mb.';
+            } else {
+                $cd_folder_by       = $this->model_quality_control->get_code_file_by($code_data_requirement);                       
+                $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);                              
+                $fileNameOld        = $_FILES['file_data_requirement']['name'];                                                    
+                @$ext               = end(explode('.',$_FILES['file_data_requirement']['name']));                          
+                if ($ext == 'pdf') {
+                    $fileNameNew        = $personnel_number . '_' . $code_data_requirement . '_' . date('YmdH') . '.' . $ext;
+                    $sourceFileName     = $_FILES['file_data_requirement']['tmp_name'];                  
+                    $destination        = $fileNameOld;                                      
+                    $destinationnew     = $fileNameNew;
+
+                    if($date_training_data_requirement != '') {
+                        $date_training  = date('Y-m-d', strtotime($date_training_data_requirement));
+                    } else {
+                        $date_training  = null;
+                    };
+
+                    if ($save_result_expiration_date_data_requirement) {
+                        $date_expiration = date('Y-m-d', strtotime($save_result_expiration_date_data_requirement));
+                    } else {
+                        $date_expiration = null;
+                    };  
+
+                    $file_exists = $this->ftp->list_files(str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name . '/' . $destinationnew));
+                    if(!$file_exists) {  
+                        $send               = $this->ftp->upload($sourceFileName,$destination);                               
+                        $rename             = $this->ftp->rename($destination,$destinationnew);
+                        $data_general_certificate = array(
+                            'personnel_number_fk'  => $personnel_number,                
+                            'date_training'        => $date_training,
+                            'expiration_date'      => $date_expiration,
+                            'code_file'            => $code_data_requirement,                
+                            'name_file'            => $fileNameNew,                            
+                            'date_upload'          => date('Y-m-d'),
+                            'time_upload'          => date('H:i:s'),
+                        );
+                                               
+                        $this->db->insert('t_file_requirement',$data_general_certificate);                                          
+                        $this->ftp->close();                            
+                        echo 'Save successfull.';                                                                     
+                    } else {
+                        echo 'File is exists.';                         
+                    }
+                } else {
+                    echo 'File type not suport, please atach file pdf.';                
+                }
+            }    
+        } else {
+            echo 'Please choose file.';
+        }   
+    }
+
+
+    public function process_document()
     {
         $request_number   = $this->input->post('request_number');
         $personnel_number = $this->input->post('personnel_number');

@@ -16,7 +16,7 @@ if($p_sub_status =='4') : ?>
 <optgroup label="Assessment Process">
 <option value="5">Written Assesment Schedule</option>
 <option value="17">Oral Assessment Schedule</option>
-<option value="18">Practical Assessment Schedule</option>
+<option value="19">Practical Assessment Schedule</option>
 <option value="6">Issue Assessment Verification</option>                  
 <option value="7">Assessment Process Closed</option>
 <?php endif; 

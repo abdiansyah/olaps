@@ -686,8 +686,10 @@ class model_quality_control extends CI_Model
     }
     
     public function get_data_requirement($personnel_number){
-    $query = "SELECT DISTINCT tfr.personnel_number_fk, tfr.code_file, (m_req.name_t) AS name_file FROM t_file_requirement AS tfr
-        LEFT JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t            
+    $query = "SELECT tfr.personnel_number_fk, tfr.code_file, tfr.date_training, tfr.expiration_date, tfr.no_upload, tfr.name_file, tfr.status_valid, tfr.reason, (m_req.name_t) AS name_file FROM t_file_requirement AS tfr
+        JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t AND tfr.no_upload = 
+        (SELECT MAX(no_upload) AS no_upload FROM t_file_requirement
+        WHERE t_file_requirement.code_file = tfr.code_file)
         WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by = ''";
     return $this->db->query($query)->result();
     } 
@@ -700,10 +702,11 @@ class model_quality_control extends CI_Model
     } 
     
     public function cek_data_document($personnel_number){
-    $query = "SELECT (tfr.name_file) AS name_file_ftp, tfr.code_file, (maadrg.name_t) AS name_file, tfr.date_training, tfr.expiration_date, tfr.status_valid, tfr.reason FROM t_file_requirement AS tfr
-            LEFT JOIN UNION_REQUIREMENT AS maadrg ON tfr.code_file = maadrg.code_t
-            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.status_valid = '2'";
-            // status_valid 2 (not_valid)
+    $query = "SELECT tfr.personnel_number_fk, tfr.code_file, tfr.date_training, tfr.expiration_date, tfr.no_upload, tfr.name_file, tfr.status_valid, tfr.reason, (m_req.name_t) AS name_file FROM t_file_requirement AS tfr
+        JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t AND tfr.no_upload = 
+        (SELECT MAX(no_upload) AS no_upload FROM t_file_requirement
+        WHERE t_file_requirement.code_file = tfr.code_file)
+        WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.update_by = '' AND tfr.status_valid = '2'";            
     return $this->db->query($query)->result();    
     }
     
@@ -929,7 +932,6 @@ class model_quality_control extends CI_Model
         return $this->db->query($query)->row_array();
     }
     
-
 
 }
 

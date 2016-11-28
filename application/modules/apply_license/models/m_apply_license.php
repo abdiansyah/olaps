@@ -421,7 +421,7 @@ class M_apply_license extends CI_Model {
 
     public function _get_query_ga() {                              
         $this->db->select("*");
-        $this->db->where('lic_type','GA');
+        $this->db->where('scp_indent','GASW');
         $this->db->from($this->table_auth);                              
     }
 
@@ -435,7 +435,7 @@ class M_apply_license extends CI_Model {
 
     public function _get_query_citilink() {                              
         $this->db->select("*");
-        $this->db->where('lic_type','CL');
+        $this->db->where('scp_indent','CTSW');
         $this->db->from($this->table_auth);                              
     }
 
@@ -447,19 +447,19 @@ class M_apply_license extends CI_Model {
         return $query->result();
     }
 
-    // public function _get_query_sriwijaya() {                              
-    //     $this->db->select("*");
-    //     $this->db->where('lic_type','CL');
-    //     $this->db->from($this->table_auth);                              
-    // }
+    public function _get_query_sriwijaya() {                              
+        $this->db->select("*");
+        $this->db->where('scp_indent','SJSW');
+        $this->db->from($this->table_auth);                              
+    }
 
-    // public function get_data_sriwijaya_license() {        
-    //     $personnel_number = $this->input->post('personnel_number');
-    //     $this->db->where('empl_id',$personnel_number);
-    //     $this->_get_query_ga();        
-    //     $query = $this->db->get();        
-    //     return $query->result();
-    // }
+    public function get_data_sriwijaya_license() {        
+        $personnel_number = $this->input->post('personnel_number');
+        $this->db->where('empl_id',$personnel_number);
+        $this->_get_query_sriwijaya();        
+        $query = $this->db->get();        
+        return $query->result();
+    }
 
     public function _get_query_easa() {                              
         $this->db->select("*");        

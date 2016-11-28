@@ -108,7 +108,7 @@
 					</div>
                     <?php if(@$sess_employee_group == '1'){ ?>                    
                     <div class="form-group" id="fieldnongmfemp">
-						<label for="" class="col-sm-2 col-md-offset-2 control-label">Validity Contract :</label>
+						<label  class="col-sm-2 col-md-offset-2 control-label">Validity Contract :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="validitycontract" type="text" />
 						</div>						
@@ -116,11 +116,11 @@
                     <?php }?>                    
                     <div class="form-group" id="fieldnongmfemp">
 						<hr/>
-                        <label for="" class="col-sm-4 control-label">Superior Information</label>
+                        <label  class="col-sm-4 control-label">Superior Information</label>
 					</div>
                     
                     <div class="form-group" id="fieldnongmfemp">
-						<label for="" class="col-sm-4 control-label">Personnel Number Superior :</label>
+						<label  class="col-sm-4 control-label">Personnel Number Superior :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="personnel_number_superior" type="text" />
 						</div>
@@ -131,39 +131,176 @@
                         
 					</div>
                     <div class="form-group data-superior" id="fieldnongmfemp">
-						<label for="" class="col-sm-2 col-md-offset-2 control-label">Name :</label>
+						<label  class="col-sm-2 col-md-offset-2 control-label">Name :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="name_superior" type="text" />
 						</div>						
 					</div>
                     <div class="form-group data-superior" id="fieldnongmfemp">
-						<label for="" class="col-sm-2 col-md-offset-2 control-label">Job Title :</label>
+						<label  class="col-sm-2 col-md-offset-2 control-label">Job Title :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="jobtitle_superior" type="text"/>
 						</div>						
 					</div>
                     <div class="form-group data-superior" id="fieldnongmfemp">
-						<label for="" class="col-sm-2 col-md-offset-2 control-label">Email :</label>
+						<label  class="col-sm-2 col-md-offset-2 control-label">Email :</label>
 						<div class="col-sm-4">
 							<input class="form-control input-sm" name="email_superior" type="text"/>
 						</div>						
 					</div>										
 				</div>
+				<div class="form-group">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label  class="col-sm-2 col-md-offset-2 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Authorization Details :</label>			
+					<button type="submit" class="btn btn-success btn-md col-sm-4" name="submitchecklicense" data-toggle="modal" data-target="#view-modal" onClick="return false;" data-id="<?php echo @$sess_personnel_number; ?>">
+					<b>View</b>
+					</button>									
+				</div>
                 
-            </div>
-            <div class="box-footer">
-                <button type="submit" class="btn btn-info btn-sm pull-right" name="submitpersonnelinformation">NEXT</button>
+            </div>          
+            <div class="box-footer">	            
+                <button type="submit" class="btn btn-info btn-sm pull-right" name="submitpersonnelinformation">NEXT</button>                
             </div>	
             </form>
 </div>  
 </div> 
 </div> 
-        
+ <!-- Modal License History-->
+<div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog"> 
+     <div class="modal-content">         
+        <div class="modal-header"> 
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+           <h4 class="modal-title">
+           <i class="glyphicon glyphicon-user"></i> License history
+           </h4> 
+        </div>                 
+        <div class="modal-body">                     
+            <div id="modal-loader" style="display: none; text-align: center;">               
+                <img src="<?php echo base_url('/assets/images/property/hourglass.gif'); ?>">
+            </div> 
+            <div class="table-responsive">                                                          
+                <div class="col-md-12">                                        
+                    <h4><b>Basic License</b></h4>
+                    <table class="table table-bordered table-responsive" id="datatables_basic">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Basic License</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+                    <h4><b>AME License</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_ame"></b></font><font size="3"><b id="status_ame" class="pull-right"></b></font><font size="3"> <b id="status_days_ame" class="pull-right"></b></font>                      
+                    <table class="table table-bordered table-responsive" id="datatables_ame">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table>                                                                                                       
+                    <h4><b>Certifying Staff Authorization</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_cs"></b></font><font size="3"><b id="status_cs" class="pull-right"></b></font><font size="3"> <b id="status_days_cs" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_cs">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table>
+                    <h4><b>GMF License</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_gmf"></b></font><font size="3"><b id="status_gmf" class="pull-right"></b></font><font size="3"> <b id="status_days_gmf" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_gmf">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Scope</th>                                                                            
+                        </tr>    
+                        </thead>                                         
+                    </table>                 
+                    <h4><b>GA Authorization</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_ga"></b></font><font size="3"><b id="status_ga" class="pull-right"></b></font><font size="3"> <b id="status_days_ga" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_ga">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table>     
+                    <h4><b>Citilink Authorization</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_citilink"></b></font><font size="3">
+                    <b id="status_citilink" class="pull-right"></b></font><font size="3"> <b id="status_days_citilink" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_citilink">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="97%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table>
+                    <h4><b>Sriwijaya Authorization</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_sriwijaya"></b></font><font size="3"><b id="status_sriwijaya" class="pull-right"></b></font><font size="3"> <b id="status_days_sriwijaya" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_sriwijaya">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table>                                                                                                                      
+
+                    <h4><b>EASA Authorization</b></h4>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_easa"></b></font><font size="3"><b id="status_easa" class="pull-right"></b></font><font size="3"> <b id="status_days_easa" class="pull-right"></b></font>
+                    <table class="table table-bordered table-responsive" id="datatables_easa">                    
+                        <thead>
+                        <tr>                        
+                            <th width="3%">No</th>
+                            <th width="42%">Scope</th>                                                
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+
+                    <h4><b>Stamp Data</b></h4>
+					<b><font size="3">No Stamp :</font></b>&nbsp;<font size="3"><b id="no_stamp"></b></font><br/>
+                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_cofc"></b></font><font size="3"><b id="status_cofc" class="pull-right"></b></font><font size="3"> <b id="status_days_cofc" class="pull-right"></b></font> 
+                    <table class="table table-bordered table-responsive" id="datatables_cofc">                    
+                        <thead>
+                        <tr>                                                    
+                            <th width="10%">No.</th>                    
+                            <th width="37%">EC Description</th>                    
+                            <th width="20%">Rating</th>                    
+                        </tr>    
+                        </thead>                                         
+                    </table> 
+
+                </div>
+            </div>
+        </div> 
+                    
+        <div class="modal-footer">             
+            <button type="button" class="btn btn-default" data-dismiss="modal" name="close">Close</button>  
+        </div> 
+                        
+    </div> 
+  </div>
+</div>        
 <?php 
 echo bootstrap_datepicker();
 ?>   
 <script type="text/javascript">
     var get_data_gmf = "<?php echo site_url().'/apply_license/get_data_personnel_by_gmf/'; ?>",
-    	get_data_non_gmf = "<?php echo site_url().'/apply_license/get_data_personnel_by_non_gmf/';?>";
+    	get_data_non_gmf = "<?php echo site_url().'/apply_license/get_data_personnel_by_non_gmf/';?>",
+    	get_data_basic_license      = "<?php echo site_url().'/apply_license/get_data_basic_license/'; ?>",
+        get_data_ame_license        = "<?php echo site_url().'/apply_license/get_data_ame_license/'; ?>",
+        get_data_cs_license         = "<?php echo site_url().'/apply_license/get_data_cs_license/'; ?>",
+        get_data_gmf_license        = "<?php echo site_url().'/apply_license/get_data_gmf_license/'; ?>",
+        get_data_ga_license         = "<?php echo site_url().'/apply_license/get_data_ga_license/'; ?>",
+        get_data_citilink_license   = "<?php echo site_url().'/apply_license/get_data_citilink_license/'; ?>",
+        get_data_sriwijaya_license  = "<?php echo site_url().'/apply_license/get_data_sriwijaya_license/'; ?>",
+        get_data_easa_license       = "<?php echo site_url().'/apply_license/get_data_easa_license/'; ?>",
+        get_data_cofc_license       = "<?php echo site_url().'/apply_license/get_data_cofc_license/'; ?>";
 </script>
 <script src="<?php echo base_url('assets/plugins/js/personnel_information.js');?>" type="text/javascript"></script>     

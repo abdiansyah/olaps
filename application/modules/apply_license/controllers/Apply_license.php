@@ -234,6 +234,7 @@ class Apply_license extends CI_Controller
                     $data_general_certificate .= '</td><td width="20%">';
                         if (!empty($row->code_file)) {
                             $data_general_certificate .= '<div class="progressbox"><div id="progressbar_document_certificate_' . $no . '" class="progress" style="background:blue"></div>100%</div ></div>
+                                <input type="hidden" id="status_upload_'. $no .'" value="1">
                                 </td>
                                 <td><img class="status_file_document_certificate" id="status_file_document_certificate_' . $no . '" height="30" src = "'. base_url('/assets/images/property/check.png') .'"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_document_certificate" id="empty_file_document_certificate_' . $no . '" height="30"/>
                                 <br/>
@@ -243,7 +244,10 @@ class Apply_license extends CI_Controller
                             $data_general_certificate .= '<div class="progressbox"><div id="progressbar_document_certificate_' . $no . '" class="progress"></div>
                                 <div id="statustxt_document_certificate_' . $no . '" class="statustxt_document_certificate">0%</div ></div>
                                 </td>
-                                <td><img class="status_file_document_certificate" id="status_file_document_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_document_certificate" id="empty_file_document_certificate_' . $no . '" height="30"/></td> 
+                                <td><img class="status_file_document_certificate" id="status_file_document_certificate_' . $no . '" height="30"/> &nbsp; <img class="empty_file_document_certificate" id="empty_file_document_certificate_' . $no . '" height="30"/>
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                </td> 
                                 </tr>';
                             }                                                         
                     
@@ -297,12 +301,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_' . $no . '" value="' . $value->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate" id="save_result_expiration_date_req_spec_certificate_' . $no . '" />';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate" id="save_result_expiration_date_req_spec_certificate_' . $no . '"  value="' . $value->expiration_date . '"/>';
                                 if (!empty($value->code_file)) {
                                     $data_req_specific .= '<div class="progressbox"><div id="progressbar_req_certificate_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_' . $no . '" class="statustxt_req_certificate">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate" id="status_file_req_certificate_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate" id="empty_file_req_certificate_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -360,12 +365,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_license_garuda_' . $no . '" value="' . $value->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_license_garuda_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_license_garuda_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_garuda" id="save_result_expiration_date_req_spec_certificate_license_garuda_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_garuda" id="save_result_expiration_date_req_spec_certificate_license_garuda_' . $no . '" value="' . $value->expiration_date . '"/>';
                                 if (!empty($value->code_file)) {
                                     $data_req_specific_license_garuda .= '<div class="progressbox"><div id="progressbar_req_certificate_license_garuda_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_license_garuda_' . $no . '" class="statustxt_req_certificate_license_garuda">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_license_garuda" id="status_file_req_certificate_license_garuda_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_license_garuda" id="empty_file_req_certificate_license_garuda_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -426,12 +432,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_license_citilink_' . $no . '" value="' . $value->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_license_citilink_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_license_citilink_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_citilink" id="save_result_expiration_date_req_spec_certificate_license_citilink_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_citilink" id="save_result_expiration_date_req_spec_certificate_license_citilink_' . $no . '" value="' . $value->expiration_date . '"/>';
                                 if (!empty($value->code_file)) {
                                     $data_req_specific_license_citilink .= '<div class="progressbox"><div id="progressbar_req_certificate_license_citilink_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_license_citilink_' . $no . '" class="statustxt_req_certificate_license_citilink">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_license_citilink" id="status_file_req_certificate_license_citilink_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_license_citilink" id="empty_file_req_certificate_license_citilink_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -492,12 +499,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_license_sriwijaya_' . $no . '" value="' . $value->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_license_sriwijaya_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_license_sriwijaya_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_sriwijaya" id="save_result_expiration_date_req_spec_certificate_license_sriwijaya_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_license_sriwijaya" id="save_result_expiration_date_req_spec_certificate_license_sriwijaya_' . $no . '" value="' . $value->expiration_date . '"/>';
                                 if (!empty($value->code_file)) {
                                     $data_req_specific_license_sriwijaya .= '<div class="progressbox"><div id="progressbar_req_certificate_license_sriwijaya_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_license_sriwijaya_' . $no . '" class="statustxt_req_certificate_license_sriwijaya">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_license_sriwijaya" id="status_file_req_certificate_license_sriwijaya_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_license_sriwijaya" id="empty_file_req_certificate_license_sriwijaya_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -578,12 +586,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_easa_' . $no . '" value="' . $value_easa->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_easa_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_easa_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_easa" id="save_result_expiration_date_req_spec_certificate_easa_' . $no . '" />';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_easa" id="save_result_expiration_date_req_spec_certificate_easa_' . $no . '" value="' . $value_easa->expiration_date . '"/>';
                                 if (!empty($value_easa->code_file)) {
                                     $data_req_specific_easa .= '<div class="progressbox"><div id="progressbar_req_certificate_easa_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_easa_' . $no . '" class="statustxt_req_certificate_easa">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_easa" id="status_file_req_certificate_easa_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_easa" id="empty_file_req_certificate_easa_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -658,12 +667,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_special_' . $no . '" value="' . $value_special->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_special_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_special_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_special" id="save_result_expiration_date_req_spec_certificate_special_' . $no . '" />';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_special" id="save_result_expiration_date_req_spec_certificate_special_' . $no . '" value="' . $value_special->expiration_date . '"/>';
                                 if (!empty($value_special->code_file)) {
                                     $data_req_specific_special .= '<div class="progressbox"><div id="progressbar_req_certificate_special_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_special_' . $no . '" class="statustxt_req_certificate_special">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_special" id="status_file_req_certificate_special_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_special" id="empty_file_req_certificate_special_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -739,12 +749,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_garuda_' . $no . '" value="' . $value_garuda->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_garuda_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_garuda_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_garuda" id="save_result_expiration_date_req_spec_certificate_garuda_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_garuda" id="save_result_expiration_date_req_spec_certificate_garuda_' . $no . '" value="' . $value_garuda->expiration_date . '"/>';
                                 if (!empty($value_garuda->code_file)) {
                                     $data_req_specific_garuda .= '<div class="progressbox"><div id="progressbar_req_certificate_garuda_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_garuda_' . $no . '" class="statustxt_req_certificate_garuda">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_garuda" id="status_file_req_certificate_garuda_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_garuda" id="empty_file_req_certificate_garuda_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -825,12 +836,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_citilink_' . $no . '" value="' . $value_citilink->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_citilink_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_citilink_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_citilink" id="save_result_expiration_date_req_spec_certificate_citilink_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_citilink" id="save_result_expiration_date_req_spec_certificate_citilink_' . $no . '" value="' . $value_citilink->expiration_date . '"/>';
                                 if (!empty($value_citilink->code_file)) {
                                     $data_req_specific_citilink .= '<div class="progressbox"><div id="progressbar_req_certificate_citilink_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_citilink_' . $no . '" class="statustxt_req_certificate_citilink">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_citilink" id="status_file_req_certificate_citilink_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_citilink" id="empty_file_req_certificate_citilink_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -904,12 +916,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_sriwijaya_' . $no . '" value="' . $value_sriwijaya->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_sriwijaya_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_sriwijaya_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_sriwijaya" id="save_result_expiration_date_req_spec_certificate_sriwijaya_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_sriwijaya" id="save_result_expiration_date_req_spec_certificate_sriwijaya_' . $no . '" value="' . $value_sriwijaya->expiration_date . '"/>';
                                 if (!empty($value_sriwijaya->code_file)) {
                                     $data_req_specific_sriwijaya .= '<div class="progressbox"><div id="progressbar_req_certificate_sriwijaya_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_sriwijaya_' . $no . '" class="statustxt_req_certificate_sriwijaya">100%</div ></div></td>
-                                    <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_sriwijaya" id="status_file_req_certificate_csriwijaya_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_sriwijaya" id="empty_file_req_certificate_sriwijaya_' . $no . '" height="30"/>
+                                    <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_sriwijaya" id="status_file_req_certificate_sriwijaya_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_sriwijaya" id="empty_file_req_certificate_sriwijaya_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -917,7 +930,7 @@ class Apply_license extends CI_Controller
                                     <div id="progressbar_req_certificate_sriwijaya_' . $no . '" class="progress"></div>
                                     <div id="statustxt_req_certificate_sriwijaya_' . $no . '" class="statustxt_req_certificate_sriwijaya">0%</div >
                                     </div></td>
-                                    <td><img class="status_file_req_certificate_sriwijaya" id="status_file_req_certificatev_sriwijaya_' . $no . '" height="30"/> &nbsp; 
+                                    <td><img class="status_file_req_certificate_sriwijaya" id="status_file_req_certificate_sriwijaya_' . $no . '" height="30"/> &nbsp; 
                                     <img class="empty_file_req_certificate_sriwijaya" id="empty_file_req_certificate_sriwijaya_' . $no . '" height="30"/></td> 
                                     </tr>';
                                 }
@@ -985,12 +998,13 @@ class Apply_license extends CI_Controller
                                 <input type="hidden" id="code_req_spec_certificate_cofc_' . $no . '" value="' . $value_cofc->code_t . '"/>
                                 <input type="hidden" id="date_req_spec_certificate_cofc_' . $no . '" />
                                 <input type="hidden" id="time_req_spec_certificate_cofc_' . $no . '" />
-                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_cofc" id="save_result_expiration_date_req_spec_certificate_cofc_' . $no . '"/>';
+                                <input type="hidden" class="save_result_expiration_date_req_spec_certificate_cofc" id="save_result_expiration_date_req_spec_certificate_cofc_' . $no . '" value="' . $value_cofc->expiration_date . '"/>';
                                 if (!empty($value_cofc->code_file)) {
                                     $data_req_specific_cofc .= '<div class="progressbox"><div id="progressbar_req_certificate_cofc_' . $no . '" class="progress" style="background:blue"></div><div id="statustxt_req_certificate_cofc_' . $no . '" class="statustxt_req_certificate_cofc">100%</div ></div></td>
                                     <td><img src = "'. base_url('/assets/images/property/check.png') .'" class="status_file_req_certificate_cofc" id="status_file_req_certificate_cofc_' . $no . '" height="30"/> &nbsp; <img src = "'. base_url('/assets/images/property/cross_check.png') .'" class="empty_file_req_certificate_cofc" id="empty_file_req_certificate_cofc_' . $no . '" height="30"/>
                                     <br/>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_' . $no . '" src="'. base_url('/assets/images/property/squares.gif') .'"/>
+                                        <input type="hidden" id="status_upload_'. $no .'" value="1">
                                     </td> 
                                     </tr>';
                                 } else {
@@ -1132,7 +1146,7 @@ class Apply_license extends CI_Controller
         @$ext                           = end(explode('.',$_FILES['file_req_document_general']['name']));                                      
         $fileNameNew                    = $personnel_number.'_'.$code_req_document_general.'_'.$date_upload.$time_upload.'.pdf';
         $file_exists                    = $this->ftp->list_files(str_replace('%20',' ','/' . $mainfolder .'/'. $subfolder .'/'. $cd_folder_by->name .'/'. $fileNameNew));
-        if($file_exists) {              
+        if($file_exists) {            
             $this->ftp->delete_file(str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name . '/' . $fileNameNew));
             $this->db->where('name_file',$fileNameNew);
             $this->db->delete('t_file_requirement');
@@ -1166,6 +1180,7 @@ class Apply_license extends CI_Controller
         $code_req_document_certificate                          = $this->input->post('code_req_document_certificate');                    
         $date_training_req_general_certificate                  = $this->input->post('date_training_req_general_certificate');            
         $save_result_expiration_date_req_general_certificate    = $this->input->post('save_result_expiration_date_req_general_certificate');            
+        $no_upload                                              = no_upload($personnel_number,$code_req_document_certificate);
         if(isset($_FILES['file_req_document_certificate']['name'])) {
             if ($_FILES['file_req_document_certificate']['size'] > 5120000) {  
                 echo 'File too large, max 5mb.';
@@ -1203,6 +1218,7 @@ class Apply_license extends CI_Controller
                             'name_file'            => $fileNameNew,                                                                    
                             'date_upload'          => date('Y-m-d'),
                             'time_upload'          => date('H:i:s'),
+                            'no_upload'            => $no_upload,
                         );
                                                
                         $this->db->insert('t_file_requirement',$data_general_certificate);                                          
@@ -1269,6 +1285,7 @@ class Apply_license extends CI_Controller
         $code_req_document_certificate                          = $this->input->post('code_req_spec_certificate');                    
         $date_training_req_general_certificate                  = $this->input->post('date_training_req_spec_certificate');            
         $save_result_expiration_date_req_general_certificate    = $this->input->post('save_result_expiration_date_req_spec_certificate');            
+        $no_upload                                              = no_upload($personnel_number,$code_req_document_certificate);
         if(isset($_FILES['file_req_spec_certificate']['name'])) {
             if ($_FILES['file_req_spec_certificate']['size'] > 5120000) {  
                 echo 'File too large, max 5mb.';
@@ -1307,6 +1324,7 @@ class Apply_license extends CI_Controller
                             'name_file'            => $fileNameNew,                            
                             'date_upload'          => date('Y-m-d'),
                             'time_upload'          => date('H:i:s'),
+                            'no_upload'            => $no_upload,
                         );
                                                
                         $this->db->insert('t_file_requirement',$data_general_certificate);                                          
@@ -1322,23 +1340,6 @@ class Apply_license extends CI_Controller
         } else {
             echo 'Please choose file.';
         }   
-    }
-
-    public function test($folder='') {
-        $this->load->library('ftp');                
-        $this->load->library('upload');                                                              
-        $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
-        connection_ftp();
-        $sess_data_personnel = $this->session->userdata('sess_data_personnel');        
-        $personnel_number = $sess_data_personnel['personnel_number'];                               
-        $subfolder = $sess_data_personnel['personnel_number'];        
-        $cd_folder = $this->m_apply_license->get_code_file();
-        $dir = str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder . '/' . $folder . '/');
-        $list_files = $this->ftp->list_files($dir);
-        print_r ($list_files);    
-        $this->ftp->close();
-        die();
-        // $fileNameNew        = $personnel_number.'_'.$code_req_general_document.'.'.$ext;
     }
 
     public function completing_data()
@@ -2141,7 +2142,7 @@ class Apply_license extends CI_Controller
     // -- Params :  
         
     // -- Purpose : 
-        function approved_superior()
+    function approved_superior()
     {
         $user_data                  = $this->session->userdata('users_applicant');
         $sess_data_personnel        = $this->session->userdata('sess_data_personnel');
@@ -2329,8 +2330,7 @@ class Apply_license extends CI_Controller
             UNION
             SELECT (CONVERT(varchar(10),TSH.PERNR)) AS personnel_number, (TSH.EMPLNAME) AS name, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement, (TSH.EMAIL) AS email, (TSH.BORNDATE) AS dateofbirth, (TSH.EMPLODATE) AS dateofemployee, (SELECT mobilephone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk =  (CONVERT(varchar(10),TSH.PERNR))) AS mobilephone, (SELECT businessphone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk =  (CONVERT(varchar(10),TSH.PERNR))) AS businessphone FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
             WHERE (CONVERT(varchar(10),TSH.PERNR))='$personnel_number' OR (CONVERT(varchar(10),TSH.PERNR))='$post_personnel_number') AS TSH ON t_apply_license.personnel_number = TSH.personnel_number                                                               
-            WHERE " . $where . " ORDER BY date_submited, date_approved_superior DESC";
-        //die(print_r($data_query)); 
+            WHERE " . $where . " ORDER BY date_submited, date_approved_superior DESC";        
         $data['back']             = $this->agent->referrer();
         $data['cek_data_summary'] = $cekdatasummary;
         $data['data_history']     = $this->db->query($data_query)->result();
@@ -2601,7 +2601,8 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scp_descrip;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y');           
             $data[] = $row;
         }
 
@@ -2623,7 +2624,7 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scp_descrip;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $data[] = $row;
         }
 
@@ -2645,7 +2646,7 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scp_descrip;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $data[] = $row;
         }
 
@@ -2667,7 +2668,7 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scp_descrip;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $data[] = $row;
         }
 
@@ -2689,7 +2690,7 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scp_descrip;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $data[] = $row;
         }
 
@@ -2699,7 +2700,29 @@ class Apply_license extends CI_Controller
         );
 
         echo json_encode($output);            
-    }           
+    }   
+
+    public function get_data_sriwijaya_license(){                
+        $list   = $this->m_apply_license->get_data_sriwijaya_license();                
+        $data   = array();
+        $no     = $_POST['start'];
+        
+        foreach ($list as $rc) {            
+            $no++;
+            $row = array();
+            $row[] = $no;            
+            $row[] = $rc->scp_descrip;
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw"              => $_POST['draw'],                    
+            "data"              => $data,
+        );
+
+        echo json_encode($output);            
+    }        
 
     public function get_data_easa_license(){                
         $list   = $this->m_apply_license->get_data_easa_license();                
@@ -2711,7 +2734,7 @@ class Apply_license extends CI_Controller
             $row = array();
             $row[] = $no;            
             $row[] = $rc->scopes;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $data[] = $row;
         }
 
@@ -2734,7 +2757,7 @@ class Apply_license extends CI_Controller
             $row[] = $rc->ecno;
             $row[] = $rc->ecdesc;
             $row[] = $rc->ecrating;
-            $row[] = date('d-M-Y',strtotime($rc->valid_until));           
+            $row[] = date('d-m-Y',strtotime($rc->valid_until));           
             $row[] = $rc->stamp_no;
             $data[] = $row;
         }

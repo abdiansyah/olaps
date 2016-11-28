@@ -76,11 +76,11 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                                     <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
                                     <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
                                     <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
-                                    
+                                    <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="<?php echo $i;?>" />
                                 </td>
                                     <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/>
                                     <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loadingmessage_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
                                     </td> 
                                 <?php 
                                 } else {
@@ -88,8 +88,14 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                                 <td width="20%">
                                     <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
                                     <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>
+                                    <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                    <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
                                 </td>
-                                <td><img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
+                                <td>
+                                    <img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
+                                    <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="" />
+                                    <br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
                                     </td> 
                                 <?php 
                                     }
