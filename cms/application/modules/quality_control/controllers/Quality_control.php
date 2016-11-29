@@ -1007,7 +1007,7 @@ class Quality_control extends MX_Controller
             $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
             $pesan .= '<p>PT GMF AeroAsia</p>';
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';            
+            $pesan .= '<p>Fax: +62-21-550 1257</p>';             
             if(!empty($cek_data_document)){                    
                     $this->email->message($pesan);
                     $this->email->send();  
@@ -1037,73 +1037,6 @@ class Quality_control extends MX_Controller
                     redirect(site_url('quality_control/index'));
                  }
              }
-            //endif
-        
-        if (isset($_POST['save_req_document_tqd'])) {
-            $this->load->library('ftp');                
-            $ftp_config['hostname'] = '127.0.0.1'; 
-            $ftp_config['username'] = 'yayas';
-            $ftp_config['password'] = 'Bismillah';
-            $ftp_config['debug']    = TRUE;
-            $this->load->library('upload');
-            $mainfolder              = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS'; 
-            $personnel_number        = $this->input->post('personnel_number');
-            $request_number          = $this->input->post('request_number');
-            $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
-            $code_req_spec_document_quality_s = $this->input->post('code_req_spec_document_quality');
-            @$file_req_spec_document_quality = count($_FILES['file_req_spec_document_quality']['name']);
-            $expiration_date_spec_quality = $this->input->post('expiration_date_spec_quality');
-            $subfolder               = $personnel_number;
-              
-            $this->ftp->connect($ftp_config);
-            $this->ftp->close();
-            $this->ftp->connect($ftp_config);
-            if ($this->ftp->list_files('/' . $mainfolder . '/' . $subfolder) == '') {
-                $this->ftp->mkdir('/' . $mainfolder . '/' . $subfolder);
-            };
-            $this->ftp->close();
-            $this->ftp->connect($ftp_config);
-            $this->ftp->changedir('/' . $mainfolder . '/' . $subfolder);
-            
-            for ($g = 0; $g < $file_req_spec_document_quality; $g++) {
-                if ($_FILES['file_req_spec_document_quality']['size'][$g] != 0) {
-                    $code_req_spec_document_quality = $code_req_spec_document_quality_s[$g];
-                    $fileNameOld           = $_FILES['file_req_spec_document_quality']['name'][$g];
-                    @$ext = end(explode('.', $_FILES['file_req_spec_document_quality']['name'][$g]));
-                    $fileNameNew    = $personnel_number . '_' . $code_req_spec_document_quality . '_' . date('YmdHis') . '.' . $ext;
-                    $sourceFileName = $_FILES['file_req_spec_document_quality']['tmp_name'][$g];
-                    @$destination = $fileNameOld;
-                    @$destinationnew = $fileNameNew;
-                    $send = $this->ftp->upload($sourceFileName, $destination);
-                    $this->ftp->rename($destination, $destinationnew);
-                    $data_requirement = array(
-                        'personnel_number_fk' => @$personnel_number,
-                        'name_file'     => @$fileNameNew,
-                        'code_file'     => @$code_data_requirement,
-                        'status_valid'  => '1',
-                        'update_by'     => @$sess_personnel_number
-                    );
-                    $this->db->insert('t_file_requirement', $data_requirement);
-                    if($send){
-                        $this->session->set_flashdata('msg', 'Upload document successfully.');
-                       redirect(site_url('quality_control/index'));                    
-                    }else{
-                        $this->session->set_flashdata('msg', 'Document failed upload, please check network.');
-                        redirect(site_url('quality_control/index'));                    
-                    }
-                }
-            }
-            $this->ftp->close(); 
-                if(!empty($cek_data_document)){ 
-                    $this->email->message($pesan);
-                    $this->email->send();               
-                    $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
-                    redirect(site_url('quality_control/index'));                    
-                }else{
-                    $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
-                    redirect(site_url('quality_control/index'));
-                }     
-    }
 }
 
     function upload_file_data_requirement() {
@@ -1111,17 +1044,18 @@ class Quality_control extends MX_Controller
         $this->load->library('upload');                                                         
         $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_personnel_number  = $this->session->userdata('users_quality')->PERNR;
-        $personnel_number       = $sess_personnel_number;
-        $subfolder              = $sess_personnel_number;        
+        $personnel_number       = $this->input->post('personnel_number');
+        $subfolder              = $this->input->post('personnel_number');
         connection_ftp();     
         $code_data_requirement                          = $this->input->post('code_data_requirement');                    
         $date_training_data_requirement                 = $this->input->post('date_training_data_requirement');            
         $save_result_expiration_date_data_requirement   = $this->input->post('save_result_expiration_date_data_requirement');            
+        $no_upload                                      = no_upload($personnel_number,$code_data_requirement);
         if(isset($_FILES['file_data_requirement']['name'])) {
             if ($_FILES['file_data_requirement']['size'] > 5120000) {  
                 echo 'File too large, max 5mb.';
-            } else {
-                $cd_folder_by       = $this->model_quality_control->get_code_file_by($code_data_requirement);                       
+            } else {                
+                $cd_folder_by       = $this->model_quality_control->get_code_file_by($code_data_requirement);                                      
                 $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);                              
                 $fileNameOld        = $_FILES['file_data_requirement']['name'];                                                    
                 @$ext               = end(explode('.',$_FILES['file_data_requirement']['name']));                          
@@ -1131,13 +1065,13 @@ class Quality_control extends MX_Controller
                     $destination        = $fileNameOld;                                      
                     $destinationnew     = $fileNameNew;
 
-                    if($date_training_data_requirement != '') {
+                    if(!empty($date_training_data_requirement)) {
                         $date_training  = date('Y-m-d', strtotime($date_training_data_requirement));
                     } else {
                         $date_training  = null;
                     };
 
-                    if ($save_result_expiration_date_data_requirement) {
+                    if (!empty($save_result_expiration_date_data_requirement)) {
                         $date_expiration = date('Y-m-d', strtotime($save_result_expiration_date_data_requirement));
                     } else {
                         $date_expiration = null;
@@ -1155,10 +1089,10 @@ class Quality_control extends MX_Controller
                             'name_file'            => $fileNameNew,                            
                             'date_upload'          => date('Y-m-d'),
                             'time_upload'          => date('H:i:s'),
+                            'no_upload'            => $no_upload,
                         );
                                                
-                        $this->db->insert('t_file_requirement',$data_general_certificate);                                          
-                        $this->ftp->close();                            
+                        $this->db->insert('t_file_requirement',$data_general_certificate);                                                                  
                         echo 'Save successfull.';                                                                     
                     } else {
                         echo 'File is exists.';                         
@@ -1169,7 +1103,8 @@ class Quality_control extends MX_Controller
             }    
         } else {
             echo 'Please choose file.';
-        }   
+        }
+        $this->ftp->close();                               
     }
 
 

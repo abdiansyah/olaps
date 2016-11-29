@@ -904,24 +904,26 @@ class model_quality_control extends CI_Model
         return $this->db->query($query);
     }
 
-    public function get_code_file_by($code=''){
+    public function get_code_file_by($code='') {
         $querycode = "SELECT mdr.name FROM m_dir_requirement AS mdr
                         LEFT JOIN UNION_REQUIREMENT AS UR ON mdr.code = UR.code_folder
                         WHERE code_t = '$code'"; 
         return $this->db->query($querycode)->row();          
-    } 
+    }
 
-    public function cek_date_current($personnel_number, $code_current) {
-        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
-            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
+    public function cek_date_current($personnel_number='', $code_current='' ) {
+        $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
+                time_upload  FROM t_file_requirement AS tfr
+                WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                ORDER BY tfr.id DESC";
         return $this->db->query($query)->row_array();
     }
 
     public function cek_time_current($personnel_number, $code_current) {
-        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
-            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
+        $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
+                time_upload  FROM t_file_requirement AS tfr
+                WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+                ORDER BY tfr.id DESC";
         return $this->db->query($query)->row_array();
     }
 

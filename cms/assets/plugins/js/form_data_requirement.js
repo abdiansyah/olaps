@@ -22,7 +22,8 @@ $('.file_data_requirement').on('change', function() {
     var file                = $('#file_data_requirement_'+ row_id).prop('files')[0];            
     var code                = $('#code_data_requirement_'+ row_id).val();            
     var date_training       = $('#date_training_data_requirement_'+ row_id).val();            
-    var expiration_date     = $('expiration_date_data_requirement_'+ row_id).val();            
+    var expiration_date     = $('#save_result_expiration_date_data_requirement_'+ row_id).val();            
+    var personnel_number    = $('#personnel_number_'+ row_id).val();
     
     var timerId = 0;
     var ctr=0;
@@ -41,6 +42,9 @@ $('.file_data_requirement').on('change', function() {
     form_data.append(
         'save_result_expiration_date_data_requirement', expiration_date
         );
+    form_data.append(
+        'personnel_number', personnel_number
+        );
 
     $.ajax({
         url: upload_file_data_requirement, 
@@ -54,26 +58,9 @@ $('.file_data_requirement').on('change', function() {
             if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
                 $('#msg_data_requirement_'+row_id).html(response); 
                 $('#msg_data_requirement_'+row_id).css('color','red');
-            } else {
-                    timerId = setInterval(function () {    
-                        ctr++;
-                        $(progressbar).attr("style","width:" + ctr*max + "%");
-                        progressbar.css('background','blue');
-                        statustxt.html(ctr*max + "%"); 
-                        statustxt.css('color','#000'); 
-                        status_file.hide();  
-                        empty_file.hide();                                
-                        // max reached?
-                        if (ctr==max){
-                        status_file.show(); 
-                        empty_file.show(); 
-                        clearInterval(timerId);
-                        status_file.attr('src',image_check);
-                        empty_file.attr('src',image_cross_check);
-                        $('#msg_data_requirement_'+row_id).html(response); 
-                        $('#msg_data_requirement_'+row_id).css('color','blue');
-                        }            
-                    }, 300);                 
+            } else {                    
+                $('#msg_data_requirement_'+row_id).html(response); 
+                $('#msg_data_requirement_'+row_id).css('color','blue');                                            
             }
         },
         error: function (response) {                

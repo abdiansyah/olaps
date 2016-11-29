@@ -39,11 +39,11 @@ if (@$data_file_requirement[0] != '') {
             echo $i;?>"/>            
         </td>                                                                                                                           
         <td width="10%">
-            <input type="text" id="date_training_data_training_<?php
+            <input type="text" id="date_training_data_requirement_<?php
             echo $i;?>" value="<?php if (@$row->date_training != NULL ) {echo date('d-m-Y',strtotime(@$row->date_training));}?>" />                                 
         </td>        
         <td width="10%">
-            <input type="text" id="expiration_date_data_training_<?php
+            <input type="text" id="save_result_expiration_date_data_requirement_<?php
             echo $i;?>"  value="<?php if (@$row->expiration_date != NULL ) {echo date('d-m-Y',strtotime(@$row->expiration_date));}?>"/>
         </td>        
         <td width="5%">

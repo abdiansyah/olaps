@@ -214,6 +214,33 @@ function connection_ftp() {
 	$CI->ftp->connect($ftp_config);  
 }
 
+function no_upload($personnel_number='', $code_file=''){
+	$CI 		=& get_instance();        
+                            
+	$query      ="SELECT MAX(no_upload) AS no_upload 
+                  FROM t_file_requirement WHERE personnel_number_fk = '$personnel_number' AND code_file = '$code_file'";
+                  
+	$row = $CI->db->query($query)->row_array();
+    //   
+	$id     = $row['no_upload'];            
+	$max_id = substr($id,-6);
+	$plus = $max_id+1;           
+    	if($plus<10){                
+    		$kode = "00000".$plus;
+    	}else if($plus<100){                
+    		$kode = "0000".$plus;
+    	}else if($plus<1000){                
+    		$kode = "000".$plus;
+    	}else if($plus<10000){                
+    		$kode = "00".$plus;
+    	}else if($plus<100000){                
+    		$kode = "0".$plus;
+    	}else if($plus<1000000){                
+    		$kode = $plus;
+    	}	    
+	return $kode;
+}
+
 function kode_tbl_spec(){
 	$CI 	=& get_instance();	
 	$query = "
