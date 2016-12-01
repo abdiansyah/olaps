@@ -234,12 +234,12 @@
         
         $('.tab-add-easa-authorization .add-easa-box').click(function(){ 
         var n_easa_authorization    = $('.box-number-easa').length + 1; 
- 		var tab_spec_easa           = $('#tab-spec-easa :selected').val();
- 		var tab_spec_easa_text      = $('#tab-spec-easa :selected').text();        
+        var tab_spec_easa           = $('#tab-spec-easa :selected').val();
+        var tab_spec_easa_text      = $('#tab-spec-easa :selected').text();        
         var tab_category_easa       = $('#tab-category-easa :selected').val();
- 		var tab_category_easa_text  = $('#tab-category-easa :selected').text();        
+        var tab_category_easa_text  = $('#tab-category-easa :selected').text();        
         var tab_scope_easa          = $('#tab-scope-easa :selected').val();
- 		var tab_scope_easa_text     = $('#tab-scope-easa :selected').text();
+        var tab_scope_easa_text     = $('#tab-scope-easa :selected').text();
         var tab_scope_assesment_easa= $('input#tab-scope-assesment-easa').val(); 
         if($('#etops_easa').is(':checked')){
                         var etops_easa  = '1';
@@ -261,8 +261,8 @@
             box_html_authorization_easa.hide();
             $('.tab-add-easa-authorization tr.text-easa-authorization:last').before(box_html_authorization_easa);
             $('#tab-spec-easa')[0].selectedIndex = 0;            
- 			$('#tab-category-easa').empty();
- 			$('#tab-scope-easa').empty(); 
+            $('#tab-category-easa').empty();
+            $('#tab-scope-easa').empty(); 
             $('#etops_easa').attr('checked',false);
             box_html_authorization_easa.fadeIn('slow');
             return true;
@@ -281,12 +281,12 @@
         
     $('.tab-add-special-authorization .add-box-special').click(function(){ 
         var n_special_authorization = $('.box-number-special').length + 1; 
- 		var tab_spec_special        = $('#tab-spec-special :selected').val();
- 		var tab_spec_special_text   = $('#tab-spec-special :selected').text();        
+        var tab_spec_special        = $('#tab-spec-special :selected').val();
+        var tab_spec_special_text   = $('#tab-spec-special :selected').text();        
         var tab_category_special      = $('#tab-category-special :selected').val();
- 		var tab_category_special_text  = $('#tab-category-special :selected').text();        
+        var tab_category_special_text  = $('#tab-category-special :selected').text();        
         var tab_scope_special       = $('#tab-scope-special :selected').val();
- 		var tab_scope_special_text  = $('#tab-scope-special :selected').text();
+        var tab_scope_special_text  = $('#tab-scope-special :selected').text();
         var tab_scope_assesment_special  = $('input#tab-scope-assesment-special').val(); 
         if($('#etops_special').is(':checked')){
                         var etops_special  = '1';
@@ -307,7 +307,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_special.hide();
-        $('.tab-add-special-authorization tr.text-special-authorization:last').before(box_html_authorization_special);  			            
+        $('.tab-add-special-authorization tr.text-special-authorization:last').before(box_html_authorization_special);                          
         $('#tab-spec-special')[0].selectedIndex = 0;
         $('#tab-category-special').empty();
         $('#tab-scope-special').empty(); 
@@ -330,12 +330,12 @@
      // Garuda Specification
         $('.tab-authorization-garuda .add-license-garuda-box').click(function(){ 
         var n_license_garuda_authorization   = $('.box-number-data-license-garuda').length + 1; 
- 		var tab_spec_license_garuda          = $('#tab-spec-license-garuda :selected').val();
- 		var tab_spec_license_garuda_text     = $('#tab-spec-license-garuda :selected').text();        
+        var tab_spec_license_garuda          = $('#tab-spec-license-garuda :selected').val();
+        var tab_spec_license_garuda_text     = $('#tab-spec-license-garuda :selected').text();        
         var tab_category_license_garuda      = $('#tab-category-license-garuda :selected').val();
- 		var tab_category_license_garuda_text = $('#tab-category-license-garuda :selected').text();        
+        var tab_category_license_garuda_text = $('#tab-category-license-garuda :selected').text();        
         var tab_scope_license_garuda         = $('#tab-scope-license-garuda :selected').val();
- 		var tab_scope_license_garuda_text    = $('#tab-scope-license-garuda :selected').text(); 
+        var tab_scope_license_garuda_text    = $('#tab-scope-license-garuda :selected').text(); 
         var tab_scope_assesment_license_garuda = $('input#tab-scope-assesment-customer-garuda').val();
             if($('#etops_license_garuda').is(':checked')){
                     var etops_license_garuda  = '1';
@@ -355,7 +355,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_license_garuda.hide();
-        $('.tab-authorization-garuda tr.text-license-garuda:last').before(box_html_authorization_license_garuda);  			            
+        $('.tab-authorization-garuda tr.text-license-garuda:last').before(box_html_authorization_license_garuda);                       
         $('#tab-spec-license-garuda')[0].selectedIndex = 0;
         $('#tab-category-license-garuda').empty();
         $('#tab-scope-license-garuda').empty(); 
@@ -378,12 +378,12 @@
     // Citilink Specification
     $('.tab-authorization-citilink .add-license-citilink-box').click(function(){ 
         var n_license_citilink_authorization = $('.box-number-data-license-citilink').length + 1; 
- 		var tab_spec_license_citilink        = $('#tab-spec-license-citilink :selected').val();
- 		var tab_spec_license_citilink_text   = $('#tab-spec-license-citilink :selected').text();        
+        var tab_spec_license_citilink        = $('#tab-spec-license-citilink :selected').val();
+        var tab_spec_license_citilink_text   = $('#tab-spec-license-citilink :selected').text();        
         var tab_category_license_citilink      = $('#tab-category-license-citilink :selected').val();
- 		var tab_category_license_citilink_text  = $('#tab-category-license-citilink :selected').text();        
+        var tab_category_license_citilink_text  = $('#tab-category-license-citilink :selected').text();        
         var tab_scope_license_citilink       = $('#tab-scope-license-citilink :selected').val();
- 		var tab_scope_license_citilink_text  = $('#tab-scope-license-citilink :selected').text();
+        var tab_scope_license_citilink_text  = $('#tab-scope-license-citilink :selected').text();
         var tab_scope_assesment_license_citilink = $('input#tab-scope-assesment-customer-citilink').val(); 
             if($('#etops_license_citilink').is(':checked')){
                     var etops_license_citilink  = '1';
@@ -402,7 +402,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_license_citilink.hide();
-        $('.tab-authorization-citilink tr.text-license-citilink:last').before(box_html_authorization_license_citilink);  		            
+        $('.tab-authorization-citilink tr.text-license-citilink:last').before(box_html_authorization_license_citilink);                     
         $('#tab-spec-license-citilink')[0].selectedIndex = 0;
         $('#tab-category-license-citilink').empty();
         $('#tab-scope-license-citilink').empty(); 
@@ -426,12 +426,12 @@
     // Sriwijaya Specification
     $('.tab-authorization-sriwijaya .add-license-sriwijaya-box').click(function(){ 
         var n_license_sriwijaya_authorization = $('.box-number-data-license-sriwijaya').length + 1; 
- 		var tab_spec_license_sriwijaya        = $('#tab-spec-license-sriwijaya :selected').val();
- 		var tab_spec_license_sriwijaya_text   = $('#tab-spec-license-sriwijaya :selected').text();        
+        var tab_spec_license_sriwijaya        = $('#tab-spec-license-sriwijaya :selected').val();
+        var tab_spec_license_sriwijaya_text   = $('#tab-spec-license-sriwijaya :selected').text();        
         var tab_category_license_sriwijaya      = $('#tab-category-license-sriwijaya :selected').val();
- 		var tab_category_license_sriwijaya_text  = $('#tab-category-license-sriwijaya :selected').text();        
+        var tab_category_license_sriwijaya_text  = $('#tab-category-license-sriwijaya :selected').text();        
         var tab_scope_license_sriwijaya       = $('#tab-scope-license-sriwijaya :selected').val();
- 		var tab_scope_license_sriwijaya_text  = $('#tab-scope-license-sriwijaya :selected').text(); 
+        var tab_scope_license_sriwijaya_text  = $('#tab-scope-license-sriwijaya :selected').text(); 
         var tab_scope_assesment_license_sriwijaya = $('input#tab-scope-assesment-customer-sriwijaya').val();
             if($('#etops_license_sriwijaya').is(':checked')){
                         var etops_license_sriwijaya  = '1';
@@ -449,7 +449,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_license_sriwijaya.hide();
-        $('.tab-authorization-sriwijaya tr.text-license-sriwijaya:last').before(box_html_authorization_license_sriwijaya);  			            
+        $('.tab-authorization-sriwijaya tr.text-license-sriwijaya:last').before(box_html_authorization_license_sriwijaya);                          
         $('#tab-spec-license-sriwijaya')[0].selectedIndex = 0;
         $('#tab-category-license-sriwijaya').empty();
         $('#tab-scope-license-sriwijaya').empty();
@@ -473,12 +473,12 @@
     // Garuda Add Specification
         $('.tab-add-garuda-authorization .add-garuda-box').click(function(){ 
         var n_garuda_authorization = $('.box-number-garuda').length + 1; 
- 		var tab_spec_garuda        = $('#tab-spec-garuda :selected').val();
- 		var tab_spec_garuda_text   = $('#tab-spec-garuda :selected').text();        
+        var tab_spec_garuda        = $('#tab-spec-garuda :selected').val();
+        var tab_spec_garuda_text   = $('#tab-spec-garuda :selected').text();        
         var tab_category_garuda      = $('#tab-category-garuda :selected').val();
- 		var tab_category_garuda_text  = $('#tab-category-garuda :selected').text();        
+        var tab_category_garuda_text  = $('#tab-category-garuda :selected').text();        
         var tab_scope_garuda       = $('#tab-scope-garuda :selected').val();
- 		var tab_scope_garuda_text  = $('#tab-scope-garuda :selected').text(); 
+        var tab_scope_garuda_text  = $('#tab-scope-garuda :selected').text(); 
         var tab_scope_assesment_garuda  = $('input#tab-scope-assesment-customer-garuda').val();
         if($('#etops_garuda').is(':checked')){
                         var etops_garuda  = '1';
@@ -498,7 +498,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_garuda.hide();
-        $('.tab-add-garuda-authorization tr.text-garuda-authorization:last').before(box_html_authorization_garuda);  			            
+        $('.tab-add-garuda-authorization tr.text-garuda-authorization:last').before(box_html_authorization_garuda);                         
         $('#tab-spec-garuda')[0].selectedIndex = 0;
         $('#tab-category-garuda').empty();
         $('#tab-scope-garuda').empty(); 
@@ -521,12 +521,12 @@
     // Citilink Add Specification
     $('.tab-add-citilink-authorization .add-citilink-box').click(function(){ 
         var n_citilink_authorization = $('.box-number-citilink').length + 1; 
- 		var tab_spec_citilink        = $('#tab-spec-citilink :selected').val();
- 		var tab_spec_citilink_text   = $('#tab-spec-citilink :selected').text();        
+        var tab_spec_citilink        = $('#tab-spec-citilink :selected').val();
+        var tab_spec_citilink_text   = $('#tab-spec-citilink :selected').text();        
         var tab_category_citilink      = $('#tab-category-citilink :selected').val();
- 		var tab_category_citilink_text  = $('#tab-category-citilink :selected').text();        
+        var tab_category_citilink_text  = $('#tab-category-citilink :selected').text();        
         var tab_scope_citilink       = $('#tab-scope-citilink :selected').val();
- 		var tab_scope_citilink_text  = $('#tab-scope-citilink :selected').text(); 
+        var tab_scope_citilink_text  = $('#tab-scope-citilink :selected').text(); 
        var tab_scope_assesment_citilink  = $('input#tab-scope-assesment-customer-citilink').val();
        if($('#etops_citilink').is(':checked')){
                         var etops_citilink  = '1';
@@ -545,7 +545,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_citilink.hide();
-        $('.tab-add-citilink-authorization tr.text-citilink-authorization:last').before(box_html_authorization_citilink);  			            
+        $('.tab-add-citilink-authorization tr.text-citilink-authorization:last').before(box_html_authorization_citilink);                       
         $('#tab-spec-citilink')[0].selectedIndex = 0;
         $('#tab-category-citilink').empty();
         $('#tab-scope-citilink').empty();
@@ -569,12 +569,12 @@
     // Sriwijaya Add Specification
     $('.tab-add-sriwijaya-authorization .add-sriwijaya-box').click(function(){ 
         var n_sriwijaya_authorization = $('.box-number-sriwijaya').length + 1; 
- 		var tab_spec_sriwijaya        = $('#tab-spec-sriwijaya :selected').val();
- 		var tab_spec_sriwijaya_text   = $('#tab-spec-sriwijaya :selected').text();        
+        var tab_spec_sriwijaya        = $('#tab-spec-sriwijaya :selected').val();
+        var tab_spec_sriwijaya_text   = $('#tab-spec-sriwijaya :selected').text();        
         var tab_category_sriwijaya      = $('#tab-category-sriwijaya :selected').val();
- 		var tab_category_sriwijaya_text  = $('#tab-category-sriwijaya :selected').text();        
+        var tab_category_sriwijaya_text  = $('#tab-category-sriwijaya :selected').text();        
         var tab_scope_sriwijaya       = $('#tab-scope-sriwijaya :selected').val();
- 		var tab_scope_sriwijaya_text  = $('#tab-scope-sriwijaya :selected').text(); 
+        var tab_scope_sriwijaya_text  = $('#tab-scope-sriwijaya :selected').text(); 
        var tab_scope_assesment_sriwijaya  = $('input#tab-scope-assesment-customer-sriwijaya').val();
        if($('#etops_sriwijaya').is(':checked')){
                         var etops_sriwijaya  = '1';
@@ -593,7 +593,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_sriwijaya.hide();
-        $('.tab-add-sriwijaya-authorization tr.text-sriwijaya-authorization:last').before(box_html_authorization_sriwijaya);  			            
+        $('.tab-add-sriwijaya-authorization tr.text-sriwijaya-authorization:last').before(box_html_authorization_sriwijaya);                        
         $('#tab-spec-sriwijaya')[0].selectedIndex = 0;
         $('#tab-category-sriwijaya').empty();
         $('#tab-scope-sriwijaya').empty(); 
@@ -617,12 +617,12 @@
     // Tab add COFC Authorization
     $('.tab-add-cofc-authorization .add-cofc-box').click(function(){ 
         var n_cofc_authorization = $('.box-number-cofc').length + 1; 
- 		var tab_spec_cofc        = $('#tab-spec-cofc :selected').val();
- 		var tab_spec_cofc_text   = $('#tab-spec-cofc :selected').text();        
+        var tab_spec_cofc        = $('#tab-spec-cofc :selected').val();
+        var tab_spec_cofc_text   = $('#tab-spec-cofc :selected').text();        
         var tab_category_cofc      = $('#tab-category-cofc :selected').val();
- 		var tab_category_cofc_text  = $('#tab-category-cofc :selected').text();        
+        var tab_category_cofc_text  = $('#tab-category-cofc :selected').text();        
         var tab_scope_cofc       = $('#tab-scope-cofc :selected').val();
- 		var tab_scope_cofc_text  = $('#tab-scope-cofc :selected').text();
+        var tab_scope_cofc_text  = $('#tab-scope-cofc :selected').text();
         var tab_scope_assesment_cofc  = $('input#tab-scope-assesment-cofc').val();         
         
             
@@ -635,7 +635,7 @@
                             '</tr>');
                                                                                                                                                                      
         box_html_authorization_cofc.hide();
-        $('.tab-add-cofc-authorization tr.text-cofc-authorization:last').before(box_html_authorization_cofc);  			            
+        $('.tab-add-cofc-authorization tr.text-cofc-authorization:last').before(box_html_authorization_cofc);                       
         $('#tab-spec-cofc')[0].selectedIndex = 0;
         $('#tab-category-cofc').empty();
         $('#tab-scope-cofc').empty(); 

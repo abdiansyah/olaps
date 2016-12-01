@@ -1,13 +1,14 @@
+<style>
+.datepicker{z-index:1151;}
+</style>
 <?php echo jquery_select2(); ?>
 <script type="text/javascript">    
-	$('.select2-tab-search-high').select2({width : '100%'});  
-    $('.datepicker').keyup(function(){
-        if ($(this).val().length == 2){
-            $(this).val($(this).val() + "-");
-        }else if ($(this).val().length == 5){
-            $(this).val($(this).val() + "-");
-        }
-    });  
+	$('.select2-tab-search-high').select2({width : '100%'});
+
+    $('.datepicker').datepicker({
+        format:'dd-mm-yyyy',        
+    });
+
 </script>
 <?php if($p_search_high =='status_approved_superior') :?>
 <select name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control">

@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class model_requirement extends CI_Model
 {
-    private $table_specific = 'm_group_scope_category';
+    private $table_specific = 'm_group_scope_category';    
     private $table_general = 'm_group_license_req_general';
     
     private $column_specific = array('mal.name_t');
@@ -11,6 +11,9 @@ class model_requirement extends CI_Model
         
     private $order_specific = array('mal.name_t' => 'desc');
     private $order_general = array('mal.name_t' => 'desc');    
+
+    private $column_search_specific  = array('mal.name_t',' mat.name_t','masp.name_t','mac.name_t','mas.name_t','maars.name_t');  
+    private $column_search_general  = array('mal.name_t',' mat.name_t','masp.name_t','maarg.name_t');  
 
 
     public function _get_query_specific()
@@ -23,6 +26,22 @@ class model_requirement extends CI_Model
         $this->db->join('m_auth_category AS mac','mgsc.id_auth_category_fk = mac.id','left');
         $this->db->join('m_auth_scope AS mas','mgsc.id_auth_scope_fk = mas.id','left');
         $this->db->join('m_auth_additional_req_spec AS maars','mgsc.id_auth_additional_req_spec_fk = maars.id','left');
+        $i = 0;
+        foreach ($this->column_search_specific as $item) {
+            if($_POST['search']['value']) {
+                if($i===0){ 
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else{
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+                
+                if(count($this->column_search_specific) - 1 == $i) 
+                    $this->db->group_end();
+            }
+            $i++;
+        }
         if (isset($_POST['order_specific'])) {
             $this->db->order_by($this->column_specific[$_POST['order_specific']['0']['column']],
                 $_POST['order_specific']['0']['dir']);
@@ -66,6 +85,24 @@ class model_requirement extends CI_Model
         $this->db->join('m_auth_type AS mat','mglrg.id_auth_type_fk = mat.id','left');
         $this->db->join('m_auth_spect AS masp','mglrg.id_auth_spect_fk = masp.id','left');        
         $this->db->join('m_auth_additional_req_general AS maarg','mglrg.id_auth_additional_req_general_fk = maarg.id','left');
+
+        $i = 0;
+        foreach ($this->column_search_general as $item) {
+            if($_POST['search']['value']) {
+                if($i===0){ 
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else{
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+                
+                if(count($this->column_search_general) - 1 == $i) 
+                    $this->db->group_end();
+            }
+            $i++;
+        }
+
         if (isset($_POST['order_general'])) {
             $this->db->order_by($this->column_general[$_POST['order_general']['0']['column']],
                 $_POST['order_general']['0']['dir']);

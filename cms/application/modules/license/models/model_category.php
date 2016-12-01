@@ -6,12 +6,29 @@ class model_category extends CI_Model
     private $table_category = 'm_auth_category';
     private $column_order_category = array('m_auth_category.name_t');            
     private $order_category = array('m_auth_category.id' => 'desc');    
+    private $column_search  = array('name_t','desc_t'); 
 
 
     public function _get_query_category()
     {
         $this->db->select('id, name_t, desc_t');
         $this->db->from($this->table_category);
+        $i = 0;
+        foreach ($this->column_search as $item) {
+            if($_POST['search']['value']) {
+                if($i===0){ 
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else{
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+                
+                if(count($this->column_search) - 1 == $i) 
+                    $this->db->group_end();
+            }
+            $i++;
+        }
         if (isset($_POST['order_category'])) {
             $this->db->order_by($this->column_order_category[$_POST['order_category']['0']['column']],
                 $_POST['order_category']['0']['dir']);

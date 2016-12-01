@@ -1,5 +1,5 @@
 <section class="content-header">
-	<h1>Authorization</h1>    
+	<h1>Authorization </h1>    
 </section>
 
 <?php echo form_open($action, array('class' => 'form-horizontal row-form', 'data-toggle' => 'validator')); ?>

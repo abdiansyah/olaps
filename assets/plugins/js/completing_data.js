@@ -499,15 +499,14 @@ $(document).ready(function () {
         var code_1 = data_row_id[5];
         var code_2 = data_row_id[6];              
         
-        var empty_file                  = $('#empty_file_document_general_'+ row_id+'_'+code_1+'_'+code_2);
-        var file_req_document_general   = $('#file_req_document_general_'+ row_id+'_'+code_1+'_'+code_2);
-        var progressbar                 = $('#progressbar_document_general_'+row_id); 
-        var status_file                 = $('#status_file_document_general_'+ row_id);       
-        var statustxt                   = $('#statustxt_document_general_'+row_id);  
+        var empty_file      = $('#empty_file_document_general_'+ row_id+'_'+code_1+'_'+code_2);
+        var progressbar     = $('#progressbar_document_general_'+row_id); 
+        var status_file     = $('#status_file_document_general_'+ row_id);       
+        var statustxt       = $('#statustxt_document_general_'+row_id);  
 
-        var code_file                   = $('#code_req_document_general_'+ row_id).val();            
-        var date_upload                 = $('#date_req_document_general_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload                 = $('#time_req_document_general_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_document_general_'+ row_id).val();            
+        var date_upload     = $('#date_req_document_general_'+ row_id).val().replace(/-/g,'');                            
+        var time_upload     = $('#time_req_document_general_'+ row_id).val().replace(':','').substring(0,2);                                    
 
         var yesno = confirm('Are you sure?');
         if (yesno) {          
@@ -544,7 +543,6 @@ $(document).ready(function () {
                         status_file.hide(); 
                         empty_file.hide(); 
                         $('#status_upload_document_general_'+row_id).val('');
-                        file_req_document_general.replaceWith( file_req_document_general.val('').clone( true ) ); 
                     }
                 },
                 error: function (response) {                

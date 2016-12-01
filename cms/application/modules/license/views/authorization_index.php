@@ -2,7 +2,7 @@
 $().ready(function(){
 $('#datatables_authorization').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,      
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.

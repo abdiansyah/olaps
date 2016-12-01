@@ -44,7 +44,6 @@
 </div>
 <div class="col-md-12 ">
 <iframe src="<?php echo "ftp://yayas:Bismillah@127.0.0.1/TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS/".$personnel_number."/".$code_folder."/".$name_file_ftp; ?>"  height="700px" width="100%"></iframe>
-<?php @ftp_close('127.0.0.1', 21);?>
 <br/>
 <br/>
 <br/>

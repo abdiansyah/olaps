@@ -2,7 +2,7 @@
 $().ready(function(){
 $('#datatables_blocked_date').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,                 
         "bSort"             : false,     
         "scrollCollapse"	: true,

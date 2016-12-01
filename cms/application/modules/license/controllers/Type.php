@@ -76,7 +76,7 @@ class Type extends MX_Controller {
 			'desc_t' 	        => $this->input->post('desc_t')
 		
 		);
-		$this->db->insert('m_auth_license', $data);
+		$this->db->insert('m_auth_type', $data);
 		
 		redirect($this->page->base_url());
 	}
@@ -87,14 +87,14 @@ class Type extends MX_Controller {
 			'desc_t' 	        => $this->input->post('desc_t')			
 		);	
 		$this->db->where('id', $id);
-		$this->db->update('m_auth_license', $data);
+		$this->db->update('m_auth_type', $data);
 		
 		redirect($this->page->base_url());
 	}
 	
 	public function delete($id){
 		if ($this->agent->referrer() == '') show_404();						
-		$this->db->delete('m_auth_license',array('id'=>$id));		
+		$this->db->delete('m_auth_type',array('id'=>$id));		
 		redirect($this->agent->referrer());
 	}
 	

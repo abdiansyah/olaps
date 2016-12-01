@@ -2,7 +2,7 @@
 $().ready(function(){
 $('#datatables_license_type').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,                 
         "bSort"             : false,     
         "scrollCollapse"	: true,
@@ -27,7 +27,7 @@ $('#datatables_license_type').dataTable({
 
 $('#datatables_type_spect').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,
         "bSort"             : false,      
         "scrollCollapse"	: true,
@@ -52,7 +52,7 @@ $('#datatables_type_spect').dataTable({
 
 $('#datatables_spect_category').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,      
         "bSort"             : false,
         "scrollCollapse"	: true,
@@ -62,7 +62,7 @@ $('#datatables_spect_category').dataTable({
 
 		// Load data for the table's content from an Ajax source
 		"ajax": {
-			"url"	: "<?php echo site_url('license/Authorization_group/ajax_type_spect'); ?>",
+			"url"	: "<?php echo site_url('license/Authorization_group/ajax_category_spect'); ?>",
 			"type"	: "POST",                        
 		},
 
@@ -164,8 +164,10 @@ echo '</b>
 			<thead>				
 	            <tr>&nbsp;&nbsp;&nbsp;<a href="<?php echo $add_spect_category; ?>" class="btn btn-flat bg-light-blue color-palette btn-sm"><span class="fa fa-plus"></span>&nbsp;&nbsp;Add group</a></tr>
 	            <tr>								
-	                <th width="40%">Type</th>
-	                <th width="45%">Spec</th>                                             
+	                <th width="20%">License</th>
+	                <th width="20%">Type</th>                                             
+	                <th width="20%">Spect</th>                                             
+	                <th width="20%">Category</th>                                             
 	                <th width="15%">Actions</th>                                							
 				</tr>                                                           
 			</thead>

@@ -168,7 +168,7 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
             <textarea rows="10" cols="53" name="note_practical"> <?php if(@$data_assesment_practical->note_practical != ''){echo @$data_assesment_practical->note_practical;} ?> </textarea>
         </div>
     </div>
-    <?php endif; ?> 
+    <?php endif; ?> 	 
     <div class="form-group">
 		<div class="col-sm-offset-2 col-sm-6">
 			<button type="submit" class="btn btn-flat btn-primary color-palette btn-sm"><span class="fa fa-save"></span> &nbsp;Save </button>			
@@ -179,30 +179,31 @@ echo form_open_multipart($action, array('class' => 'form-horizontal row-form', '
 
 <script type="text/javascript">
 
-$('[name=score_written]').on('keyup',function(){
+ $('[name=score_written]').on('keyup',function(){
     var score = $('[name=score_written]').val();
     if(score < 75){    
         $('[name=result_written]').val('Tidak Lulus');
     }else if(score >= 75){
         $('[name=result_written]').val('Lulus');
     }
-});  
+ });  
 
-$('[name=score_oral]').on('keyup',function(){
+ $('[name=score_oral]').on('keyup',function(){
     var score = $('[name=score_oral]').val();
     if(score < 75){    
         $('[name=result_oral]').val('Tidak Lulus');
     }else if(score >= 75){
         $('[name=result_oral]').val('Lulus');
     }
-});   
-    
-$('[name=score_practical]').on('keyup',function(){
-    var score = $('[name=score_practical]').val();
-    if(score < 75){    
-        $('[name=result_practical]').val('Tidak Lulus');
-    }else if(score >= 75){
-        $('[name=result_practical]').val('Lulus');
-    }
-});  
+ });
+
+    $('[name=score_practical]').on('keyup',function(){
+        var score = $('[name=score_practical]').val();
+        if(score < 75){    
+            $('[name=result_practical]').val('Tidak Lulus');
+        }else if(score >= 75){
+            $('[name=result_practical]').val('Lulus');
+        }
+    });  
+
 </script>

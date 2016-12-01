@@ -69,6 +69,31 @@ class Authorization_group extends MX_Controller {
 		echo json_encode($output);
 	}
     
+    public function ajax_category_spect(){		    
+		$list = $this->model_authorization_group->get_category_spect();
+		$data = array();
+		$no = $_POST['start'];
+		
+		foreach ($list as $grid) {			
+			$row = array();   			          
+            $row[] = $grid->name_license;
+            $row[] = $grid->name_type;                        
+            $row[] = $grid->name_spect;                        
+            $row[] = $grid->name_category;                        
+            $row[] = '<a href="'.site_url('license/authorization_group/edit_spect_category/'.$grid->id_category_spect).'" title="Edit Data"><button class="btn-info btn-sm btn-flat">&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;</button></a> &nbsp; &nbsp; &nbsp; <a href="'.site_url('license/authorization_group/delete_spect_category/'.$grid->id_category_spect).'" title="Hapus Data"><button class="btn-warning btn-sm btn-flat">Hapus</button></a>';					
+			$data[] = $row;            
+		}
+
+		$output = array(
+			"draw" 				=> $_POST['draw'],
+			"recordsTotal" 		=> $this->model_authorization_group->count_all_category_spect(),
+            "recordsFiltered" 	=> $this->model_authorization_group->count_filtered_category_spect(),			
+			"data" 				=> $data,            
+		);
+		
+		//output to json format
+		echo json_encode($output);
+	}
 	
 	private function form($action = '', $id = ''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
@@ -89,7 +114,18 @@ class Authorization_group extends MX_Controller {
         } else if($this->uri->segment(3) == 'edit_general'){
 			$title = 'Edit Requirement General';
             $action = 'update_general';
+		} else if($this->uri->segment(3) == 'edit_license_type'){
+			$title = 'Edit License Type';
+            $action = 'update_license_type';
+		} else if($this->uri->segment(3) == 'edit_type_spect'){
+			$title = 'Edit Type Spect';
+            $action = 'update_type_spect';
+		} else if($this->uri->segment(3) == 'edit_spect_category'){
+			$title = 'Edit Spect Category';
+            $action = 'update_spect_category';
 		}
+
+		
 
 		$this->page->view('authorization_group_form', array (
 			'ttl'				=> $title,
@@ -97,6 +133,7 @@ class Authorization_group extends MX_Controller {
 			'action'			=> $this->page->base_url("/{$action}/{$id}"),
 			'rc_license_type' 	=> $this->model_authorization_group->by_license_type_id($id),
             'rc_type_spect' 	=> $this->model_authorization_group->by_type_spect_id($id),
+            'rc_spect_category' => $this->model_authorization_group->by_spect_category_id($id),
 			'aksi'				=> $action,
 		));
 	}
@@ -112,7 +149,20 @@ class Authorization_group extends MX_Controller {
 	public function add_spect_category(){
 		$this->form();
 	}
+
+	public function edit_license_type($id){
+		$this->form('update_license_type', $id);
+	}
 	
+
+	public function edit_type_spect($id){
+		$this->form('update_type_spect', $id);
+	}
+
+	public function edit_spect_category($id){
+		$this->form('update_spect_category', $id);
+	}
+
 	public function edit_specific($id){
 		$this->form('update_specific', $id);
 	}
@@ -145,7 +195,7 @@ class Authorization_group extends MX_Controller {
 				'id_auth_spect_fk'            => $this->input->post('id_spect'),			
 			);			
 			$this->db->insert('m_group_spect_type', $data);		
-			$this->session->set_flashdata('msg_auth_group','Group type & ratting (spect), save completed.');        
+			$this->session->set_flashdata('msg_auth_group','Group type & rating (spect), save completed.');        
 			redirect(site_url('license/authorization_group'));
 		}		
 	}
@@ -157,13 +207,14 @@ class Authorization_group extends MX_Controller {
         $id_category        			= $this->input->post('id_category');
         if($id_license!='' && $id_type!='' && $id_spect!='' && $id_category!=''){
 	       	$data = array(
-	       		'id_auth_license_fk'          => $id_license,
-    			'id_auth_type_fk'             => $id_type,            
-				'id_auth_spect_fk'            => $id_spect,
-				'id_auth_category_fk'         => $id_category,			
+	       		'id_auth_license_fk'   	=> $id_license,
+    			'id_auth_type_fk'      	=> $id_type,            
+				'id_auth_spect_fk'     	=> $id_spect,
+				'id_auth_category'     	=> $id_category,			
 			);        
 			$this->db->insert('m_group_category_spect', $data);		
 		}
+		$this->session->set_flashdata('msg_auth_group','Group spect (rating) & category, save completed.');        
 		redirect(site_url('license/authorization_group'));
 	}
     
@@ -185,7 +236,7 @@ class Authorization_group extends MX_Controller {
 		$new_auth	        				= $this->input->post('new_auth');
 		$renewal	        				= $this->input->post('renewal');
 		$additional	        				= $this->input->post('additional');
-		$ratting_change	        			= $this->input->post('ratting_change');
+		$rating_change	        			= $this->input->post('rating_change');
 
 		if(empty($new_auth)){
             $new_auth ='0';  
@@ -199,8 +250,8 @@ class Authorization_group extends MX_Controller {
             $additional = '0';
         };
         
-        if(empty($ratting_change)){
-            $ratting_change = '0';
+        if(empty($rating_change)){
+            $rating_change = '0';
         };		
 		$data = array(
 			'id_assesment_scope_fk' 			=> $this->input->post('id_assesment_scope'),			
@@ -213,7 +264,7 @@ class Authorization_group extends MX_Controller {
 			'new_auth'                       	=> $new_auth,
             'renewal'                        	=> $renewal,
             'additional'                     	=> $additional,
-            'ratting_change'                 	=> $ratting_change,
+            'rating_change'                 	=> $rating_change,
 			'category_continous'	        	=> $this->input->post('category_continous'),
 			'age_requirement'	        		=> $this->input->post('age_requirement'),
 			'category_admin'	        		=> $this->input->post('category_admin'),
@@ -225,10 +276,81 @@ class Authorization_group extends MX_Controller {
 		redirect(site_url('license/requirement'));
 	}
 	
+	public function update_license_type($id) {
+		$id_license       			= $this->input->post('id_license');
+        $id_type        			= $this->input->post('id_type');
+        if($id_license!='' && $id_type!=''){
+           	$data = array(            
+    			'id_auth_license_fk'             => $id_license,
+    			'id_auth_type_fk'                => $id_type,			
+    		);   
+           	$this->db->where('id',$id);
+    		$this->db->update('m_group_type_license', $data);
+    		$this->session->set_flashdata('msg_auth_group','Group license type, save completed.');
+    		redirect(site_url('license/authorization_group'));
+        }		
+	}
+
+	public function update_type_spect($id) {
+		$id_type       				= $this->input->post('id_type');
+        $id_spect        			= $this->input->post('id_spect');
+        if($id_type!='' && $id_spect!=''){
+	       	$data = array(            
+				'id_auth_type_fk'             => $this->input->post('id_type'),
+				'id_auth_spect_fk'            => $this->input->post('id_spect'),			
+			);			
+			$this->db->where('id',$id);
+			$this->db->update('m_group_spect_type', $data);		
+			$this->session->set_flashdata('msg_auth_group','Group type & rating (spect), save completed.');        
+			redirect(site_url('license/authorization_group'));
+		}				
+	}
+
+	public function update_spect_category($id) {
+		$id_license       				= $this->input->post('id_license');
+        $id_type        				= $this->input->post('id_type');
+        $id_spect       				= $this->input->post('id_spect');
+        $id_category        			= $this->input->post('id_category');
+        if($id_type!='' && $id_spect!=''){
+	       	$data = array(            
+	       		'id_auth_license_fk'          => $this->input->post('id_license'),
+				'id_auth_type_fk'             => $this->input->post('id_type'),
+				'id_auth_spect_fk'            => $this->input->post('id_spect'),			
+				'id_auth_category'            => $this->input->post('id_category'),			
+			);			
+			$this->db->where('id',$id);
+			$this->db->update('m_group_category_spect', $data);		
+			$this->session->set_flashdata('msg_auth_group','Group category & rating (spect), save completed.');        
+			redirect(site_url('license/authorization_group'));
+		}				
+	}
+
+
 	public function delete_specific($id){
 		if ($this->agent->referrer() == '') show_404();						
 		$this->db->delete('m_group_scope_category',array('id'=>$id));		
 		redirect($this->agent->referrer());
+	}
+
+	public function delete_type_spect($id) {
+		if ($this->agent->referrer() == '') show_404();						
+		$this->db->delete('m_group_spect_type',array('id'=>$id));		
+		$this->session->set_flashdata('msg_auth_group','Group type spect deleted.');        
+		redirect(site_url('license/authorization_group'));
+	}
+
+	public function delete_license_type($id) {
+		if ($this->agent->referrer() == '') show_404();						
+		$this->db->delete('m_group_license_type',array('id'=>$id));		
+		$this->session->set_flashdata('msg_auth_group','Group license type deleted.');        
+		redirect(site_url('license/authorization_group'));
+	}
+
+	public function delete_spect_category($id) {
+		if ($this->agent->referrer() == '') show_404();						
+		$this->db->delete('m_group_category_spect',array('id'=>$id));		
+		$this->session->set_flashdata('msg_auth_group','Group category spect deleted.');        
+		redirect(site_url('license/authorization_group'));
 	}
 
 	public function update_general($id){		

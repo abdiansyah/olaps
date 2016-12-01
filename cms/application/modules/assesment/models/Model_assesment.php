@@ -36,19 +36,19 @@ class Model_assesment extends CI_Model {
         (" . $subQuery_sesi_practical . ") AS sesi_practical,
         TAS.score_practical, TAS.result_practical, TAS.note_practical,
         (" . $subQuery_pic_practical . ") AS pic_practical
-        ");	   	   
-	$this->db->from('t_assesment AS TAS');                
-	$this->db->join('UNION_EMP AS TSH', 'TSH.personnel_number = TAS.personnel_number_fk', 'left');
+        ");        
+    $this->db->from('t_assesment AS TAS');                
+    $this->db->join('UNION_EMP AS TSH', 'TSH.personnel_number = TAS.personnel_number_fk', 'left');
     $this->db->join('m_assesment_scope AS masc','TAS.id_assesment_scope_fk = masc.id','left');
-		
-		if(isset($_POST['order'])){
-			$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-		} 
-		else if(isset($this->order)){
-			$order = $this->order;
-			$this->db->order_by(key($order), $order[key($order)]);
-		}
-	}
+        
+        if(isset($_POST['order'])){
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } 
+        else if(isset($this->order)){
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
 	
 	public function get_written_assesment() {		
         $request_number_written        = $this->input->post('request_number_written');                
@@ -113,7 +113,7 @@ class Model_assesment extends CI_Model {
 	}
     
     // Oral assesment
-    public function get_oral_assesment() {
+    	public function get_oral_assesment() {
         $request_number_oral        = $this->input->post('request_number_oral');                
         $personnel_number_oral      = $this->input->post('personnel_number_oral');
         $status_assesment_oral      = $this->input->post('status_assesment_oral');
@@ -173,8 +173,8 @@ class Model_assesment extends CI_Model {
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}        
-
-    // Practical assesment
+    
+        // Practical assesment
     public function get_practical_assesment() {
         $request_number_practical        = $this->input->post('request_number_practical');                
         $personnel_number_practical      = $this->input->post('personnel_number_practical');
@@ -230,7 +230,7 @@ class Model_assesment extends CI_Model {
         $this->db->from($this->table);
         return $this->db->count_all_results();
     }        
-    	
+
 	public function by_id_users($id){
 		$datasrc = $this->db->get_where('users', array('id_users' => $id));
 		return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
@@ -252,7 +252,7 @@ class Model_assesment extends CI_Model {
                     LEFT JOIN m_assesment_scope AS masc ON TAS.id_assesment_scope_fk = masc.id WHERE request_number_fk = '$request_number' AND id_assesment_scope_fk = '$id_scope'";
         return $this->db->query($datasrc)->num_rows() > 0 ? $this->db->query($datasrc)->row() : $this;
     }
-    // Disini
+
     public function by_request_number_practical($request_number='', $id_scope=''){
         $subQuery_pic_practical = $this->db->select('TSH.name')->from('UNION_EMP AS TSH')->where('TSH.personnel_number = TAS.pic_practical')->get_compiled_select();
         $datasrc = " SELECT TAS.request_number_fk, TAS.personnel_number_fk, TSH.name, TAS.id_assesment_scope_fk, masc.name_t, TAS.date_practical_assesment, TAS.score_practical, TAS.result_practical, TAS.note_written, TAS.note_practical,
@@ -298,7 +298,7 @@ class Model_assesment extends CI_Model {
         return $this->db->query($query)->result();
     }
 
-     public function get_result_practical ($request_number = '', $personnel_number = '') {
+    public function get_result_practical ($request_number = '', $personnel_number = '') {
         $query = "SELECT TA.request_number_fk, personnel_number_fk, (mal.name_t) AS name_license, (mat.name_t) AS name_type, masp.name_t AS name_spect, mac.name_t AS name_category, mas.name_t AS name_scope, (CASE tald.is_etops WHEN '1' THEN '+ ETOPS' END) AS status_etops, pic_practical, date_result_practical, score_practical, result_practical, note_practical, 
         (mal.id) AS id_license, (mat.id) AS id_type, (masp.id) AS id_spect, (mac.id) AS id_category, (mas.id) AS id_scope FROM t_assesment AS TA
         LEFT JOIN t_apply_license_dtl AS tald ON TA.request_number_fk = tald.request_number_fk 

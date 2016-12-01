@@ -11,12 +11,12 @@ if(@$data_assesment_oral[0]!='') :
         <thead>
         <tr>
             <th width="2%"><input type="checkbox" name="check_all" onClick="check_uncheck_checkbox(this.checked);"/></th>  <th width="2%">No</th>
-            <th width="15%">Status</th>                        						                       
+            <th width="15%">Status</th>                                                                    
             <th width="30%">Scope</th>  
             <th width="10%">Date of Oral Test</th>
             <th width="10%">Time</th>
             <th width="10%">Location</th>                                                          
-    	</tr>    
+        </tr>    
         </thead>
         <tbody>                                        
         <?php
@@ -64,7 +64,7 @@ if(@$data_assesment_oral[0]!='') :
             </td>                    
             <td><input type="hidden" name="id_assesment[]" value="<?php echo $value->id; ?>"/><?php echo $value->name_spect .' '.$value->name_category.' '.$value->name_scope.''.$status_etops; ?></td>
             <td><input type="text" name="date_oral_assesment[]" id="date_oral_assesment_<?php echo $no; ?>" class="form-control date_oral_assesment"/></td>                        
-    		<td>
+            <td>
             <select id="id_oral_sesi_<?php echo $no; ?>" name="id_oral_sesi[]" class="form-control id_oral_sesi"> 
             <option value="" data-date-format="hh:ii"><a>00:00</a></option>                       
             <option value="1" data-date-format="hh:ii"><a>09:00 - 11:00</a></option>
@@ -81,9 +81,9 @@ if(@$data_assesment_oral[0]!='') :
         <?php
             $no++;
         endforeach;
-        ?>                    					                                     
+        ?>                                                                           
         </tbody>                     
-    	</table>
+        </table>
     </div>
 </div>
 <div class="col-md-12">
@@ -97,18 +97,18 @@ if($p_type_assesment =='5') :
 if(@$data_assesment[0]!='') :
  ?>
 <div class="col-md-12">                        
-	<div class="box-body table-responsive no-padding">                    
+    <div class="box-body table-responsive no-padding">                    
         <table class="table table-bordered tab-schedule-written-assesment">                    
         <thead>
         <tr>
             <th width="2%"><input type="checkbox" name="check_all"  onClick="check_uncheck_checkbox(this.checked);"/></th>                        
-			<th width="2%">No</th>
+            <th width="2%">No</th>
             <th width="15%">Status</th>                                                                    
             <th width="30%">Scope</th>  
             <th width="10%">Date of Written Test</th>
             <th width="10%">Time</th>
             <th width="10%">Location</th>                                                          
-		</tr>    
+        </tr>    
         </thead>
         <tbody>                                        
         <?php
@@ -156,12 +156,12 @@ if(@$data_assesment[0]!='') :
             </td>                    
             <td><input type="hidden" name="id_assesment[]" value="<?php echo $value->id; ?>"/><?php echo $value->name_spect .' '.$value->name_category.' '.$value->name_scope.''.$status_etops; ?></td>
             <td><input type="text" name="date_written_assesment[]" id="date_written_assesment_<?php echo $no; ?>" class="form-control date_written_assesment"/></td>                        
-			<td>
+            <td>
             <select id="id_written_sesi_<?php echo $no; ?>" name="id_written_sesi[]" class="form-control id_written_sesi"> 
             <option value="" data-date-format="hh:ii"><a>00:00</a></option>                       
             <option value="1" data-date-format="hh:ii"><a>09:00 - 11:00</a></option>
             <option value="2" data-date-format="hh:ii"><a>13:00 - 15:00</a></option>
-            </select>                                                                                                                        			                                                    
+            </select>                                                                                                                                                                                       
             </td>
             <td>
             <select class="form-control id_written_room" name="id_written_room[]" id="id_written_room_<?php echo $no;?>">
@@ -173,19 +173,19 @@ if(@$data_assesment[0]!='') :
         <?php
         $no++;
         endforeach;
-        ?>                    					                                     
+        ?>                                                                           
         </tbody>                     
-		</table>
-	</div>
+        </table>
+    </div>
 </div>
 <div class="col-md-12">
-<button type="submit" class="btn btn-info pull-right btn-sm" name="savewrittenassesment"><strong>Save Written Assesment</strong></button>    		
+<button type="submit" class="btn btn-info pull-right btn-sm" name="savewrittenassesment"><strong>Save Written Assesment</strong></button>           
 </div>
 <?php
 endif;
 endif;
 
-if($p_type_assesment =='19') :
+if($p_type_assesment =='18') :
 if(@$data_assesment_practical[0]!='') :
 ?>
 <div class="col-md-12">                        

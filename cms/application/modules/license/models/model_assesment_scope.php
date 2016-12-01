@@ -9,11 +9,29 @@ class model_assesment_scope extends CI_Model
         
     private $order_assesment_scope = array('m_assesment_scope.name_t' => 'desc');    
 
+    private $column_search  = array('code_t', 'name_t'); 
+
 
     public function _get_query_assesment_scope()
     {
         $this->db->select('id, code_t, name_t');
         $this->db->from($this->table_assesment_scope);
+        $i = 0;
+        foreach ($this->column_search as $item) {
+            if($_POST['search']['value']) {
+                if($i===0){ 
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                }
+                else{
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+                
+                if(count($this->column_search) - 1 == $i) 
+                    $this->db->group_end();
+            }
+            $i++;
+        }
         if (isset($_POST['order_assesment_scope'])) {
             $this->db->order_by($this->column_order_assesment_scope[$_POST['order_assesment_scope']['0']['column']],
                 $_POST['order_assesment_scope']['0']['dir']);

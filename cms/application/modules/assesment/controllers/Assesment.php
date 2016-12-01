@@ -54,7 +54,7 @@ class Assesment extends MX_Controller {
             $row[] = @$rc->personnel_number_fk;			
 			$row[] = @$rc->name;
             $row[] = @$rc->sesi_written;
-            $row[] = @$rc->room_written;            
+            $row[] = @$rc->room_written;    
             $row[] = @$rc->name_t;
             $row[] = @$rc->pic_written;
 			$row[] = @$rc->score_written;
@@ -91,7 +91,7 @@ class Assesment extends MX_Controller {
             $row[] = @$rc->personnel_number_fk;			
 			$row[] = @$rc->name;
             $row[] = @$rc->sesi_oral;
-            $row[] = @$rc->room_oral;            
+            $row[] = @$rc->room_oral;
             $row[] = @$rc->name_t;
             $row[] = @$rc->pic_oral;
 			$row[] = @$rc->score_oral;			
@@ -126,7 +126,7 @@ class Assesment extends MX_Controller {
             $row[] = @$rc->request_number_fk;
             $row[] = @$rc->personnel_number_fk;         
             $row[] = @$rc->name;
-            $row[] = @$rc->sesi_practical;                    
+          $row[] = @$rc->sesi_practical;                    
             $row[] = @$rc->name_t;
             $row[] = @$rc->pic_practical;
             $row[] = @$rc->score_practical;          
@@ -147,6 +147,7 @@ class Assesment extends MX_Controller {
         //output to json format
         echo json_encode($output);
     }
+
 	
 	private function form($action = 'insert', $id = '', $personnel_number = '', $id_assesment_scope=''){
 		if ($this->agent->referrer() == '') redirect($this->page->base_url());
@@ -163,13 +164,13 @@ class Assesment extends MX_Controller {
         }
 		
 		$this->page->view('assesment_form', array (
-			'ttl'		      		     => $title,
-			'back'		      		     => $this->agent->referrer(),
-			'action'	      		     => $this->page->base_url("/{$action}/{$id}/{$personnel_number}/{$id_assesment_scope}"),
-			'data_assesment'  		     => $this->model_assesment->by_request_number($id, $id_assesment_scope),
-			'data_assesment_oral'  	     => $this->model_assesment->by_request_number_oral($id, $id_assesment_scope),
+            'ttl'                        => $title,
+            'back'                       => $this->agent->referrer(),
+            'action'                     => $this->page->base_url("/{$action}/{$id}/{$personnel_number}/{$id_assesment_scope}"),
+            'data_assesment'             => $this->model_assesment->by_request_number($id, $id_assesment_scope),
+            'data_assesment_oral'        => $this->model_assesment->by_request_number_oral($id, $id_assesment_scope),
             'data_assesment_practical'   => $this->model_assesment->by_request_number_practical($id, $id_assesment_scope),
-			'aksi'		      		     => $action,
+            'aksi'                       => $action,
 		));
 	}
 	
@@ -269,6 +270,7 @@ class Assesment extends MX_Controller {
                 $pesan .= '<p>PT GMF AeroAsia</p>';
                 $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
                 $pesan .= '<p>Fax: +62-21-550 1257</p>';
+                
                 $this->email->message($pesan);                    
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg_assesment', 'Sending result writen assesment successfull.');
@@ -357,10 +359,10 @@ class Assesment extends MX_Controller {
                 $this->email->message($pesan);                 
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg', 'Sending result oral assesment successfull.');
-                        redirect(base_url('index.php/assesment/index'));                                
+                        redirect(base_url('index.php/assesment/index'));
                     } else {
                     	$this->session->set_flashdata('msg', 'Sending result oral assesment failed.');
-                        redirect(base_url('index.php/assesment/index'));                                
+                        redirect(base_url('index.php/assesment/index'));
                 }  
 	}
 
@@ -413,7 +415,7 @@ class Assesment extends MX_Controller {
         <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
         </head></body>';                
         $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-        $pesan .= '<p>Your result oral assesment : </p>';
+        $pesan .= '<p>Your result practical assesment : </p>';
         $pesan .= '<table border="1">
                 <tr>
                 <td> No </td>
@@ -438,7 +440,7 @@ class Assesment extends MX_Controller {
         $pesan .= '<p>PT GMF AeroAsia</p>';
         $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
         $pesan .= '<p>Fax: +62-21-550 1257</p>';
-
+        
         $this->email->message($pesan);                 
         if ($this->email->send()) {
                 $this->session->set_flashdata('msg_assesment', 'Sending result practical assesment successfull.');
@@ -448,7 +450,7 @@ class Assesment extends MX_Controller {
                 redirect(base_url('index.php/assesment/index'));                                
         }  
     }
-
+    
 	public function delete($id){
 		if ($this->agent->referrer() == '') show_404();
 		

@@ -24,7 +24,7 @@ $().ready(function(){
     var status_issue_authorization  = '<?php echo $status_issue_authorization; ?>';
     var referral_authorization      = '<?php echo $referral_authorization; ?>';  
     var take_authorization          = '<?php echo $take_authorization; ?>'; 
-    // alert(date_request)
+    // alert(date_request);
     
     $('#datatables_finish').dataTable({
         "scrollY"           : "342px", 
@@ -250,6 +250,7 @@ echo '</b>
     $msg = $this->session->flashdata('msg');                                                
     unset($msg); 
 }
+
 ?>
 <div id="FormSearch" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -290,13 +291,12 @@ echo '</b>
                         <option value="date_finish">Date Finish</option> 
                         <optgroup label="Status License">                                                                       
                         <option value="status_submit">Status Terkirim Applicant</option>                        
-                        <option value="status_approved_superior">Status Approved Superior</option>                                                                             
+                        <option value="status_approved_superior">Status Approved Superior</option>
                         <option value="status_data_validated">Status Approved Quality</option>                                                
-                        <option value="status_assesment">Status Assesment</option>                                                                       
+                        <option value="status_assesment">Status Assesment</option>
                         <option value="status_issue_authorization">Status Issue Authorization</option>
                         <option value="referral_authorization">Status Referral Authorization</option>  
-                        <option value="take_authorization">Status Take Authorization</option>                                                                                                                                                                
-                        </select>                   
+                        <option value="take_authorization">Status Take Authorization</option>                                                  </select>                   
                     </td>  
                     <td id="box-type-search-high">
                      <input name="input-tab-search-high" id="input-tab-search-high" class="col-md-12 form-control" type="text"/>

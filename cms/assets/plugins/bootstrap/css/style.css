@@ -2,6 +2,7 @@ table .table_bootstrap {
   border-collapse: separate;
   border-spacing: 0 5px;
 }
+.date{z-index:1151 !important;}
 
 th {
   background-color: #006DCC;
@@ -24,7 +25,7 @@ tr th:last-child {
     color:white;
 }
 
-#datatables_high, #datatables_normal, #datatables_specific, #datatables_general, #datatables_users_group, #datatables_license_type, #datatables_type_spect, #datatables_spect_category{          
+#datatables_high, #datatables_normal, #datatables_specific, #datatables_general, #datatables_users_group, #datatables_license_type, #datatables_type_spect, #datatables_spect_category, #written_assesment, #oral_assesment, #datatables_blocked_date, #datatables_blocked_room, #datatables_assesment_summary,#datatables_authorization,#datatables_type,#datatables_spect, #datatables_category,#datatables_scope,#datatables_users,#datatables_menu{          
     font-size: 13px;       
 }
 

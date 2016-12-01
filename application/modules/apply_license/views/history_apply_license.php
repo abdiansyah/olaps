@@ -146,7 +146,7 @@ if(@$data_history[0]!=''){
             <div class="col-md-3">
                     <div class="panel panel-info"> <!-- div type panel -->
                        <div class="panel-heading text-center"> <!-- div head panel -->
-                       <h4>Number of Days Since Receive Data</h4>
+                       <h4>Progress (Days)</h4>
                        </div> <!-- end div head panel -->                  
                       <div class="panel-body"> <!-- div body panel -->
                             <div class="col-md-12"> <!-- div content panel -->                               

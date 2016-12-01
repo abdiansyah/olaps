@@ -2,7 +2,7 @@
 $().ready(function(){
 $('#datatables_spect').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,                 
         "bSort"             : false,     
         "scrollCollapse"	: true,

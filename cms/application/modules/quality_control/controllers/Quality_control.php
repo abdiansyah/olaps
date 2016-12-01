@@ -222,8 +222,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
-
+            'wordwrap' => TRUE); 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -495,8 +494,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
-
+            'wordwrap' => TRUE); 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -602,8 +600,9 @@ class Quality_control extends MX_Controller
                                 $this->session->set_flashdata('msg', 'Sending schedule oral assesment successfully.');
                                 redirect(site_url('quality_control'));                                
                             } else {
+                                $this->session->set_flashdata('msg', 'Sending schedule oral assesment failed.');
                                 redirect(site_url('quality_control'));
-                            }                
+                        }                
                     }            
             }
         if (isset($_POST['savewrittenassesment'])) {
@@ -619,8 +618,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
-
+            'wordwrap' => TRUE); 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
@@ -686,7 +684,8 @@ class Quality_control extends MX_Controller
                             'id_auth_scope_fk' => $id_scope[$key],
                             'date_assesment' => date('Y-m-d H:i:s')
                         );
-                                    
+                        //print_r($data_assesment);
+                        //            die();             
                         $this->db->insert('t_assesment', $data_assesment);
                     }
                     $this->db->query("UPDATE t_apply_license_dtl SET status_written_assesment = '1' WHERE 
@@ -725,11 +724,12 @@ class Quality_control extends MX_Controller
                     $this->session->set_flashdata('msg', 'Sending schedule written assesment successfully.');
                     redirect(site_url('quality_control'));
                 } else {
+                    $this->session->set_flashdata('msg', 'Sending schedule written assesment failed.');
                     redirect(site_url('quality_control'));
-                }                        
+                }            
         }
 
-        // Practical Assesment
+                // Practical Assesment
         if (isset($_POST['savepracticalassesment'])) {
             $request_number               = $this->input->post('request_number');
             $check_assesment              = $this->input->post('check_assesment');
@@ -746,15 +746,15 @@ class Quality_control extends MX_Controller
             $data_applicant               = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             $name_applicant               = $data_applicant['EMPLNAME'];
             $email_applicant              = $data_applicant['EMAIL'];            
-            $config     = Array(
-            'protocol'  => 'smtp',
+            $config = Array(
+            'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
             'smtp_user' => 'devlicensetq@gmail.com',
             'smtp_pass' => 'Bismillah1995', 
-            'mailtype'  => 'html',
-            'charset'   => 'iso-8859-1',
-            'wordwrap'  => TRUE);  
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE); 
 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
@@ -859,11 +859,12 @@ class Quality_control extends MX_Controller
                                 $this->session->set_flashdata('msg', 'Sending schedule practical assesment successfully.');
                                 redirect(site_url('quality_control'));                                
                             } else {                                
+                                $this->session->set_flashdata('msg', 'Sending schedule practical assesment failed.');
                                 redirect(site_url('quality_control'));
                             }                
                     }            
             }
-    }
+    }    
     
     public function view($id)
     {
@@ -876,6 +877,7 @@ class Quality_control extends MX_Controller
             $personnel_number = $this->input->post('personnel_number');
             $request_number   = $this->input->post('request_number');
             $this->session->set_userdata('request_number', $request_number);
+            $this->session->set_userdata('personnel_number', $personnel_number);
             $data['data_file_requirement']              = $this->model_quality_control->get_data_requirement($personnel_number);
             $data['data_file_requirement_revision']     = $this->model_quality_control->get_data_requirement_revision($personnel_number);            
             $data['request_number']                     = $request_number;
@@ -917,7 +919,7 @@ class Quality_control extends MX_Controller
             $date_upload      = $this->input->post('date_upload');
             $time_upload      = $this->input->post('time_upload');            
             @$cd_folder_by    = $this->model_quality_control->get_code_file_by($code_file); 
-            $name_file_ftp    = $personnel_number.'_'.$code_file.'_'.$date_upload.$time_upload.'.pdf';
+            $name_file_ftp    = $this->input->post('name_file_ftp');
             @$code_folder     = $cd_folder_by->name;
             
             $data = array(
@@ -931,12 +933,16 @@ class Quality_control extends MX_Controller
             );
             $this->page->view('quality_control/form_view_requirement', $data);
         };
+
+        if (isset($_POST['save_req_document_tqd'])) {              
+                $this->session->set_flashdata('msg', 'Save document by TQD successfull.');
+                redirect(site_url('quality_control/index'));
+            }               
         
-        if (isset($_POST['save_validation_document'])) {                    
+        if (isset($_POST['save_validation_document'])) {              
             $personnel_number        = $this->input->post('personnel_number');
             $request_number          = $this->input->post('request_number');
-            $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;
-            
+            $sess_personnel_number   = $this->session->userdata('users_quality')->PERNR;                                                            
             $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -945,8 +951,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
-
+            'wordwrap' => TRUE); 
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -1007,8 +1012,8 @@ class Quality_control extends MX_Controller
             $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
             $pesan .= '<p>PT GMF AeroAsia</p>';
             $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';             
-            if(!empty($cek_data_document)){                    
+            $pesan .= '<p>Fax: +62-21-550 1257</p>';            
+            if(!empty($cek_data_document)){ 
                     $this->email->message($pesan);
                     $this->email->send();  
                     $data = array(
@@ -1016,8 +1021,7 @@ class Quality_control extends MX_Controller
                         'date_approved_quality' => date('Y-m-d H:i:s'),
                         'personnel_number_quality' => $sess_personnel_number,
                         'finished' => '1',
-                        'date_finish' => date('Y-m-d H:i:s'),
-                        'personnel_number_finish' => $sess_personnel_number,
+                        'date_finish' => date('Y-m-d H:i:s')
                     );
                     $this->db->where('request_number', $request_number);
                     $this->db->update('t_apply_license', $data);                                             
@@ -1036,17 +1040,20 @@ class Quality_control extends MX_Controller
                     $this->session->set_flashdata('msg', 'Document '.$request_number.' is Validated');
                     redirect(site_url('quality_control/index'));
                  }
-             }
+             }        
 }
-
     function upload_file_data_requirement() {
         $this->load->library('ftp');                            
         $this->load->library('upload');                                                         
         $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_personnel_number  = $this->session->userdata('users_quality')->PERNR;
         $personnel_number       = $this->input->post('personnel_number');
-        $subfolder              = $this->input->post('personnel_number');
-        connection_ftp();     
+        $subfolder              = $this->input->post('personnel_number');                    
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config);     
         $code_data_requirement                          = $this->input->post('code_data_requirement');                    
         $date_training_data_requirement                 = $this->input->post('date_training_data_requirement');            
         $save_result_expiration_date_data_requirement   = $this->input->post('save_result_expiration_date_data_requirement');            
@@ -1107,8 +1114,81 @@ class Quality_control extends MX_Controller
         $this->ftp->close();                               
     }
 
+    function upload_file_data_requirement_tqd() {
+        $this->load->library('ftp');                            
+        $this->load->library('upload');                                                         
+        $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
+        $sess_personnel_number  = $this->session->userdata('users_quality')->PERNR;
+        $personnel_number       = $this->input->post('personnel_number');
+        $subfolder              = $this->input->post('personnel_number');                    
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;        
+        $this->ftp->connect($ftp_config);     
+        $code_data_requirement                          = $this->input->post('code_data_requirement_tqd');                            
+        $date_training_data_requirement                 = $this->input->post('date_training_data_requirement_tqd');            
+        $save_result_expiration_date_data_requirement   = $this->input->post('save_result_expiration_date_data_requirement_tqd');            
+        $no_upload                                      = no_upload($personnel_number,$code_data_requirement);
+        if(isset($_FILES['file_data_requirement_tqd']['name'])) {
+            if ($_FILES['file_data_requirement_tqd']['size'] > 5120000) {  
+                echo 'File too large, max 5mb.';
+            } else {                
+                $cd_folder_by       = $this->model_quality_control->get_code_file_by($code_data_requirement);                                      
+                $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);                              
+                $fileNameOld        = $_FILES['file_data_requirement_tqd']['name'];                                                    
+                @$ext               = end(explode('.',$_FILES['file_data_requirement_tqd']['name']));                          
+                if ($ext == 'pdf') {
+                    $fileNameNew        = $personnel_number . '_' . $code_data_requirement . '_' . date('YmdH') . '.' . $ext;
+                    $sourceFileName     = $_FILES['file_data_requirement_tqd']['tmp_name'];                  
+                    $destination        = $fileNameOld;                                      
+                    $destinationnew     = $fileNameNew;
 
-    public function process_document()
+                    if(!empty($date_training_data_requirement)) {
+                        $date_training  = date('Y-m-d', strtotime($date_training_data_requirement));
+                    } else {
+                        $date_training  = null;
+                    };
+
+                    if (!empty($save_result_expiration_date_data_requirement)) {
+                        $date_expiration = date('Y-m-d', strtotime($save_result_expiration_date_data_requirement));
+                    } else {
+                        $date_expiration = null;
+                    };  
+
+                    $file_exists = $this->ftp->list_files(str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name . '/' . $destinationnew));
+                    if(!$file_exists) {  
+                        $send               = $this->ftp->upload($sourceFileName,$destination);                               
+                        $rename             = $this->ftp->rename($destination,$destinationnew);
+                        $data_general_certificate = array(
+                            'personnel_number_fk'  => $personnel_number,                
+                            'date_training'        => $date_training,
+                            'expiration_date'      => $date_expiration,
+                            'code_file'            => $code_data_requirement,                
+                            'name_file'            => $fileNameNew,                            
+                            'date_upload'          => date('Y-m-d'),
+                            'time_upload'          => date('H:i:s'),
+                            'no_upload'            => $no_upload,
+                        );
+                                               
+                        $this->db->insert('t_file_requirement',$data_general_certificate);                                                                  
+                        echo 'Save successfull.';                                                                     
+                    } else {
+                        echo 'File is exists.';                         
+                    }
+                } else {
+                    echo 'File type not suport, please atach file pdf.';                
+                }
+            }    
+        } else {
+            echo 'Please choose file.';
+        }
+        $this->ftp->close();                               
+    }
+
+
+    
+     public function process_document()
     {
         $request_number   = $this->input->post('request_number');
         $personnel_number = $this->input->post('personnel_number');
@@ -1199,10 +1279,6 @@ class Quality_control extends MX_Controller
         $m_unit = $this->db->query("SELECT DISTINCT UNIT FROM db_hrm.dbo.TBL_SOE_HEAD");
         return options($m_unit, 'UNIT', 'UNIT');
     }
-
-    public function cek_room($date_assesment, $id_sesi, $id_room){             
-        $this->model_quality_control->get_room_by($date_assesment, $id_sesi, $id_room);                                                                     
-    } 
     
     public function cek_room_written($date_written_assesment, $id_sesi, $id_room){
         $this->model_quality_control->get_room_written_by($date_written_assesment,$id_sesi,$id_room);

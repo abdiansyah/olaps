@@ -2,7 +2,7 @@
 $().ready(function(){
 $('#datatables_specific').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,      
         "scrollCollapse"	: true,
 		"processing" 		: true, //Feature control the processing indicator.
@@ -26,7 +26,7 @@ $('#datatables_specific').dataTable({
     
 $('#datatables_general').dataTable({
 		"scrollY"			: "342px", 
-        "searching"         : false, 
+        "searching"         : true, 
         "select"            : true,      
         "scrollCollapse"	: true,
 		"processing" 		: true,

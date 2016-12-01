@@ -142,7 +142,7 @@ class M_apply_license extends CI_Model {
                             FROM 
                             (SELECT personnel_number, name,  email, presenttitle, departement FROM m_employee
                             WHERE personnel_number='$personnel_number'
-                            UNION		
+                            UNION       
                             SELECT (TSH.PERNR) AS personnel_number, (TSH.EMPLNAME) AS name , (TSH.EMAIL) AS email, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement                            
                             FROM 
                             db_hrm.dbo.TBL_SOE_HEAD AS TSH
@@ -339,7 +339,7 @@ class M_apply_license extends CI_Model {
     return $this->db->query($querycekakses)->row();     
     }         
 
-	public function get_code_file(){
+    public function get_code_file(){
         $querycodefile = "SELECT * FROM m_dir_requirement"; 
         return $this->db->query($querycodefile)->result();       
     }  
@@ -493,7 +493,7 @@ class M_apply_license extends CI_Model {
     }
 
 }
-	
+    
 
 /* End of file m_apply_license.php */
 /* Location: ./application/modules/apply_license/models/m_apply_license.php */

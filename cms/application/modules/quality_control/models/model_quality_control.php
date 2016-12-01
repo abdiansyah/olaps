@@ -44,30 +44,27 @@ class model_quality_control extends CI_Model
                         (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),105)) FROM t_assesment AS TA WHERE (TA.request_number_fk=t_apply_license.request_number))
                         WHEN t_apply_license.status_issue_authorization IS NULL then
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))
-                        WHEN t_apply_license.take_authorization IS NULL then
+                        WHEN t_apply_license.referral_authorization IS NULL then
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),105))
                         WHEN t_apply_license.finished IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),105))
                         WHEN t_apply_license.finished IS NOT NULL then
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_finish,120),105))
                         END) as last_update,
-                        (CASE WHEN t_apply_license.status_approved_superior IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108))                                                 
-                        WHEN t_apply_license.status_approved_quality IS NULL then                         
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),108))                             
-                        WHEN t_apply_license.status_assesment IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108))                 
+                        (CASE WHEN t_apply_license.status_approved_superior IS NULL then 
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),108))                               
+                        WHEN t_apply_license.status_approved_quality IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),108))                               
+                        WHEN t_apply_license.status_assesment IS NULL then 
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108))
                         WHEN t_apply_license.status_issue_authorization IS NULL then
-                        (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),108)) FROM t_assesment AS TA WHERE (TA.request_number_fk = t_apply_license.request_number))
-                        WHEN t_apply_license.status_issue_authorization IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))
-                        WHEN t_apply_license.take_authorization IS NULL then
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))       
+                        WHEN t_apply_license.referral_authorization IS NULL then
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),108))
                         WHEN t_apply_license.finished IS NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),108))
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),108))
                         WHEN t_apply_license.finished IS NOT NULL then
-                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_finish,120),108))
-                        END) as time,
+                        (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),108)) END) as time,
                         t_apply_license.priority,
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.datetime_priority,120),105)) as date_priority,
                         (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.datetime_priority,120),108)) as time_priority,
@@ -89,27 +86,27 @@ class model_quality_control extends CI_Model
 
     public function get_quality_control_high()
     {        
-        $personnel_number 	         = $this->input->post('personnel_number');
-        $request_number 	         = $this->input->post('request_number');
-        $code_unit 	                 = $this->input->post('code_unit');
-        $reason_apply_license 	     = $this->input->post('reason_apply_license');
-        $priority 	                 = $this->input->post('priority');
-        $datetime_priority 	         = $this->input->post('datetime_priority');
-        $personnel_number_superior 	 = $this->input->post('personnel_number_superior');
-        $personnel_number_quality 	 = $this->input->post('personnel_number_quality');
-        $id_disposition_user_fk 	 = $this->input->post('id_disposition_user_fk');
-        $id_location_user_fk 	     = $this->input->post('id_location_user_fk');
-        $date_request 	             = $this->input->post('date_request');
-        $date_approved_superior 	 = $this->input->post('date_approved_superior');
-        $date_approved_quality 	     = $this->input->post('date_approved_quality');
+        $personnel_number            = $this->input->post('personnel_number');
+        $request_number              = $this->input->post('request_number');
+        $code_unit                   = $this->input->post('code_unit');
+        $reason_apply_license        = $this->input->post('reason_apply_license');
+        $priority                    = $this->input->post('priority');
+        $datetime_priority           = $this->input->post('datetime_priority');
+        $personnel_number_superior   = $this->input->post('personnel_number_superior');
+        $personnel_number_quality    = $this->input->post('personnel_number_quality');
+        $id_disposition_user_fk      = $this->input->post('id_disposition_user_fk');
+        $id_location_user_fk         = $this->input->post('id_location_user_fk');
+        $date_request                = $this->input->post('date_request');
+        $date_approved_superior      = $this->input->post('date_approved_superior');
+        $date_approved_quality       = $this->input->post('date_approved_quality');
         $date_referral_authorization = $this->input->post('date_referral_authorization');
-        $date_take_authorization 	 = $this->input->post('date_take_authorization');
-        $status_submit    	         = $this->input->post('status_submit');                
-        $status_approved_superior 	 = $this->input->post('status_approved_superior');
-        $status_approved_quality 	 = $this->input->post('status_approved_quality');
-        $status_assesment 	         = $this->input->post('status_assesment');
-        $referral_authorization 	 = $this->input->post('referral_authorization');
-        $take_authorization 	     = $this->input->post('take_authorization');    
+        $date_take_authorization     = $this->input->post('date_take_authorization');
+        $status_submit               = $this->input->post('status_submit');                
+        $status_approved_superior    = $this->input->post('status_approved_superior');
+        $status_approved_quality     = $this->input->post('status_approved_quality');
+        $status_assesment            = $this->input->post('status_assesment');
+        $referral_authorization      = $this->input->post('referral_authorization');
+        $take_authorization          = $this->input->post('take_authorization');    
         $this->_get_query();
         if(!empty($personnel_number)){
            $this->db->where('personnel_number', $personnel_number);    
@@ -153,23 +150,23 @@ class model_quality_control extends CI_Model
         }
         
         if(!empty($date_request)){
-           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));    
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105))', $date_request);    
         }
         
-        if(!empty($date_approved_superior)){
-           $this->db->LIKE('t_apply_license.date_approved_superior', $date_approved_superior);    
+        if(!empty($date_approved_superior)){           
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))', $date_approved_superior); 
         }
                 
-        if(!empty($date_approved_quality)){
-           $this->db->LIKE('t_apply_license.date_approved_quality', $date_approved_quality);    
+        if(!empty($date_approved_quality)){           
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))', $date_approved_quality);
         }
         
         if(!empty($date_referral_authorization)){
-           $this->db->LIKE('t_apply_license.date_refferal_authorization', $date_referral_authorization);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_refferal_authorization,120),105))', $date_referral_authorization);           
         }
         
         if(!empty($date_take_authorization)){
-           $this->db->LIKE('t_apply_license.date_take_authorization', $date_take_authorization);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))', $date_take_authorization);                      
         }
         
         if(!empty($status_submit)){
@@ -208,27 +205,27 @@ class model_quality_control extends CI_Model
     
         public function get_quality_control_normal()
         {        
-        $personnel_number 	         = $this->input->post('personnel_number');
-        $request_number 	         = $this->input->post('request_number');
-        $code_unit 	                 = $this->input->post('code_unit');
-        $reason_apply_license 	     = $this->input->post('reason_apply_license');
-        $priority 	                 = $this->input->post('priority');
-        $datetime_priority 	         = $this->input->post('datetime_priority');
-        $personnel_number_superior 	 = $this->input->post('personnel_number_superior');
-        $personnel_number_quality 	 = $this->input->post('personnel_number_quality');
-        $id_disposition_user_fk 	 = $this->input->post('id_disposition_user_fk');
-        $id_location_user_fk 	     = $this->input->post('id_location_user_fk');
-        $date_request 	             = $this->input->post('date_request');
-        $date_approved_superior 	 = $this->input->post('date_approved_superior');
-        $date_approved_quality 	     = $this->input->post('date_approved_quality');
+        $personnel_number            = $this->input->post('personnel_number');
+        $request_number              = $this->input->post('request_number');
+        $code_unit                   = $this->input->post('code_unit');
+        $reason_apply_license        = $this->input->post('reason_apply_license');
+        $priority                    = $this->input->post('priority');
+        $datetime_priority           = $this->input->post('datetime_priority');
+        $personnel_number_superior   = $this->input->post('personnel_number_superior');
+        $personnel_number_quality    = $this->input->post('personnel_number_quality');
+        $id_disposition_user_fk      = $this->input->post('id_disposition_user_fk');
+        $id_location_user_fk         = $this->input->post('id_location_user_fk');
+        $date_request                = $this->input->post('date_request');
+        $date_approved_superior      = $this->input->post('date_approved_superior');
+        $date_approved_quality       = $this->input->post('date_approved_quality');
         $date_referral_authorization = $this->input->post('date_referral_authorization');
-        $date_take_authorization 	 = $this->input->post('date_take_authorization');
-        $status_submit    	         = $this->input->post('status_submit');        
-        $status_approved_superior 	 = $this->input->post('status_approved_superior');
-        $status_approved_quality 	 = $this->input->post('status_approved_quality');
-        $status_assesment 	         = $this->input->post('status_assesment');
-        $referral_authorization 	 = $this->input->post('referral_authorization');
-        $take_authorization 	     = $this->input->post('take_authorization');    
+        $date_take_authorization     = $this->input->post('date_take_authorization');
+        $status_submit               = $this->input->post('status_submit');        
+        $status_approved_superior    = $this->input->post('status_approved_superior');
+        $status_approved_quality     = $this->input->post('status_approved_quality');
+        $status_assesment            = $this->input->post('status_assesment');
+        $referral_authorization      = $this->input->post('referral_authorization');
+        $take_authorization          = $this->input->post('take_authorization');    
         $this->_get_query();
         if(!empty($personnel_number)){
            $this->db->where('personnel_number', $personnel_number);    
@@ -272,23 +269,23 @@ class model_quality_control extends CI_Model
         }
         
         if(!empty($date_request)){
-           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));   
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105))', $date_request);   
         }
         
-        if(!empty($date_approved_superior)){
-           $this->db->LIKE('t_apply_license.date_approved_superior', $date_approved_superior);    
+        if(!empty($date_approved_superior)){           
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))', $date_approved_superior); 
         }
                 
         if(!empty($date_approved_quality)){
-           $this->db->LIKE('t_apply_license.date_approved_quality', $date_approved_quality);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))', $date_approved_quality);           
         }
         
         if(!empty($date_referral_authorization)){
-           $this->db->LIKE('t_apply_license.date_refferal_authorization', $date_referral_authorization);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_refferal_authorization,120),105))', $date_referral_authorization);           
         }
         
-        if(!empty($date_take_authorization)){
-           $this->db->LIKE('t_apply_license.date_take_authorization', $date_take_authorization);    
+        if(!empty($date_take_authorization)){           
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))', $date_take_authorization);
         }
         
         if(!empty($status_submit)){
@@ -394,23 +391,23 @@ class model_quality_control extends CI_Model
         }
         
         if(!empty($date_request)){
-           $this->db->LIKE('t_apply_license.date_request', date('Y-m-d',strtotime($date_request)));   
+           $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105))', $date_request);   
         }
         
         if(!empty($date_approved_superior)){
-           $this->db->LIKE('t_apply_license.date_approved_superior', $date_approved_superior);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_superior,120),105))', $date_approved_superior);           
         }
                 
         if(!empty($date_approved_quality)){
-           $this->db->LIKE('t_apply_license.date_approved_quality', $date_approved_quality);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),105))', $date_approved_quality);            
         }
         
         if(!empty($date_referral_authorization)){
-           $this->db->LIKE('t_apply_license.date_refferal_authorization', $date_referral_authorization);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_refferal_authorization,120),105))', $date_referral_authorization); 
         }
         
         if(!empty($date_take_authorization)){
-           $this->db->LIKE('t_apply_license.date_take_authorization', $date_take_authorization);    
+            $this->db->LIKE('(CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))', $date_take_authorization);            
         }
         
         if(!empty($status_submit)){
@@ -568,10 +565,10 @@ class model_quality_control extends CI_Model
                     (SELECT TOP 1 (CONVERT(varchar(10), CONVERT(datetime, TA.date_assesment,120),105)) FROM t_assesment AS TA WHERE (TA.request_number_fk=t_apply_license.request_number))
                     WHEN t_apply_license.status_issue_authorization IS NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105))
-                    WHEN t_apply_license.take_authorization IS NULL then
+                    WHEN t_apply_license.referral_authorization IS NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),105))
                     WHEN t_apply_license.finished IS NULL then
-                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),105))
+                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),105))
                     WHEN t_apply_license.finished IS NOT NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_finish,120),105))
                     END) as last_update,
@@ -582,11 +579,12 @@ class model_quality_control extends CI_Model
                     WHEN t_apply_license.status_assesment IS NULL then 
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_approved_quality,120),108))
                     WHEN t_apply_license.status_issue_authorization IS NULL then
-                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))       WHEN t_apply_license.referral_authorization IS NULL then
+                    (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108))       
+                    WHEN t_apply_license.referral_authorization IS NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_issue_authorization,120),108))
-                    WHEN t_apply_license.take_authorization IS NULL then
+                    WHEN t_apply_license.finished IS NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_referral_authorization,120),108))
-                    WHEN t_apply_license.take_authorization IS NOT NULL then
+                    WHEN t_apply_license.finished IS NOT NULL then
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_take_authorization,120),108)) END) as time,
                     (CASE t_apply_license.status_submit WHEN '1' THEN 'Data Submited' END) AS submited, 
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_request,120),105)) AS date_submited,
@@ -604,8 +602,6 @@ class model_quality_control extends CI_Model
                     (CASE (SELECT TOP 1 TA.status_assesment FROM t_assesment AS TA WHERE (TA.request_number_fk='$id' OR TA.request_number_fk = '$id')) WHEN '1' THEN 'Lulus' WHEN '2' THEN 'Tidak Lulus' END) AS verification_assesment,
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),105)) AS date_verification_assesment,
                     (CONVERT(varchar(10), CONVERT(datetime, t_apply_license.date_status_assesment,120),108)) AS time_verification_assesment,  
-
-                    
                     (SELECT 'GMF Authorization Issued' FROM t_issue_authorization AS TIA WHERE TIA.id_issue_fk = '1' AND TIA.request_number_fk = '$id') AS desc_gmf_issue_authorization,
                     (SELECT (CONVERT(varchar(10), CONVERT(datetime, TIA.date_issue,120),105)) FROM t_issue_authorization AS TIA WHERE TIA.id_issue_fk = '1' AND TIA.request_number_fk = '$id') AS date_gmf_issue_authorization,
                     (SELECT (CONVERT(varchar(10), CONVERT(datetime, TIA.date_issue,120),108)) FROM t_issue_authorization AS TIA WHERE TIA.id_issue_fk = '1' AND TIA.request_number_fk = '$id') AS time_gmf_issue_authorization,
@@ -644,7 +640,7 @@ class model_quality_control extends CI_Model
                     LEFT JOIN (SELECT personnel_number, name,  presenttitle, departement, email, dateofbirth, dateofemployee, mobilephone, businessphone FROM m_employee                
                     UNION
                     SELECT (CONVERT(varchar(10),TSH.PERNR)) AS personnel_number, (TSH.EMPLNAME) AS name, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement, (TSH.EMAIL) AS email, (TSH.BORNDATE) AS dateofbirth, (TSH.EMPLODATE) AS dateofemployee, (SELECT mobilephone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk = (CONVERT(varchar(10),TSH.PERNR))) AS mobilephone, (SELECT businessphone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk = (CONVERT(varchar(10),TSH.PERNR))) AS businessphone FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH) AS TSH 
-                    ON t_apply_license.personnel_number = TSH.personnel_number                                     								                 
+                    ON t_apply_license.personnel_number = TSH.personnel_number                                                                                   
                     WHERE " . $where ." ORDER BY date_submited, date_approved_superior DESC");
         return $datasrc->num_rows() > 0 ? $datasrc->result() : $this;
     }
@@ -686,7 +682,7 @@ class model_quality_control extends CI_Model
     }
     
     public function get_data_requirement($personnel_number){
-    $query = "SELECT tfr.personnel_number_fk, tfr.code_file, tfr.date_training, tfr.expiration_date, tfr.no_upload, tfr.name_file, tfr.status_valid, tfr.reason, (m_req.name_t) AS name_file FROM t_file_requirement AS tfr
+    $query = "SELECT tfr.personnel_number_fk, tfr.code_file, tfr.date_training, tfr.expiration_date, tfr.no_upload, tfr.name_file, tfr.status_valid, tfr.reason, (m_req.name_t) AS name_file, (tfr.name_file) AS name_file_ftp FROM t_file_requirement AS tfr
         JOIN UNION_REQUIREMENT AS m_req ON tfr.code_file = m_req.code_t AND tfr.no_upload = 
         (SELECT MAX(no_upload) AS no_upload FROM t_file_requirement
         WHERE t_file_requirement.code_file = tfr.code_file)
@@ -822,7 +818,7 @@ class model_quality_control extends CI_Model
     } 
 
     public function get_spec_document_quality($request_number){
-        $query = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
+        $query = "SELECT DISTINCT maars.name_t AS name_file, (maars.code_t) AS code_file , mgsc.category_continous,mgsc.category_admin, mgsc.age_requirement FROM m_group_scope_category mgsc
                 LEFT JOIN m_auth_additional_req_spec AS maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                 LEFT JOIN m_auth_license AS mal ON mgsc.id_auth_license_fk = mal.id
                 LEFT JOIN t_apply_license_dtl AS tald ON tald.id_auth_license_fk = mgsc.id_auth_license_fk 
@@ -904,26 +900,24 @@ class model_quality_control extends CI_Model
         return $this->db->query($query);
     }
 
-    public function get_code_file_by($code='') {
+    public function get_code_file_by($code=''){
         $querycode = "SELECT mdr.name FROM m_dir_requirement AS mdr
                         LEFT JOIN UNION_REQUIREMENT AS UR ON mdr.code = UR.code_folder
                         WHERE code_t = '$code'"; 
         return $this->db->query($querycode)->row();          
-    }
+    } 
 
-    public function cek_date_current($personnel_number='', $code_current='' ) {
-        $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
-                time_upload  FROM t_file_requirement AS tfr
-                WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-                ORDER BY tfr.id DESC";
+    public function cek_date_current($personnel_number, $code_current) {
+        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
+            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
         return $this->db->query($query)->row_array();
     }
 
     public function cek_time_current($personnel_number, $code_current) {
-        $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
-                time_upload  FROM t_file_requirement AS tfr
-                WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-                ORDER BY tfr.id DESC";
+        $query  = "SELECT TOP 1 REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS time_upload  FROM t_file_requirement AS tfr
+            WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
+            ORDER BY tfr.date_upload, tfr.time_upload  DESC";
         return $this->db->query($query)->row_array();
     }
 

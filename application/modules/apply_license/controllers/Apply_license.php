@@ -52,7 +52,16 @@ class Apply_license extends CI_Controller
     // -- Purpose : 
     function index()
     {
-        destroy_all_session_applicant();
+        $this->session->unset_userdata('sess_data_personnel');
+        $this->session->unset_userdata('sess_license');
+        $this->session->unset_userdata('sess_license_garuda');
+        $this->session->unset_userdata('sess_license_citilink');
+        $this->session->unset_userdata('sess_license_sriwijaya');
+        $this->session->unset_userdata('sess_license_easa');
+        $this->session->unset_userdata('sess_license_special');
+        $this->session->unset_userdata('sess_with_garuda');
+        $this->session->unset_userdata('sess_with_citilink');
+        $this->session->unset_userdata('sess_with_sriwijaya');
         $this->form_validation->set_error_delimiters('', '<br>');
         $this->form_validation->set_rules('personnel_number', 'Personnel Number', 'required|trim|max_length[30]');
         $this->form_validation->set_rules('name', 'Information', 'required|trim|max_length[30]');
@@ -90,7 +99,7 @@ class Apply_license extends CI_Controller
                 }
                 $this->session->set_userdata('sess_data_personnel', $sess_data_personnel);
                 $data['data_personnel_information'] = $this->session->userdata('sess_data_personnel');
-                $data['auth_license']               = $this->db->order_by('id', 'ASC')->get('m_auth_license')->result();
+                $data['auth_license']               = $this->db->order_by('name_t', 'ASC')->get('m_auth_license')->result();
                 $this->page->view('authorization_request', $data);
                 return true;
             }
@@ -107,7 +116,15 @@ class Apply_license extends CI_Controller
     // -- Purpose : 
     function authorization_request()
     {
-        destroy_all_session_authorization_applicant();
+        $this->session->unset_userdata('sess_license');
+        $this->session->unset_userdata('sess_license_garuda');
+        $this->session->unset_userdata('sess_license_citilink');
+        $this->session->unset_userdata('sess_license_sriwijaya');
+        $this->session->unset_userdata('sess_license_easa');
+        $this->session->unset_userdata('sess_license_special');
+        $this->session->unset_userdata('sess_with_garuda');
+        $this->session->unset_userdata('sess_with_citilink');
+        $this->session->unset_userdata('sess_with_sriwijaya');
         $this->form_validation->set_error_delimiters('', '<br>');
         $this->form_validation->set_rules('status', 'Reason of apply', 'required|trim|min_length[1]');
         $this->form_validation->set_rules('license', 'Authorization', 'required|trim|min_length[1]');
@@ -1042,7 +1059,7 @@ class Apply_license extends CI_Controller
         }
     }
     
-    public function cek_date_file_current() {
+        public function cek_date_file_current() {
         $sess_data_personnel    = $this->session->userdata('sess_data_personnel');        
         $personnel_number       = $sess_data_personnel['personnel_number'];                               
         $code_current           = $this->input->post('code_req_document_certificate'); 
@@ -1067,14 +1084,18 @@ class Apply_license extends CI_Controller
     }
 
     public function upload_file_general() {
-        $this->load->library('ftp');                              
+        $this->load->library('ftp');                
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config);                               
         $this->load->library('upload');                                                              
         $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_data_personnel    = $this->session->userdata('sess_data_personnel');        
         $personnel_number       = $sess_data_personnel['personnel_number'];                               
         $subfolder              = $sess_data_personnel['personnel_number'];        
-        $cd_folder = $this->m_apply_license->get_code_file();        
-        connection_ftp();
+        $cd_folder = $this->m_apply_license->get_code_file();            
         if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder)==''){                
            $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder);                
             foreach($cd_folder as $code_file){  
@@ -1082,9 +1103,7 @@ class Apply_license extends CI_Controller
                     $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder.'/'.$code_file->name);                
                   };     
               }
-        };     
-        $this->ftp->close();                    
-        connection_ftp();    
+        };             
         $code_req_document_general      = $this->input->post('code_req_document_general');        
         $no_upload                      = no_upload($personnel_number,$code_req_document_general);
         if(isset($_FILES['file_req_document_general']['name'])) {
@@ -1113,7 +1132,7 @@ class Apply_license extends CI_Controller
                             'no_upload'             => $no_upload,
                         );                                                     
                         $this->db->insert('t_file_requirement',$data_license);                                          
-                        $this->ftp->close();                            
+                                            
                         echo 'Save successfull.';                         
                     } else {
                         echo 'File is exists.';                         
@@ -1126,18 +1145,22 @@ class Apply_license extends CI_Controller
         } else {
             echo 'Please choose file.';
         }   
+        $this->ftp->close(); 
     }
 
     function delete_file_general() {
-        $this->load->library('ftp');                        
+        $this->load->library('ftp'); 
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config);                        
         $this->load->library('upload');                                                              
         $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_data_personnel = $this->session->userdata('sess_data_personnel');        
         $personnel_number = $sess_data_personnel['personnel_number'];                               
         $subfolder = $sess_data_personnel['personnel_number'];        
-        $cd_folder = $this->m_apply_license->get_code_file();
-                                
-        connection_ftp();
+        $cd_folder = $this->m_apply_license->get_code_file();                                    
         $code_req_document_general      = $this->input->post('code_req_document_general');                        
         $date_upload                    = $this->input->post('date_req_document_general');                        
         $time_upload                    = $this->input->post('time_req_document_general');  
@@ -1146,27 +1169,31 @@ class Apply_license extends CI_Controller
         @$ext                           = end(explode('.',$_FILES['file_req_document_general']['name']));                                      
         $fileNameNew                    = $personnel_number.'_'.$code_req_document_general.'_'.$date_upload.$time_upload.'.pdf';
         $file_exists                    = $this->ftp->list_files(str_replace('%20',' ','/' . $mainfolder .'/'. $subfolder .'/'. $cd_folder_by->name .'/'. $fileNameNew));
-        if($file_exists) {            
+        if($file_exists) { 
+            $this->ftp->chmod(str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name . '/' . $fileNameNew), 0777);             
             $this->ftp->delete_file(str_replace('%20',' ','/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name . '/' . $fileNameNew));
             $this->db->where('name_file',$fileNameNew);
             $this->db->delete('t_file_requirement');
             echo 'Delete successfull.';                         
         } else {
             echo 'Delete failed, please try again.';                         
-        }                                
+        }
+        $this->ftp->close();                                 
     }
 
     function upload_file_document_certificate() {
         $this->load->library('ftp');                                    
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config); 
         $this->load->library('upload');                                                            
-
         $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_data_personnel    = $this->session->userdata('sess_data_personnel');        
         $personnel_number       = $sess_data_personnel['personnel_number'];                               
         $subfolder              = $sess_data_personnel['personnel_number'];        
-        $cd_folder              = $this->m_apply_license->get_code_file();
-        
-        connection_ftp();
+        $cd_folder              = $this->m_apply_license->get_code_file();            
         if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder)==''){                
            $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder);                
             foreach($cd_folder as $code_file){  
@@ -1174,9 +1201,7 @@ class Apply_license extends CI_Controller
                     $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder.'/'.$code_file->name);                
                   };     
               }
-        };     
-        $this->ftp->close();                    
-        connection_ftp();     
+        };             
         $code_req_document_certificate                          = $this->input->post('code_req_document_certificate');                    
         $date_training_req_general_certificate                  = $this->input->post('date_training_req_general_certificate');            
         $save_result_expiration_date_req_general_certificate    = $this->input->post('save_result_expiration_date_req_general_certificate');            
@@ -1222,7 +1247,7 @@ class Apply_license extends CI_Controller
                         );
                                                
                         $this->db->insert('t_file_requirement',$data_general_certificate);                                          
-                        $this->ftp->close();                            
+                                                   
                         echo 'Save successfull.';                                                                     
                     } else {
                         echo 'File is exists.';                         
@@ -1233,11 +1258,17 @@ class Apply_license extends CI_Controller
             }    
         } else {
             echo 'Please choose file.';
-        }   
+        }
+        $this->ftp->close();    
     }
 
     public function delete_file_document_certificate() {
-        $this->load->library('ftp');                              
+        $this->load->library('ftp');
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config);                               
         $this->load->library('upload');                                                              
         $mainfolder = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_data_personnel    = $this->session->userdata('sess_data_personnel');        
@@ -1246,8 +1277,7 @@ class Apply_license extends CI_Controller
         $cd_folder              = $this->m_apply_license->get_code_file();
         $code_file              = $this->input->post('code_req_document_certificate');                                                        
         $date_upload            = $this->input->post('date_req_document_certificate');                        
-        $time_upload            = $this->input->post('time_req_document_certificate');                        
-        connection_ftp();
+        $time_upload            = $this->input->post('time_req_document_certificate');                                
         $cd_folder_by                   = $this->m_apply_license->get_code_file_by($code_file);                       
         $this->ftp->changedir('/'.$mainfolder.'/'.$subfolder.'/'.$cd_folder_by->name);                                              
         $fileNameNew                    = $personnel_number.'_'.$code_file.'_'.$date_upload.$time_upload.'.pdf';
@@ -1259,19 +1289,24 @@ class Apply_license extends CI_Controller
             echo 'Delete successfull.';                         
         } else {
             echo 'Delete failed, please try again.';                         
-        }                                
+        }
+        $this->ftp->close();                                 
     }
 
 
     function upload_file_spec_certificate() {
-        $this->load->library('ftp');                            
+        $this->load->library('ftp');
+        $ftp_config['hostname'] = '127.0.0.1'; 
+        $ftp_config['username'] = 'yayas';
+        $ftp_config['password'] = 'Bismillah';
+        $ftp_config['debug']    = TRUE;    
+        $this->ftp->connect($ftp_config);                                                           
         $this->load->library('upload');                                                         
         $mainfolder             = 'TQ-STORAGE/LICENSE_CERTIFICATION/OLAPS';                
         $sess_data_personnel    = $this->session->userdata('sess_data_personnel');        
         $personnel_number       = $sess_data_personnel['personnel_number'];                               
         $subfolder              = $sess_data_personnel['personnel_number'];        
-        $cd_folder              = $this->m_apply_license->get_code_file();        
-        connection_ftp();
+        $cd_folder              = $this->m_apply_license->get_code_file();                
         if($this->ftp->list_files('/'.$mainfolder.'/'.$subfolder)==''){                
            $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder);                
             foreach($cd_folder as $code_file){  
@@ -1279,9 +1314,7 @@ class Apply_license extends CI_Controller
                     $this->ftp->mkdir('/'.$mainfolder.'/'.$subfolder.'/'.$code_file->name);                
                   };     
               }
-        };     
-        $this->ftp->close();                    
-        connection_ftp();     
+        };             
         $code_req_document_certificate                          = $this->input->post('code_req_spec_certificate');                    
         $date_training_req_general_certificate                  = $this->input->post('date_training_req_spec_certificate');            
         $save_result_expiration_date_req_general_certificate    = $this->input->post('save_result_expiration_date_req_spec_certificate');            
@@ -1328,7 +1361,7 @@ class Apply_license extends CI_Controller
                         );
                                                
                         $this->db->insert('t_file_requirement',$data_general_certificate);                                          
-                        $this->ftp->close();                            
+                                                  
                         echo 'Save successfull.';                                                                     
                     } else {
                         echo 'File is exists.';                         
@@ -1340,21 +1373,28 @@ class Apply_license extends CI_Controller
         } else {
             echo 'Please choose file.';
         }   
+        $this->ftp->close(); 
     }
 
-    public function completing_data()
-    {
-        @$sess_license              = $this->session->userdata('sess_license');
-        @$sess_license_garuda       = $this->session->userdata('sess_license_garuda');
-        @$sess_license_citilink     = $this->session->userdata('sess_license_citilink');
-        @$sess_license_sriwijaya    = $this->session->userdata('sess_license_sriwijaya');
-        @$sess_license_easa         = $this->session->userdata('sess_license_easa');
-        @$sess_license_special      = $this->session->userdata('sess_license_special');
-        @$sess_with_garuda          = $this->session->userdata('sess_with_garuda');
-        @$sess_with_citilink        = $this->session->userdata('sess_with_citilink');
-        @$sess_with_sriwijaya       = $this->session->userdata('sess_with_sriwijaya');
-        @$sess_with_cofc            = $this->session->userdata('sess_with_cofc');
+    public 
+    // -- Function Name : completing_data
         
+    // -- Params : 
+        
+    // -- Purpose : 
+    function completing_data()
+    {
+    @$sess_license              = $this->session->userdata('sess_license');
+    @$sess_license_garuda       = $this->session->userdata('sess_license_garuda');
+    @$sess_license_citilink     = $this->session->userdata('sess_license_citilink');
+    @$sess_license_sriwijaya    = $this->session->userdata('sess_license_sriwijaya');
+    @$sess_license_easa         = $this->session->userdata('sess_license_easa');
+    @$sess_license_special      = $this->session->userdata('sess_license_special');
+    @$sess_with_garuda          = $this->session->userdata('sess_with_garuda');
+    @$sess_with_citilink        = $this->session->userdata('sess_with_citilink');
+    @$sess_with_sriwijaya       = $this->session->userdata('sess_with_sriwijaya');
+    @$sess_with_cofc            = $this->session->userdata('sess_with_cofc');
+    
         if(isset($_POST['savecompletingdata'])){
             $data['content'] = $this->session->set_flashdata('content_not_valid', 'Save successfull.');
             redirect(site_url('home/index'));
@@ -1683,7 +1723,7 @@ class Apply_license extends CI_Controller
             $data['sess_license']           = $this->session->userdata('sess_license');
             $data['data_completing_data']   = $this->session->userdata('sess_completing_data');
             $this->page->view('summary', $data);
-            // }                                        
+                                                   
         } else {
             redirect(site_url('apply_license/index'));
         }
@@ -1694,7 +1734,7 @@ class Apply_license extends CI_Controller
     // -- Params : 
         
     // -- Purpose : 
-    function summary()
+        function summary()
     {
         if (isset($_POST['submitsummary'])) {
             $sess_summary   = array(
@@ -1934,9 +1974,7 @@ class Apply_license extends CI_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE);  
-
-
+            'wordwrap' => TRUE); 
             $email                   = 'mail.gmf-aeroasia.co.id';
             $name                    = $sess_data_personnel['name'];
             $personnel_number        = $sess_data_personnel['personnel_number'];
@@ -2139,7 +2177,7 @@ class Apply_license extends CI_Controller
     public 
     // -- Function Name : approved_superior
         
-    // -- Params :  
+    // -- Params : 
         
     // -- Purpose : 
     function approved_superior()
@@ -2171,8 +2209,7 @@ class Apply_license extends CI_Controller
         'smtp_pass' => 'Bismillah1995', 
         'mailtype' => 'html',
         'charset' => 'iso-8859-1',
-        'wordwrap' => TRUE);  
-
+        'wordwrap' => TRUE); 
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
@@ -2203,7 +2240,7 @@ class Apply_license extends CI_Controller
             $this->email->message($pesan);
             $this->session->set_flashdata('content_not_valid', 'Approval successfull.');
         } else if (isset($_POST['submitdisapproved'])) {
-            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE(), finished = '1', date_finish = GETDATE(), personnel_number_finish = '$user_approved' WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
+            $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE(), date_finish = GETDATE(), personnel_number_finish = '$user_approved' WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
             $this->db->query($query_validate);
             $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
             $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);
@@ -2235,11 +2272,12 @@ class Apply_license extends CI_Controller
                 );
             $this->db->where('t_apply_license.request_number', $request_number);
             $this->db->update('t_apply_license',$send_email); 
-            redirect(base_url('home/index'));
+            redirect(site_url('home/index'));
         } else {
             $this->session->set_flashdata('content_not_valid', 'Failed to Process approval/disapproval superior, please click link email again.');
-            redirect(base_url('home/index'));
-        }        
+            redirect(site_url('home/index'));
+        }
+        return true;
     }
     public 
     // -- Function Name : history_request_number
@@ -2330,7 +2368,8 @@ class Apply_license extends CI_Controller
             UNION
             SELECT (CONVERT(varchar(10),TSH.PERNR)) AS personnel_number, (TSH.EMPLNAME) AS name, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement, (TSH.EMAIL) AS email, (TSH.BORNDATE) AS dateofbirth, (TSH.EMPLODATE) AS dateofemployee, (SELECT mobilephone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk =  (CONVERT(varchar(10),TSH.PERNR))) AS mobilephone, (SELECT businessphone FROM m_contact_employee AS mce WHERE mce.personnel_number_fk =  (CONVERT(varchar(10),TSH.PERNR))) AS businessphone FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
             WHERE (CONVERT(varchar(10),TSH.PERNR))='$personnel_number' OR (CONVERT(varchar(10),TSH.PERNR))='$post_personnel_number') AS TSH ON t_apply_license.personnel_number = TSH.personnel_number                                                               
-            WHERE " . $where . " ORDER BY date_submited, date_approved_superior DESC";        
+            WHERE " . $where . " ORDER BY date_submited, date_approved_superior DESC";
+        //die(print_r($data_query)); 
         $data['back']             = $this->agent->referrer();
         $data['cek_data_summary'] = $cekdatasummary;
         $data['data_history']     = $this->db->query($data_query)->result();

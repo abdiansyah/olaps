@@ -107,12 +107,12 @@ $().ready(function(){
                     else{
                         $class_status_finish = "disabled";    
                     }
-                    ?>
-                    <li role="presentation" class="<?php echo $class_status_finish?>">
+                    ?> 
+                    <li role="presentation" class="<?php echo $class_take_authorization?>">
                         <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                             <img id="status" src="<?php echo base_url('assets/images/property/finish.png'); ?>">
                         </a>
-                       <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
+                         <a id="head_nav">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php if($rc[0]->approved_superior != null && $rc[0]->approved_superior != 'Approved Superior' || $rc[0]->approved_quality != null && $rc[0]->approved_quality != 'Data Validated' ) { echo 'Failed'; } else { echo 'Success';}; ?></a>
                     </li>
                     </ul>
             </div>
@@ -423,7 +423,7 @@ $().ready(function(){
                 </table>
             </div>
             <br/>
-            <a href="<?php echo site_url('quality_control/add/'.$rc[0]->request_number);?>"><button class="btn btn-info">Update Current Status</button></a>&nbsp;&nbsp;
+            <a href="<?php echo site_url('quality_control/add/'.@$rc[0]->request_number);?>"><button class="btn btn-info">Update Current Status</button></a>&nbsp;&nbsp;
             <a href="<?php echo $back_home_quality; ?>"><button class="btn btn-warning">Back</button></a>
                                                         
         </div>                                                      
