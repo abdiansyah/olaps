@@ -492,6 +492,14 @@ class M_apply_license extends CI_Model {
         return $query->result();
     }
 
+    public function get_content_msg_apply($id) {
+        $this->db->select("title, content, footer");
+        $this->db->from("m_content_approved");
+        $this->db->where('id',$id);
+        $query = $this->db->get()->row_array();                
+        return $query;
+    }
+
 }
     
 

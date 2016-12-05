@@ -1993,18 +1993,20 @@ class Apply_license extends CI_Controller
             $date_now                = date('d-m-Y');
       
             $cekdataemp              = $this->m_apply_license->get_data_row_personnel_by($personnel_number);
+            // content email apply id = 1
+            $content_email_apply     = $this->m_apply_license->get_content_msg_apply('1');
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from($email);
-            $this->email->to($email_superior);                        
+            // $this->email->to($email_superior);                        
             // $this->email->to($email_gm);                       
-            $this->email->subject('APPLY LICENSE');
+            $this->email->subject(@$content_email_apply['subject']);
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                     "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
                     <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
                     </head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $cekdataemp['NAME_SUPERIOR'] . '</p>';
-            $pesan .= '<p>We have received a submision of License Application from your subordinate: </p>';
+            $pesan .= '<p>'. $content_email_apply['title'] .'</p>';
             $pesan .= '<p>1. <b>' . $cekdataemp['EMPLNAME'] . '</b>/<b>' . $cekdataemp['UNIT'] . '</b>/<b>' . $cekdataemp['PERNR'] . '     Jobtitle : (' . $cekdataemp['JOBTITLE'] . ')</b></p>';
             $pesan .= '<p>as detailed below : </p>';
             $pesan .= '<p><b>Request Number</b> : ' . $cek_validate_req_number . '</p>';
@@ -2053,25 +2055,16 @@ class Apply_license extends CI_Controller
                         <td> ' . $row->name_scope . ' ' . $etops .' </td>                                                
                         </tr>';
                     }
-            $pesan .= '</table>';
-            $pesan .= '<p>Application(s) has been successfully submitted and currently need your confirmation and 
-                        approval to be proceed into the next phase by Personnel Qualification and Quality System Documentation Department.</p>';
+            $pesan .= '</table>';            
+            $pesan .= $content_email_apply['content'];
             $pesan .= '<p>To APPROVE or DISAPPROVE the License application, please click the link below : </p>';
                 if (date('Y-m-d', strtotime($date_validity)) >= date('Y-m-d', strtotime($date_now))) {
                     $pesan .= '<p><a href=' . $url_cek_approved_atasan . '> ' . $url_cek_approved_atasan . '</a></p>';
                 } else if (date('Y-m-d', strtotime($date_validity)) < date('Y-m-d', strtotime($date_now))) {
                     $pesan .= '<p><a href="#">Link Not Valid</a></p>';
                 };
-            $pesan .= '<b>Note :</b>';
-            $pesan .= '<p>-  If the link above is disabled, copy and paste it into your internet browser address bar.</p>';
-            $pesan .= '<p>- Link above is only valid for the next 30 days, after the time period has expired,
-                        the application will automatically be deleted and the applicant should re-apply for the new application.</p>';
-            $pesan .= '<p>Best Regards</p>';
-            $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-            $pesan .= '<p>PT GMF AeroAsia</p>';
-            $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';
-            //        die($pesan);                
+            $pesan .= $content_email_apply['footer'];
+            // die($pesan);                
             $this->email->message($pesan);
             if ($this->email->send()) {                
                 $this->session->set_flashdata('content_not_valid', 'Send successfull.');
@@ -2111,8 +2104,7 @@ class Apply_license extends CI_Controller
         $report_to              = $sess_report_to['REPORT_TO'];
         $report_gm              = $sess_data_gm['personnel_number'];
         
-        if ($sess_personnel == $report_to || $sess_personnel == $report_gm) {
-            @$cek_content_approved  = "SELECT TOP 1 * FROM m_content_approved";
+        if ($sess_personnel == $report_to || $sess_personnel == $report_gm) {            
             @$cek_approved_atasan   = $this->m_apply_license->cek_approved_atasan($cek_validate_req_number, $personnel_number);
             @$date_validity         = date('d-m-Y', strtotime('+30 days', strtotime($cek_approved_atasan[0]->date_request)));            
             @$date_now              = date('d-m-Y');                
@@ -2161,7 +2153,7 @@ class Apply_license extends CI_Controller
                             $data['data_cek_approved_atasan']       = @$data_cek_approved_atasan;
                             $data['get_data_apply_personnel_by']    = @$get_data_apply_personnel_by;
                             $data['get_request_apply_personnel_by'] = @$get_request_apply_personnel_by;
-                            $data['content_approved']               = $this->db->query($cek_content_approved)->row_array();
+                            $data['content_approved']               =  $this->m_apply_license->get_content_msg_apply('2');
                             $this->page->view('apply_license/approved_view', $data);
                         }
             } else {
@@ -2213,55 +2205,53 @@ class Apply_license extends CI_Controller
         $this->load->library('email', $config);
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
-        $this->email->to($email_applicant);
-        $this->email->subject('APPLY LICENSE');
+        $this->email->to($email_applicant);        
         if (isset($_POST['submitapproved'])) {
+            $cek_content_approved    =  $this->m_apply_license->get_content_msg_apply('3');
+            $this->email->subject(@$cek_content_approved['subject']);
             $query_validate = "UPDATE t_apply_license SET status_approved_superior = '1', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE() WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
             $this->db->query($query_validate);
-            $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
-            $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);
-            $pesan         = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
+            $cekdatasup     = $this->m_apply_license->get_data_superior_by($user_approved);
+            $cekdataempsup  = $this->m_apply_license->get_emp_data_superior_by($user_approved);
+            // content approved superior = 3            
+            $pesan          = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
             "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
             <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/></head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-            $pesan .= '<p>Your License Application with : </p>';
+            $pesan .= '<p>'. $cek_content_approved['title'] .'</p>';
             $pesan .= '<p><b>Request Number</b> : ' . $request_number_approved . '</p>';
             $pesan .= '<p>Has been <b>' . $cekdatasup['status_approved_superior'] . '</b> by :</p>';
             $pesan .= '<p>Name : ' . $cekdataempsup['name'] . '</p>';
             $pesan .= '<p>ID Number : ' . $cekdataempsup['personnel_number'] . '</p>';
             $pesan .= '<p>Unit : ' . $cekdataempsup['departement'] . '</p>';
             $pesan .= '<p>Job Title : ' . $cekdataempsup['presenttitle'] . '</p>';
-            $pesan .= '<p>Current Status : <b>Waiting for Data Validated</b></p>';
-            $pesan .= '<p>Best Regards,</p>';
-            $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-            $pesan .= '<p>PT GMF AeroAsia</p>';
-            $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';       
+            $pesan .= $cek_content_approved['content'];
+            $pesan .= $cek_content_approved['footer'];     
+            // die($pesan);
             $this->email->message($pesan);
             $this->session->set_flashdata('content_not_valid', 'Approval successfull.');
         } else if (isset($_POST['submitdisapproved'])) {
+            // content approved superior = 4   
+            $cek_content_disapproved    =  $this->m_apply_license->get_content_msg_apply('4');            
             $query_validate = "UPDATE t_apply_license SET status_approved_superior = '2', personnel_number_superior = '$user_approved', date_approved_superior = GETDATE(), date_finish = GETDATE(), personnel_number_finish = '$user_approved' WHERE request_number = '$request_number' AND personnel_number = '$personnel_number_applicant'";
             $this->db->query($query_validate);
             $cekdatasup    = $this->m_apply_license->get_data_superior_by($user_approved);
-            $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);
+            $cekdataempsup = $this->m_apply_license->get_emp_data_superior_by($user_approved);            
+            $this->email->subject(@$cek_content_disapproved['subject']);
             $pesan         = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
             "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
             <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/></head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-            $pesan .= '<p>Your License Application with : </p>';
+            $pesan .= '<p>'. $cek_content_disapproved['title'] .'</p>';
             $pesan .= '<p><b>Request Number</b> : ' . $request_number_approved . '</p>';
             $pesan .= '<p>Was <b>' . $cekdatasup['status_approved_superior'] . '</b> by :</p>';
             $pesan .= '<p>Name : ' . $cekdataempsup['name'] . '</p>';
             $pesan .= '<p>ID Number : ' . $cekdataempsup['personnel_number'] . '</p>';
             $pesan .= '<p>Unit : ' . $cekdataempsup['departement'] . '</p>';
             $pesan .= '<p>Job Title : ' . $cekdataempsup['presenttitle'] . '</p>';
-            $pesan .= '<p>Thus, we can not proceed your application (The request number is discarded), please contact your superior for detailed information.</p>';
-            $pesan .= '<p>&nbsp;</p>';
-            $pesan .= '<p>Best Regards,</p>';
-            $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-            $pesan .= '<p>PT GMF AeroAsia</p>';
-            $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-            $pesan .= '<p>Fax: +62-21-550 1257</p>';
+            $pesan .= $cek_content_disapproved['content'];
+            $pesan .= $cek_content_disapproved['footer']; 
+            // die($pesan);
             $this->email->message($pesan);
             $this->session->set_flashdata('content_not_valid', 'Disapproval successfull.');
         };
