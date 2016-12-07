@@ -210,7 +210,8 @@ class Quality_control extends MX_Controller
         $cek_content_written            =  $this->model_quality_control->get_content_msg_quality('8');
         // content practical assesment  = 9            
         $cek_content_practical          =  $this->model_quality_control->get_content_msg_quality('9');        
-        $url_apply_license     = $cek_server.'/app_olds/';                
+
+        $url_apply_license     = $cek_server.'/app_olds/';        
         if (isset($_POST['simpan_detail_history'])) {
             $request_number    = $this->input->post('request_number');
             $personnel_number  = $this->input->post('personnel_number');
@@ -221,10 +222,10 @@ class Quality_control extends MX_Controller
             $priority          = $this->input->post('priority');
             $datetime_priority = $this->input->post('datetime_priority');
             $remark            = $this->input->post('remark');
-            $data_applicant    = $this->model_quality_control->get_data_row_personnel_by($personnel_number);            
-
-            $name_applicant                 = $data_applicant['EMPLNAME'];
-            $email_applicant                = $data_applicant['EMAIL'];
+            $data_applicant    = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
+            
+            $name_applicant    = $data_applicant['EMPLNAME'];
+            $email_applicant   = $data_applicant['EMAIL'];
             $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -233,11 +234,12 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE); 
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
-            $this->email->to($email_applicant);            
+            //$this->email->to($email_applicant);
+            $this->email->subject('APPLY LICENSE');
             
             
             if (@$priority == 'Normal') {
@@ -283,7 +285,7 @@ class Quality_control extends MX_Controller
                 $pesan .= '<p>'. @$cek_content_approved['title'] .'<b>Request Number</b> : ' . $request_number . '</p>';
                 $pesan .= @$cek_content_approved['content'];
                 $pesan .= @$cek_content_approved['footer'];
-                // die($pesan);
+                //die($pesan);
                 $this->email->message($pesan);                
                 if ($this->email->send()) {
                     $data = array(
@@ -313,7 +315,7 @@ class Quality_control extends MX_Controller
                 $pesan .= '<p><b>Request Number</b> : ' . $request_number . '</p>';                
                 $pesan .= @$cek_content_disapproved['content'];
                 $pesan .= @$cek_content_disapproved['footer'];
-                // die($pesan);
+                //die($pesan);
                 $this->email->message($pesan);
                 if ($this->email->send()) {
                     $data = array(
@@ -490,7 +492,7 @@ class Quality_control extends MX_Controller
                 $this->db->where('request_number', $request_number);
                 $this->db->update('t_apply_license', $data);
             }            
-            $this->session->set_flashdata('msg', 'Update current status successfull.');
+             $this->session->set_flashdata('msg', 'Update current status successfull.');
             redirect(site_url('quality_control'));
         }
         if (isset($_POST['saveoralassesment'])) {
@@ -518,12 +520,12 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE); 
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
-            $this->email->to($email_applicant);
-            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
+            //$this->email->to($email_applicant);
+            //$this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject(@$cek_content_oral['subject']);
 
             $data_update_status_assesment = array(
@@ -613,10 +615,10 @@ class Quality_control extends MX_Controller
                                         <td> ' . $row->name_sesi . ' </td>
                                         </tr>';
                             }
-                        $pesan .= '</table>';
+                        $pesan .= '</table>';                        
                         $pesan .= @$cek_content_oral['content'];                        
                         $pesan .= @$cek_content_oral['footer'];                        
-                        // die($pesan);
+                        //die($pesan);
                         $this->email->message($pesan);                    
                         if ($this->email->send()) {
                                 $this->session->set_flashdata('msg', 'Sending schedule oral assesment successfully.');
@@ -640,12 +642,12 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE); 
+            'wordwrap' => TRUE);  
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
-            $this->email->to($email_applicant);
-            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
+            //$this->email->to($email_applicant);
+            //$this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject(@$cek_content_written['subject']);
             
             
@@ -671,6 +673,8 @@ class Quality_control extends MX_Controller
             if (@$check_assesment != '') {
                 foreach ($check_assesment as $key => $value) {
                     $cek_written_assesment = $this->model_quality_control->cek_assesment($request_number, $personnel_number, $id_license[$key], $id_type[$key], $id_spect[$key], $id_category[$key], $id_scope[$key]);
+                    //print_r($cek_written_assesment->num_rows());
+                    //            die();
                     if ($cek_written_assesment->num_rows() > 0) {
                         //die('data udah ada tinggal update');
                         $data_written_assesment = array(
@@ -717,8 +721,8 @@ class Quality_control extends MX_Controller
                                     id_auth_scope_fk = '$id_scope[$key]' AND
                                     id_assesment_scope_fk = '$id_assesment[$key]'");
                 }
-            }            
-
+            }
+            
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                  "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
                  <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/></head></body>';
@@ -729,7 +733,7 @@ class Quality_control extends MX_Controller
             $pesan .= @$cek_content_written['content'];
             $pesan .= '<p><a href=' . $url_apply_license . 'index.php/assesment/schedule_event/' . $request_number . '/' . $personnel_number . '> ' . $url_apply_license . 'index.php/assesment/schedule_event/' . $request_number . '/' . $personnel_number . '</a></p>';
             $pesan .= @$cek_content_written['footer'];
-            // die($pesan);        
+            //die($pesan);        
             $this->email->message($pesan);
             if ($this->email->send()) {
                     $this->session->set_flashdata('msg', 'Sending schedule written assesment successfully.');
@@ -765,13 +769,13 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE); 
+            'wordwrap' => TRUE);  
 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from('mail.gmf-aeroasia.co.id');
-            $this->email->to($email_applicant);
-            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
+            //$this->email->to($email_applicant);
+            //$this->email->to('list-tqd@gmf-aeroasia.co.id');
             $this->email->subject(@$cek_content_practical['subject']);
 
             $data_update_status_assesment = array(
@@ -861,7 +865,7 @@ class Quality_control extends MX_Controller
                         $pesan .= '</table>';                        
                         $pesan .= @$cek_content_practical['content'];
                         $pesan .= @$cek_content_practical['footer'];
-                        // die($pesan);    
+                        //die($pesan);    
                         $this->email->message($pesan);                    
                         if ($this->email->send()) {                                
                                 $this->session->set_flashdata('msg', 'Sending schedule practical assesment successfully.');
@@ -919,8 +923,9 @@ class Quality_control extends MX_Controller
     
     public function action_document()
     {
-        // content data not valid  = 9            
-        $cek_content_not_valid          =  $this->model_quality_control->get_content_msg_quality('10');
+        $cek_content_approved           =  $this->model_quality_control->get_content_msg_quality('5');
+        // content disapproved quality  = 6
+        $cek_content_disapproved        =  $this->model_quality_control->get_content_msg_quality('6');
         if (isset($_POST['action_view_document'])) {
             $personnel_number = $this->input->post('personnel_number');
             $request_number   = $this->session->userdata('request_number');
@@ -961,7 +966,7 @@ class Quality_control extends MX_Controller
             'smtp_pass' => 'Bismillah1995', 
             'mailtype' => 'html',
             'charset' => 'iso-8859-1',
-            'wordwrap' => TRUE); 
+            'wordwrap' => TRUE);  
             $email               = 'mail.gmf-aeroasia.co.id';
             $sess_data_personnel = $this->model_quality_control->get_data_row_personnel_by($personnel_number);
             @$personnel_number = $sess_data_personnel['PERNR'];
@@ -979,18 +984,18 @@ class Quality_control extends MX_Controller
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->from($email);
-            $this->email->to($email_personnel);
-            // $this->email->to($email_superior);
-            // $this->email->to($email_gm);
-            // $this->email->to('list-tqd@gmf-aeroasia.co.id');
-            $this->email->subject(@$cek_content_not_valid['subject']);
+            //$this->email->to($email_personnel);
+            //$this->email->to($email_superior);
+            //$this->email->to($email_gm);
+            //$this->email->to('list-tqd@gmf-aeroasia.co.id');
+            // Disapproved Quality
             $pesan = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
                  "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
                  <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
                  </head></body>';
             $pesan .= '<p>Dear Mr/Mrs ' . $name_personnel . '</p>';
             $pesan .= '<p>1. <b>' . $name_personnel . '</b>/<b>' . $unit . '</b>/<b>' . $personnel_number . ' Jobtitle : (' . $presenttitle . ')</b></p>';
-            $pesan .= '<p>'. @$cek_content_not_valid['title'] .'</p>';
+            $pesan .= '<p>'. @$cek_content_disapproved['title'] .'</p>';
             $pesan .= '<p>as detailed below : </p>';
             $pesan .= '<table border="1">
                  <tr>
@@ -1018,11 +1023,21 @@ class Quality_control extends MX_Controller
             }
             
             $pesan .= '</table>';
-            $pesan .= @$cek_content_not_valid['content'];
-            $pesan .= @$cek_content_not_valid['footer'];
+            $pesan .= @$cek_content_disapproved['content'];
+            $pesan .= @$cek_content_disapproved['footer'];          
+            // Content approved quality            
+            $pesan_approved = '<!DOCTYPE html PUBLIC "-W3CDTD XHTML 1.0 StrictEN"
+                         "http:www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html>
+                         <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/></head></body>';
+            $pesan_approved .= '<p>Dear Mr/Mrs ' . $name_personnel . '</p>';
+            $pesan_approved .= '<p>'. @$cek_content_approved['title'] .'<b>Request Number</b> : ' . $request_number . '</p>';
+            $pesan_approved .= @$cek_content_approved['content'];
+            $pesan_approved .= @$cek_content_approved['footer'];
+
             if(!empty($cek_data_document)){ 
-                    // die($pesan);
+                    $this->email->subject(@$cek_content_disapproved['subject']);
                     $this->email->message($pesan);
+                    //die($pesan);
                     $this->email->send();  
                     $data = array(
                         'status_approved_quality' => '2',
@@ -1036,6 +1051,10 @@ class Quality_control extends MX_Controller
                     $this->session->set_flashdata('msg', 'Email validation berkas sudah terkirim ke applicant');
                     redirect(site_url('quality_control/index'));                    
                 } else {
+                    $this->email->subject(@$cek_content_approved['subject']);
+                    $this->email->message($pesan_approved);
+                    // die($pesan_approved);
+                    $this->email->send(); 
                     $data = array(
                         'status_approved_quality' => '1',
                         'date_approved_quality' => date('Y-m-d H:i:s'),
@@ -1049,7 +1068,7 @@ class Quality_control extends MX_Controller
                     redirect(site_url('quality_control/index'));
                  }
              }        
-        }
+}
     function upload_file_data_requirement() {
         $this->load->library('ftp');                            
         $this->load->library('upload');                                                         

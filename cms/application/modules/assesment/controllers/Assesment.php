@@ -198,7 +198,7 @@ class Assesment extends MX_Controller {
 	
 	public function update($id, $personnel_number, $id_scope){		
 		if ( ! $this->input->post()) show_404(); 
-	
+        $cek_content_written    = $this->model_assesment->get_content_msg('10');
 		$request_number_fk      = $this->input->post('request_number');			
 		$assesment_scope 		= $this->input->post('id_assesment_scope'); 
 		$pic_written 			= $this->input->post('pic_written'); 
@@ -222,10 +222,10 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        // $this->email->to($email_superior);
-        // $this->email->to($email_gm);
-        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
-        $this->email->subject('Result written assesment');
+        $this->email->to($email_superior);
+        $this->email->to($email_gm);
+        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        $this->email->subject(@$cek_content_written['subtitle']);
 
 		$data = array(									
 			'score_written'	   	             => $this->input->post('score_written'),
@@ -245,7 +245,8 @@ class Assesment extends MX_Controller {
                 <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
                 </head></body>';                
                 $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-                $pesan .= '<p>Your result written assesment : </p>';
+                $pesan .= '<p>'. @$cek_content_written['title'] .'</p>';
+                $pesan .= @$cek_content_written['content'];
                 $pesan .= '<table border="1">
                         <tr>
                         <td> No </td>
@@ -264,13 +265,9 @@ class Assesment extends MX_Controller {
                                 <td> ' . $row->note_written . ' </td>
                                 </tr>';
                     }
-                $pesan .= '</table>';                        
-                $pesan .= '<p>Best Regards</p>';
-                $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-                $pesan .= '<p>PT GMF AeroAsia</p>';
-                $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-                $pesan .= '<p>Fax: +62-21-550 1257</p>';
-                
+                $pesan .= '</table>';  
+                $pesan .= @$cek_content_written['footer'];                
+                // die($pesan);
                 $this->email->message($pesan);                    
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg_assesment', 'Sending result writen assesment successfull.');
@@ -283,7 +280,8 @@ class Assesment extends MX_Controller {
     
    	public function update_oral($id, $personnel_number, $id_scope){		
 		if ( ! $this->input->post()) show_404(); 
-	
+        // content written assesment    = 8            
+        $cek_content_oral       =  $this->model_assesment->get_content_msg('11');        
 		$request_number_fk      = $this->input->post('request_number');			
 		$assesment_scope 		= $this->input->post('id_assesment_scope');        
 		$pic_oral 				= $this->input->post('pic_oral');        
@@ -308,10 +306,10 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        // $this->email->to($email_superior);
-        // $this->email->to($email_gm);
-        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
-        $this->email->subject('Result oral assesment');
+        $this->email->to($email_superior);
+        $this->email->to($email_gm);
+        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        $this->email->subject(@$cek_content_oral['subject']);
 
 		$data = array(									
 			'score_oral'	   	             => $this->input->post('score_oral'),
@@ -331,7 +329,8 @@ class Assesment extends MX_Controller {
                 <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
                 </head></body>';                
                 $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-                $pesan .= '<p>Your result oral assesment : </p>';
+                $pesan .= '<p>'. @$cek_content_oral['title'] .'</p>';
+                $pesan .= @$cek_content_oral['content'];
                 $pesan .= '<table border="1">
                         <tr>
                         <td> No </td>
@@ -350,12 +349,9 @@ class Assesment extends MX_Controller {
                                 <td> ' . $row->note_oral . ' </td>
                                 </tr>';
                     }
-                $pesan .= '</table>';                        
-                $pesan .= '<p>Best Regards</p>';
-                $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-                $pesan .= '<p>PT GMF AeroAsia</p>';
-                $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-                $pesan .= '<p>Fax: +62-21-550 1257</p>';
+                $pesan .= '</table>';  
+                $pesan .= @$cek_content_oral['footer'];
+                // die($pesan);
                 $this->email->message($pesan);                 
                 if ($this->email->send()) {
                         $this->session->set_flashdata('msg', 'Sending result oral assesment successfull.');
@@ -367,7 +363,9 @@ class Assesment extends MX_Controller {
 	}
 
     public function update_practical($id, $personnel_number, $id_scope){     
-        if ( ! $this->input->post()) show_404();     
+        if ( ! $this->input->post()) show_404();   
+        // content practical assesment  = 9            
+        $cek_content_practical          =  $this->model_assesment->get_content_msg('12');   
         $request_number_fk      = $this->input->post('request_number');         
         $assesment_scope        = $this->input->post('id_assesment_scope');        
         $pic_practical          = $this->input->post('pic_practical');        
@@ -392,10 +390,10 @@ class Assesment extends MX_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from('mail.gmf-aeroasia.co.id');
         $this->email->to($email_applicant);
-        // $this->email->to($email_superior);
-        // $this->email->to($email_gm);
-        // $this->email->to('list-tqd@gmf-aeroasia.co.id');
-        $this->email->subject('Result oral assesment');
+        $this->email->to($email_superior);
+        $this->email->to($email_gm);
+        $this->email->to('list-tqd@gmf-aeroasia.co.id');
+        $this->email->subject(@$cek_content_practical['subject']);
 
         $data = array(                                  
             'score_practical'           => $this->input->post('score_practical'),
@@ -415,7 +413,8 @@ class Assesment extends MX_Controller {
         <meta http-equiv="Content-Type" content="text/html; charset = utf-8"/>
         </head></body>';                
         $pesan .= '<p>Dear Mr/Mrs ' . $name_applicant . '</p>';
-        $pesan .= '<p>Your result practical assesment : </p>';
+        $pesan .= '<p>'. @$cek_content_practical['title'] .'</p>';
+        $pesan .= @$cek_content_practical['content'];
         $pesan .= '<table border="1">
                 <tr>
                 <td> No </td>
@@ -434,13 +433,9 @@ class Assesment extends MX_Controller {
                         <td> ' . $row->note_practical . ' </td>
                         </tr>';
             }
-        $pesan .= '</table>';                        
-        $pesan .= '<p>Best Regards</p>';
-        $pesan .= '<b>Personnel Qualification & Quality System Documentation /TQD</b>';
-        $pesan .= '<p>PT GMF AeroAsia</p>';
-        $pesan .= '<p>Phone: Phone: +62-21-550 8732</p>';
-        $pesan .= '<p>Fax: +62-21-550 1257</p>';
-        
+        $pesan .= '</table>';  
+        $pesan .= @$cek_content_practical['footer'];
+        // die($pesan);
         $this->email->message($pesan);                 
         if ($this->email->send()) {
                 $this->session->set_flashdata('msg_assesment', 'Sending result practical assesment successfull.');

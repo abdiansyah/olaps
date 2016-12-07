@@ -16,7 +16,7 @@ class Model_slider extends CI_Model {
 	
 	private function _get_query() {
 		$this->db->from($this->table);
-		$this->db->join('users', 'slider.id_users_fk = users.id_users', 'left');
+		$this->db->join('UNION_EMP AS TSH', 'slider.id_users_fk = TSH.personnel_number', 'left');
 		$this->db->where('flag','1');
 
 		$i = 0;
@@ -73,15 +73,15 @@ class Model_slider extends CI_Model {
 	public function by_id_slider($id){
 		$datasrc = $this->db->query("
 			SELECT ci.*,
-				u.id_users,
-				u.name_users
+				TSH.personnel_number,
+				TSH.name
 			FROM (
 				SELECT *
 				FROM slider
 				WHERE id_slider= '{$id}'
 			) AS ci
-			LEFT JOIN users AS u
-				ON ci.id_users_fk = u.id_users
+			LEFT JOIN UNION_EMP AS TSH
+				ON ci.id_users_fk = TSH.personnel_number
 		");
 		return $datasrc->num_rows() > 0 ? $datasrc->row() : $this;
 	}

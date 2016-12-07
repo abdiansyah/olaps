@@ -1,10 +1,10 @@
 <?php if(@$name_file_ftp) {?>
 <section class="content-header">
     <h3><span class="fa fa-file"></span> <?php echo $name_file;?></h3>
-    <div class="col-md-10">
+    <div class="col-md-9">
     &nbsp;
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
     <form action="<?php echo base_url()."index.php/quality_control/process_document"; ?>" method="post">            
     <input type="hidden" name="request_number" value="<?php echo $request_number;?>" />
     <input type="hidden" name="personnel_number" value="<?php echo $personnel_number;?>" />

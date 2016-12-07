@@ -316,7 +316,7 @@ echo '</b>
     </div>
   </div>
 </div> 
-    <div class="col-md-12">
+    <div class="col-md-12 table-responsive">
     <form method="POST" action="#" name="form_list_search"> 
     <h3>High Priority &nbsp; &nbsp; &nbsp;
     <button type="button" class="btn btn-flat bg-light-blue color-palette btn-sm" data-toggle="modal" data-target="#FormSearch">Search</button>
@@ -347,7 +347,7 @@ echo '</b>
         </thead>
     </table>
     </div> 
-    <div class="col-md-12">
+    <div class="col-md-12 table-responsive">
     <h3>Normal Priority </h3>   
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_normal">
         <thead>         
@@ -368,7 +368,7 @@ echo '</b>
         </thead>
     </table>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12 table-responsive">
     <h3>Finished </h3>   
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-striped table_bootstrap" id="datatables_finish">
         <thead>         

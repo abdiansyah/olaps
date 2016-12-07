@@ -431,7 +431,7 @@ $().ready(function(){
             <form action="<?php echo base_url();?>index.php/quality_control/view_document" method="POST">
             <input class="form-control input-md" type="hidden" name="personnel_number" value="<?php echo @$rc[0]->personnel_number; ?>"/>
             <input class="form-control input-md" type="hidden" name="request_number" value="<?php echo $rc[0]->request_number; ?>" />              
-            <button type="submit" class="col-md-2 btn btn-primary btn-md" name="view_document"><span class="fa fa-file-archive-o"></span> &nbsp;View Document </button>
+            <button type="submit" class="col-md-2 btn btn-primary btn-md" name="view_document" <?php if(@$rc[0]->current_status == 'Data Submited'){echo 'disabled';};?>><span class="fa fa-file-archive-o"></span> &nbsp;View Document </button>
             </form>                                    
             <br/>          
             <br/>

@@ -927,15 +927,14 @@ class model_quality_control extends CI_Model
                     ORDER BY tfr.date_upload, tfr.time_upload DESC";
         return $this->db->query($query)->row_array();
     }
-
+    
     public function get_content_msg_quality($id) {
-        $this->db->select("title, content, footer");
+        $this->db->select("subject, title, content, footer");
         $this->db->from("m_content_approved");
         $this->db->where('id',$id);
         $query = $this->db->get()->row_array();                
         return $query;
     }
-    
 
 }
 

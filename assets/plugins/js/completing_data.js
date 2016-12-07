@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    // var seen = {};
-    // $('.body_specification_requirement label.label_req_spec').each(function() {
-    //     var txt = $(this).text();        
-    //     if (seen[txt])
-    //         $(this).closest('tr').remove();            
-    //     else
-    //         seen[txt] = true;
-    // }); 
+    var seen = {};
+    $('.body_specification_requirement td.label_req_spec').each(function() {
+        var txt = $(this).text();        
+        if (seen[txt])
+            $(this).closest('tr').remove();            
+        else
+            seen[txt] = true;
+    }); 
     
     $('[name=submitcompletingdata],.body_specification_requirement').keypress(function(event){
     if (event.keyCode === 10 || event.keyCode === 13) 
@@ -586,38 +586,27 @@ $(document).ready(function () {
             'save_result_expiration_date_req_general_certificate', expirate_date
             );
 
-        $.ajax({
+        $.ajax({           
             url: upload_file_document_certificate, 
             dataType: 'text',
             cache: false,
             contentType: false,
             processData: false,
             data: form_data,
-            type: 'post',
+            type: 'post', 
+            beforeSend: function(){
+
+            },          
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
                     $('#msg_document_certificate_'+row_id).html(response); 
                     $('#msg_document_certificate_'+row_id).css('color','red');
                 } else {
-                    timerId = setInterval(function () {    
-                        ctr++;
-                        $(progressbar).attr("style","width:" + ctr*max + "%");
-                        progressbar.css('background','blue');
-                        statustxt.html(ctr*max + "%"); 
-                        statustxt.css('color','#000'); 
-                        status_file.hide(); 
-                        empty_file.hide();                                 
-                        
-                        if (ctr==max) {
-                        status_file.show(); 
-                        empty_file.show(); 
-                        clearInterval(timerId);
                         status_file.attr('src',image_check);
                         empty_file.attr('src',image_cross_check);
                         $('#msg_document_certificate_'+row_id).html(response);
                         $('#msg_document_certificate_'+row_id).css('color','blue');
-                        }            
-                    }, 300);                      
+                        $('#status_upload_document_certificate_'+row_id).val('1');                   
                 }
             },
             error: function (response) {                

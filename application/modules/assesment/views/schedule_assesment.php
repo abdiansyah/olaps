@@ -182,7 +182,7 @@ $(function(){
     $('[name=previous]').click(function(){
        location.reload(); 
     });
-   var seen = {};
+    var seen = {};
     $('.tab-schedule-assesment .id_scope_assesment').each(function() {
         var txt = $(this).val();        
         if (seen[txt])
@@ -191,18 +191,19 @@ $(function(){
             seen[txt] = true;
     });  
     
-  $('#summary-assesment').hide();
-  $('#sum-assesment-first').show();
-  $('[name=submitapproved]').attr('disabled',true);
-  $('[name=submitdisapproved]').attr('disabled',true);
-  $('.date_written_assesment').datepicker(
+    $('#summary-assesment').hide();
+    $('#sum-assesment-first').show();
+    $('[name=submitapproved]').attr('disabled',true);
+    $('[name=submitdisapproved]').attr('disabled',true);
+
+    $('.date_written_assesment').datepicker(
         {format: 'dd-mm-yyyy'}           
-  );
+    );
 
     $('.date_written_assesment').datepicker().on('changeDate', function(){
         $(this).datepicker('hide');
     });
-  $('.tab-schedule-assesment').on('change', '.id_room', function(e){    
+    $('.tab-schedule-assesment').on('change', '.id_room', function(e){    
     var id = this.id;
     var data_id_sesi = id.split("_"); 
     var row_id_sesi = data_id_sesi[2]; 
@@ -212,22 +213,30 @@ $(function(){
     var id_room = $('#id_room_'+ row_id_sesi).val(); 
     var request_number = $('[name=request_number]').val();
     var personnel_number = $('[name=personnel_number]').val();
-    if(id_room!='') {    
-        $.getJSON("<?php echo site_url();?>/assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {                            
+        if(id_room!='') {    
+            $.getJSON("<?php echo site_url();?>/assesment/cek_room/" + date_written_assesment + "/" + id_sesi + "/" + id_room , function(data) {    
                 if(data.limit >= data.quota) {
-                    $('[name=next-summary-assesment]').attr('disabled',true);
-                    alert('Room for this session full.');
+                        $('[name=next-summary-assesment]').attr('disabled',true);
+                        alert('Room for this session full.');
 
+                    } else { 
+                        $('[name=next-summary-assesment]').attr('disabled',false);
+                    };
+                });  
+            $.getJSON("<?php echo site_url();?>/assesment/cek_blocked_room/" + date_written_assesment + "/" + id_room , function(data){
+                if(data == '1'){
+                    alert('This room was blocked.');
+                    $('[name=next-summary-assesment]').attr('disabled',true);
                 } else { 
-                    $('[name=next-summary-assesment]').attr('disabled',false);
+                        $('[name=next-summary-assesment]').attr('disabled',false);
                 };
-            });    
+            });
         }                     
        
-  });
+    });
   
              
-  $('[name=next-summary-assesment]').click(function(){        
+    $('[name=next-summary-assesment]').click(function(){        
     var n_sesi = $('.id_sesi').length;   
     var id_sesi = $("[name^='id_sesi']");
     var id_assesment = $("input[name^='id_assesment']");
@@ -243,10 +252,9 @@ $(function(){
                 $('#body-summary-assesment').append(data);                                       
             });
         };
-    $('#summary-assesment').show();
-    $('#sum-assesment-first').hide();                                               
-  });
-          
+        $('#summary-assesment').show();
+        $('#sum-assesment-first').hide();                                               
+    });        
 });
 </script>   
             

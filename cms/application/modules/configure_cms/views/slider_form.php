@@ -8,7 +8,7 @@ $().ready(function(){
 </script>
 
 <section class="content-header">
-	<h1>Slider <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl; ?></small></h1>
+	<h1>Slider <small><i class="fa fa-fw fa-angle-double-right"></i> <?php echo $ttl .'-'. $action; ?></small></h1>
 </section>
 
 <?php echo form_open_multipart($action, array('class' => 'form-horizontal row-form')); ?>
@@ -21,7 +21,7 @@ $().ready(function(){
 	    <div class="form-group">
         <label class="col-sm-2 control-label input-sm">Images</label>
 		<div class="col-sm-3">
-			<input type="file" name="images"  rows="3"  />
+			<input type="file" name="image" rows="3" />
 		</div>
 	</div>
 

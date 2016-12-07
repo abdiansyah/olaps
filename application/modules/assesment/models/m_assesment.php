@@ -63,7 +63,13 @@ class M_assesment extends CI_Model {
         $data_room = $this->db->query($query)->row();
         $data_room_json = json_encode($data_room);
         die($data_room_json);                
-    }    
+    }   
+
+    public function get_blocked_room($date_assesment, $id_room) {
+        $query = "SELECT TOP 1 * FROM t_blocked_room AS tbr WHERE '$date_assesment' BETWEEN (CONVERT(varchar(10), CONVERT(datetime,tbr.date_from,120),105)) AND (CONVERT(varchar(10), CONVERT(datetime,tbr.date_until,120),105)) AND tbr.id_room_fk = '$id_room'";
+        $data_blocked_room = $this->db->query($query)->num_rows();
+        die(json_encode($data_blocked_room));
+    } 
     
     public function get_room_kuota($date_written_assesment, $id_sesi, $id_room){
         $query = "SELECT COUNT(tasm.id_sesi) AS jumlah_sesi FROM t_assesment tasm                                                 

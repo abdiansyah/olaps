@@ -335,7 +335,15 @@ class Model_assesment extends CI_Model {
                 WHERE 
                 AND personnel_number_fk = '{$personnel_number}'";
 		return $this->db->query($query);
-	}		
+	}
+
+    public function get_content_msg($id) {
+        $this->db->select("subject, title, content, footer");
+        $this->db->from("m_content_approved");
+        $this->db->where('id',$id);
+        $query = $this->db->get()->row_array();                
+        return $query;
+    }		
 }
 /* End of file Model_users.php */
 /* Location: ./application/modules/back_office/models/Model_users.php */

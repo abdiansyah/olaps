@@ -145,8 +145,7 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
     </div>
     <div class="box-footer">        
         <button type="submit" class="btn btn-info pull-right open3 btn-sm" name="submitcompletingdata" id="submitcompletingdata"><b>NEXT</b></button>
-        <a href="<?php echo base_url();?>index.php/apply_license/index"><button type="button" class="btn btn-info pull-right close2 btn-sm" name="previous"><b>PREVIOUS</b></button></a>
-        <button type="submit" class="btn btn-warning pull-right btn-sm" name="savecompletingdata"><b>SAVE</b></button>
+        <a href="<?php echo base_url();?>index.php/apply_license/index"><button type="button" class="btn btn-info pull-right close2 btn-sm" name="previous"><b>PREVIOUS</b></button></a>    
     </div>
     </form>
 </div>

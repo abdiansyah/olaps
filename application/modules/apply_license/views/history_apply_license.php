@@ -228,7 +228,7 @@ if(@$data_history[0]!=''){
         </table>
         </div>
         </div>                        
-            <div class="col-md-12" id="dtl_to_atasan">           
+            <div class="col-md-12 table-responsive" id="dtl_to_atasan">           
                 <div class="box-body table-responsive no-padding"> 
                     <br/>
                     <h4><b>Application Status</b> :</h4>                                      

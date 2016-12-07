@@ -106,6 +106,12 @@ class Content_email extends MX_Controller {
 		};
 	}
 
+	public function preview_by($id) {
+		$query = "Select * FROM m_content_approved WHERE id = '$id'";		
+		$data = $this->db->query($query)->row();
+		die(json_encode($data));
+	}
+
 }
 
 /* End of file Content email.php */

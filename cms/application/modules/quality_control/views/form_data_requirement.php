@@ -92,9 +92,9 @@ if (@$data_file_requirement[0] != '') {
 ?>                                     
         </tbody>                
         </table>                
-        <button type="submit" class="btn btn-info pull-right btn-sm" name="save_validation_document"><strong>Save And Send</strong></button>
+        <button type="submit" class="btn btn-info pull-right btn-sm" name="save_validation_document"><strong>Verify & Send</strong></button>
         </form>                 
-        <a class="btn btn-info pull-right btn-sm" href="<?php echo site_url('quality_control/index');?>">BACK</a>        
+        <a class="btn btn-info pull-right btn-sm" href="<?php echo site_url('quality_control/index');?>">Back</a>        
         <br/>        
         <br/>
             

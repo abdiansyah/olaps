@@ -57,6 +57,10 @@
             $this->m_assesment->get_room_by($date_assesment, $id_sesi, $id_room);                                                                     
         } 
 
+        public function cek_blocked_room($date_assesment='', $id_room='') {
+            $this->m_assesment->get_blocked_room($date_assesment, $id_room);
+        }
+
         public 
         
         function cek_one_room(){

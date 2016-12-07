@@ -34,10 +34,10 @@ $(document).ready(function(){
 			<tr>
 				<th width="3%">No</th>
 				<th width="10%">Subject</th>				
-				<th width="15%">Title</th>				
-				<th width="30%">Content</th>				
+				<th width="17%">Title</th>				
+				<th width="20%">Content</th>				
 				<th width="30%">Footer</th>				
-				<th width="15%">Action</th>
+				<th width="20%">Action</th>
 			</tr>
 		</thead>
 	</table>
