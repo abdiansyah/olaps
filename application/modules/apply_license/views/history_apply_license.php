@@ -25,7 +25,7 @@ if(@$data_history[0]!=''){
                             <img id="status" src="<?php echo base_url('assets/images/property/data-submited.png'); ?>">                                                       
                         </a> 
                                
-                        <a id="head_nav">Date Submited</a>                                       
+                        <a id="head_nav">Data Submited</a>                                       
                     </li>                    
                     <?php
                     if(!empty($data_history[0]->approved_superior)){
@@ -67,7 +67,7 @@ if(@$data_history[0]!=''){
                         <a id="head_nav">Assessment Process</a>
                     </li>
                     <?php
-                    if((!empty($data_history[0]->desc_gmf_issue_authorization)) || (!empty($data_history[0]->desc_coc_issue_authorization)) || (!empty($data_history[0]->desc_easa_issue_authorization)) || (!empty($data_history[0]->desc_ga_issue_authorization)) || (!empty($data_history[0]->desc_citilink_issue_authorization)) || (!empty($data_history[0]->desc_sriwijaya_issue_authorization)) ){
+                    if($data_history[0]->status_issue_authorization == 'Issue Authorization Finished'){
                     $class_issue_authorization = "active";
                     }else{
                     $class_issue_authorization = "disabled";    
@@ -277,7 +277,34 @@ if(@$data_history[0]!=''){
                         <td><?php echo @$value->time_assesment ?></td>                       
                         <td><?php echo 'Assesment Process'; ?></td>
                         <?php endif;?>                        
-                    </tr> 
+                    </tr>                        
+                        <?php foreach(@$data_assesment_history AS $value_assesment_history) :?>    
+                            <tr>
+                                <?php if(@$value_assesment_history->date_written_assesment != '' AND @$value_assesment_history->date_written_assesment != '0'):?>
+                                    <td><?php echo $no++ ?></td>
+                                    <td><?php echo @$value_assesment_history->date_written_assesment; ?></td>
+                                    <td><?php echo @$value_assesment_history->sesi_written_assesment; ?></td>                       
+                                    <td><?php echo 'Written Assesment'; ?></td>                                    
+                                <?php endif;?>
+                            </tr>
+                            <tr>
+                                <?php if(@$value_assesment_history->date_oral_assesment != '' AND @$value_assesment_history->date_oral_assesment != '0'):?>
+                                    <td><?php echo $no++ ?></td>
+                                    <td><?php echo @$value_assesment_history->date_oral_assesment; ?></td>
+                                    <td><?php echo @$value_assesment_history->sesi_oral_assesment; ?></td>                       
+                                    <td><?php echo 'Oral Assesment'; ?></td>                                    
+                                <?php endif;?>
+                            </tr>
+                            <tr>
+                                <?php if(@$value_assesment_history->date_practical_assesment != '' AND @$value_assesment_history->date_practical_assesment != '0'):?>
+                                    <td><?php echo $no++ ?></td>
+                                    <td><?php echo @$value_assesment_history->date_practical_assesment; ?></td>
+                                    <td><?php echo @$value_assesment_history->sesi_practical_assesment; ?></td>                       
+                                    <td><?php echo 'Practical Assesment'; ?></td>                                    
+                                <?php endif;?>
+                            </tr>
+                        <?php endforeach; ?>
+
                     <tr>
                         <?php if(@$value->status_assesment != '' AND $value->status_assesment == 'Assesment Process Closed'):?>
                         <td><?php echo $no++ ?></td>
@@ -384,7 +411,7 @@ if(@$data_history[0]!=''){
                     <br />
                 </div>
                 <div>
-                <a href="<?php echo $back; ?>"><button type="button" class="btn btn-info pull-right close2 btn-sm"  name="previous"><b>PREVIOUS</b></button><a>
+                <a href="<?php echo site_url('home/index');?>"><button type="button" class="btn btn-info pull-right close2 btn-sm"  name="previous"><b>PREVIOUS</b></button><a>
                 </div> 
             </div>
             <div class="col-md-12" id="statement_atasan">           
@@ -406,18 +433,4 @@ if(@$data_history[0]!=''){
     redirect(base_url());
 }
 ?> 
-<script type="text/javascript">  
-  $('[name=submitapproved]').attr('disabled',true);
-  $('[name=submitdisapproved]').attr('disabled',true);
-  $('[name=check_agree_atasan]').on('change',function(){
-    if(this.checked){
-    $('[name=submitapproved]').attr('disabled',false);
-    $('[name=submitdisapproved]').attr('disabled',false);      
-    }else
-    {
-    $('[name=submitapproved]').attr('disabled',true);
-    $('[name=submitdisapproved]').attr('disabled',true);        
-    }
-  });  
-</script>   
             

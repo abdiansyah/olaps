@@ -358,7 +358,7 @@ $(document).ready(function () {
     });    
     
     
-    $('.expiration_date_req_general,.date_training_req_general_certificate,.date_training_req_spec_certificate,.date_training_req_spec_certificate_easa,.date_training_req_spec_certificate_special,.date_training_req_spec_certificate_garuda,.date_training_req_spec_certificate_citilink,.date_training_req_spec_certificate_sriwijaya,.date_training_req_spec_certificate_license_garuda,.date_training_req_spec_certificate_license_citilink,.date_training_req_spec_certificate_license_sriwijaya,.expiration_date_req_spec_certificate_special,.expiration_date_req_spec_certificate_garuda,.expiration_date_req_spec_certificate_citilink,.expiration_date_req_spec_certificate_sriwijaya').datepicker(         
+    $('.expiration_date_req_general_document,.date_training_req_general_certificate,.date_training_req_spec_certificate,.date_training_req_spec_certificate_easa,.date_training_req_spec_certificate_special,.date_training_req_spec_certificate_garuda,.date_training_req_spec_certificate_citilink,.date_training_req_spec_certificate_sriwijaya,.date_training_req_spec_certificate_license_garuda,.date_training_req_spec_certificate_license_citilink,.date_training_req_spec_certificate_license_sriwijaya,.expiration_date_req_spec_certificate_special,.expiration_date_req_spec_certificate_garuda,.expiration_date_req_spec_certificate_citilink,.expiration_date_req_spec_certificate_sriwijaya').datepicker(         
         {format: 'dd-mm-yyyy',
         orientation: 'top auto',
         autoclose : 'true',
@@ -367,6 +367,14 @@ $(document).ready(function () {
     // Disabled input file     
     $('.file_req_document_certificate,.file_req_no_required_document_certificate,.file_req_spec_certificate,.file_req_spec_certificate_license_garuda,.file_req_spec_certificate_license_citilink,.file_req_spec_certificate_license_sriwijaya,.file_req_spec_certificate_easa,.file_req_spec_certificate_special,.file_req_spec_certificate_garuda,.file_req_spec_certificate_citilink,.file_req_spec_certificate_sriwijaya').attr('disabled',true);
     
+    function reset_value(val_1, val_2, val_3, file){
+        val_1.val('');
+        val_2.val('');
+        val_3.val('');
+        file.replaceWith(file.val('').clone(true));
+        return true;
+    }
+
     // Progressbar upload file           
     $('.body_general_requirement').on('change', '.file_req_document_general', function(){        
         var id = this.id;
@@ -375,12 +383,15 @@ $(document).ready(function () {
         var code_1 = data_row_id[5];
         var code_2 = data_row_id[6];                         
         var file            = $('#file_req_document_general_'+ row_id+'_'+ code_1+'_'+ code_2).prop('files')[0];            
-        var code            = $('#code_req_document_general_'+ row_id).val();            
+        var code            = $('#code_req_document_general_'+ row_id);            
+        var expiration_date = $('#expiration_date_req_general_document_'+ row_id+'_'+ code_1+'_'+ code_2);
                 
         var progressbar     = $('#progressbar_document_general_'+row_id);
         var statustxt       = $('#statustxt_document_general_'+row_id);                      
         var status_file     = $('#status_file_document_general_'+ row_id);
         var empty_file      = $('#empty_file_document_general_'+ row_id+'_'+ code_1+'_'+ code_2);            
+        var message         = $('#msg_'+row_id);
+        var status_upload   = $('#status_upload_document_general_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -391,7 +402,10 @@ $(document).ready(function () {
             'file_req_document_general', file
             );
         form_data.append(
-            'code_req_document_general', code
+            'code_req_document_general', code.val()
+            );
+        form_data.append(
+            'save_expiration_req_document_general', expiration_date.val()
             );
 
         $.ajax({
@@ -404,8 +418,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_'+row_id).html(response); 
-                    $('#msg_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                     timerId = setInterval(function () {    
                         ctr++;
@@ -414,23 +428,22 @@ $(document).ready(function () {
                         statustxt.html(ctr*max + "%"); 
                         statustxt.css('color','#000'); 
                         status_file.hide(); 
-                        empty_file.hide();                                 
-                        
+                        empty_file.hide();                                                         
                         if (ctr==max) {
                         status_file.show(); 
                         empty_file.show(); 
                         clearInterval(timerId);
                         status_file.attr('src',image_check);
                         empty_file.attr('src',image_cross_check);
-                        $('#msg_'+row_id).html(response);
-                        $('#msg_'+row_id).css('color','blue');
-                        $('#status_upload_document_general_'+row_id).val('1');
+                        message.html(response);
+                        message.css('color','blue');
+                        status_upload.val('1');
                         }            
                     }, 300);                      
                 }
             },
             error: function (response) {                
-                $('#msg_'+row_id).html(response); 
+                message.html(response); 
             }
         });    
     });
@@ -440,12 +453,15 @@ $(document).ready(function () {
         var id              = this.id;
         var data_row_id     = id.split("_"); 
         var row_id          = data_row_id[4];        
-        var code_file       = $('#code_req_document_general_'+ row_id).val();        
+        var code_file       = $('#code_req_document_general_'+ row_id);        
         var loading         = $('#loading_document_general_'+row_id);
+        var date_upload     = $('#date_req_document_general_'+row_id);
+        var time_upload     = $('#time_req_document_general_'+row_id);
+        var label_result_upload = $('#label_result_expiration_date_req_document_general_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -458,10 +474,9 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {
                 loading.hide();                                
-                $('#date_req_document_general_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
-
 
         $.ajax({
             url : cek_time_file_current,
@@ -472,22 +487,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_document_general_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_document_general_'+row_id).val(response);                 
-            }
-        });        
 
     }); 
     
@@ -503,22 +505,29 @@ $(document).ready(function () {
         var progressbar     = $('#progressbar_document_general_'+row_id); 
         var status_file     = $('#status_file_document_general_'+ row_id);       
         var statustxt       = $('#statustxt_document_general_'+row_id);  
+        var expiration_date = $('#expiration_date_req_general_document_'+ row_id+'_'+code_1+'_'+code_2);
+        var loading         = $('#loading_document_general_'+row_id);
 
-        var code_file       = $('#code_req_document_general_'+ row_id).val();            
-        var date_upload     = $('#date_req_document_general_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_document_general_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_document_general_'+ row_id);            
+        var date_upload     = $('#date_req_document_general_'+ row_id);                            
+        var time_upload     = $('#time_req_document_general_'+ row_id);                                    
+        var message         = $('#msg_'+row_id);
+        var status_upload   = $('#status_upload_document_general_'+row_id);
+        var file            = $('#file_req_document_general_'+ row_id+'_'+ code_1+'_'+ code_2);            
 
-        var yesno = confirm('Are you sure?');
+        var yesno = confirm('Are you sure?' + '\nLast update file ' + 
+            $('#date_req_document_general_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_document_general_'+ row_id).val().substring(0,8));
         if (yesno) {          
+            loading.show();
             var form_data = new FormData();                    
             form_data.append(
-                'code_req_document_general', code_file
+                'code_req_document_general', code_file.val()
                 );
             form_data.append(
-                'date_req_document_general', date_upload
+                'date_req_document_general', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_general', time_upload
+                'time_req_document_general', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -530,26 +539,27 @@ $(document).ready(function () {
                 data: form_data,
                 type: 'post',
                 success: function (response) {                
-                    if (response == 'Delete failed, please try again.') {
-                        $('#msg_'+row_id).html(response); 
-                        $('#msg_'+row_id).css('color','red');
-                    } else {
-                        $('#msg_'+row_id).html(response); 
-                        $('#msg_'+row_id).css('color','blue'); 
+                    if (response == 'Delete failed, please try again.') {                    
+                        message.html(response); 
+                        message.css('color','red');
+                    } else {                        
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
                         empty_file.hide(); 
-                        $('#status_upload_document_general_'+row_id).val('');
+                        reset_value(status_upload, expiration_date, status_upload, file);                        
                     }
                 },
-                error: function (response) {                
-                    $('#msg_'+row_id).html(response); 
-                    $('#msg_'+row_id).css('color','red');
+                error: function (response) {                       
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     }); 
     
@@ -564,9 +574,12 @@ $(document).ready(function () {
         var status_file     = $('#status_file_document_certificate_'+ row_id); 
         var empty_file      = $('#empty_file_document_certificate_'+ row_id);  
         var file            = $('#file_req_document_certificate_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_document_certificate_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_general_certificate_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_general_certificate_'+ row_id).val();                     
+        var code            = $('#code_req_document_certificate_'+ row_id);                     
+        var date_training   = $('#date_training_req_general_certificate_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_general_certificate_'+ row_id);                     
+        var loading         = $('#loadingmessage_'+row_id);
+        var message         = $('#msg_document_certificate_'+row_id);
+        var status_upload   = $('#status_upload_document_certificate_'+row_id);
 
         var timerId = 0;
         var ctr=0;
@@ -577,40 +590,56 @@ $(document).ready(function () {
             'file_req_document_certificate', file
             );
         form_data.append(
-            'code_req_document_certificate', code
+            'code_req_document_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_general_certificate', date_training
+            'date_training_req_general_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_general_certificate', expirate_date
+            'save_result_expiration_date_req_general_certificate', expiration_date.val()
             );
 
-        $.ajax({           
+       $.ajax({
             url: upload_file_document_certificate, 
             dataType: 'text',
             cache: false,
             contentType: false,
             processData: false,
             data: form_data,
-            type: 'post', 
-            beforeSend: function(){
-
-            },          
+            type: 'post',
+            beforeSend: function(){                
+                loading.show();
+            },
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
-                } else {
-                        status_file.attr('src',image_check);
-                        empty_file.attr('src',image_cross_check);
-                        $('#msg_document_certificate_'+row_id).html(response);
-                        $('#msg_document_certificate_'+row_id).css('color','blue');
-                        $('#status_upload_document_certificate_'+row_id).val('1');                   
+                    message.html(response); 
+                    message.css('color','red');
+                } else {                        
+                        timerId = setInterval(function () {    
+                            ctr++;
+                            $(progressbar).attr("style","width:" + ctr*max + "%");
+                            progressbar.css('background','blue');
+                            statustxt.html(ctr*max + "%"); 
+                            statustxt.css('color','#000'); 
+                            status_file.hide();  
+                            empty_file.hide();                                                            
+                            if (ctr==max){
+                            status_file.show(); 
+                            empty_file.show(); 
+                            clearInterval(timerId);
+                            status_file.attr('src',image_check);
+                            empty_file.attr('src',image_cross_check);
+                            message.html(response);
+                            message.css('color','blue');
+                            status_upload.val('1');      
+                            }            
+                        }, 100);                 
                 }
+                loading.hide();
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                loading.hide();
+                message.html(response); 
             }
         });                
     }); 
@@ -619,12 +648,14 @@ $(document).ready(function () {
         var id = this.id;
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
-        var code_file       = $('#code_req_document_certificate_'+ row_id).val();                    
+        var code_file       = $('#code_req_document_certificate_'+ row_id);                    
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_document_certificate_'+row_id);
+        var time_upload     = $('#time_req_document_certificate_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -637,10 +668,9 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {
                 loading.hide();                                
-                $('#date_req_document_certificate_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
-
 
         $.ajax({
             url : cek_time_file_current,
@@ -651,22 +681,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_document_certificate_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
-        });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_general_certificate_'+row_id).val(response);                 
-            }
-        });        
+        });     
 
     });
     
@@ -679,23 +696,30 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_document_certificate_'+ row_id);                      
         var status_file     = $('#status_file_document_certificate_'+ row_id); 
         var empty_file      = $('#empty_file_document_certificate_'+ row_id);
+        var status_upload   = $('#status_upload_document_certificate_'+row_id);
         
-        var code_file       = $('#code_req_document_certificate_'+ row_id).val();                    
-        var date_upload     = $('#date_req_document_certificate_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_document_certificate_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_document_certificate_'+ row_id);                    
+        var date_upload     = $('#date_req_document_certificate_'+ row_id);                            
+        var time_upload     = $('#time_req_document_certificate_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var expiration_date = $('#label_result_expiration_date_req_general_certificate_'+row_id);
+        var date_training   = $('#date_training_req_general_certificate_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
+        var file            = $('#file_req_document_certificate_'+row_id);                    
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_document_certificate_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_document_certificate_'+ row_id).val().substring(0,8));
-        if (yesno) {          
+        if (yesno) {       
+            loading.show();   
             var form_data = new FormData();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -708,26 +732,26 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide(); 
-                        $('#label_result_expiration_date_req_general_certificate_'+row_id).val('');                  
-                        $('#save_result_expiration_date_req_general_certificate_'+row_id).val('');
+                        empty_file.hide();                         
+                        reset_value(expiration_date, date_training, status_upload, file);
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });     
     
@@ -741,9 +765,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_'+ row_id); 
         var file            = $('#file_req_spec_certificate_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -755,13 +780,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -774,8 +799,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -792,14 +817,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -809,12 +834,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[4];
 
-        var code_file       = $('#code_req_spec_certificate_'+ row_id).val();                            
+        var code_file       = $('#code_req_spec_certificate_'+ row_id);                            
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -827,7 +854,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
                 loading.hide();
-                $('#date_req_spec_certificate_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -841,22 +868,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
-        });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_'+row_id).val(response);                 
-            }
-        });        
+        });   
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate', function(e){        
@@ -869,22 +883,28 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_'+ row_id);
                      
-        var code_file       = $('#code_req_spec_certificate_'+ row_id).val();                     
-        var date_upload     = $('#date_req_spec_certificate_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_'+ row_id);                     
+        var date_upload     = $('#date_req_spec_certificate_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_'+row_id); 
+        var expiration_date = $('#label_result_expiration_date_req_spec_certificate_'+row_id); 
+        var loading         = $('#loadingmessage_'+row_id);
+        var file            = $('#file_req_spec_certificate_'+row_id);                    
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -897,25 +917,26 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_'+row_id).val('');                  
+                        empty_file.hide();                                                 
+                        reset_value(expiration_date, date_training, status_upload, file);
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });    
     
@@ -929,9 +950,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_license_garuda_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_garuda_'+ row_id);    
         var file            = $('#file_req_spec_certificate_license_garuda_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_license_garuda_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_license_garuda_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_license_garuda_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_license_garuda_'+ row_id);                     
+        var expiration_date = $('#save_result_expiration_date_req_spec_certificate_license_garuda_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -943,13 +965,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -962,8 +984,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -980,14 +1002,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -997,12 +1019,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];      
 
-        var code_file       = $('#code_req_spec_certificate_license_garuda_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_license_garuda_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_license_garuda_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_license_garuda_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1015,7 +1039,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_license_garuda_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1029,22 +1053,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_license_garuda_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
-        });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val(response);                 
-            }
-        });        
+        });     
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_license_garuda', function(e){        
@@ -1056,22 +1067,28 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_license_garuda_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_license_garuda_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_garuda_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_license_garuda_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_license_garuda_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_license_garuda_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_license_garuda_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_license_garuda_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_license_garuda_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_license_garuda_'+row_id);
+        var expiration_date = $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
+        var file            = $('#file_req_spec_certificate_license_garuda_'+row_id);                    
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_license_garuda_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_license_garuda_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -1084,25 +1101,26 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_license_garuda_'+row_id).val('');                  
+                        empty_file.hide();                                                 
+                        reset_value(date_training, expiration_date, status_upload, file);
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -1116,9 +1134,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_license_citilink_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_citilink_'+ row_id);    
         var file            = $('#file_req_spec_certificate_license_citilink_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_license_citilink_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_license_citilink_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_license_citilink_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_license_citilink_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_license_citilink_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -1130,13 +1149,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -1149,8 +1168,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -1167,14 +1186,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -1184,12 +1203,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];      
 
-        var code_file       = $('#code_req_spec_certificate_license_citilink_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_license_citilink_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_license_citilink_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_license_citilink_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1202,7 +1223,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_license_citilink_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1216,22 +1237,10 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_license_citilink_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
 
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val(response);                 
-            }
-        });        
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_license_citilink', function(e){        
@@ -1243,22 +1252,26 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_license_citilink_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_license_citilink_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_citilink_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_license_citilink_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_license_citilink_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_license_citilink_'+ row_id).val().replace(':','').substring(0,2);                                    
-
+        var code_file       = $('#code_req_spec_certificate_license_citilink_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_license_citilink_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_license_citilink_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_license_citilink_'+row_id);
+        var expiration_date   = $('#label_result_expiration_date_req_spec_certificate_license_citilink_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_license_citilink_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_license_citilink_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -1271,25 +1284,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_license_citilink_'+row_id).val('');                  
+                        empty_file.hide(); 
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -1304,10 +1319,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_license_sriwijaya_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_sriwijaya_'+ row_id);    
         var file            = $('#file_req_spec_certificate_license_sriwijaya_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_license_sriwijaya_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+ row_id).val();                                
-        
+        var code            = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_license_sriwijaya_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_license_sriwijaya_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         var timerId = 0;
         var ctr=0;
         var max=10;
@@ -1318,13 +1333,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -1337,8 +1352,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -1355,14 +1370,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -1372,12 +1387,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[6];      
 
-        var code_file       = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_license_sriwijaya_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_license_sriwijaya_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1390,7 +1407,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_license_sriwijaya_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1404,22 +1421,10 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_license_sriwijaya_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
 
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val(response);                 
-            }
-        });        
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_license_sriwijaya', function(e){        
@@ -1431,22 +1436,27 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_license_sriwijaya_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_license_sriwijaya_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_license_sriwijaya_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_license_sriwijaya_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_license_sriwijaya_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_license_sriwijaya_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_license_sriwijaya_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_license_sriwijaya_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_license_sriwijaya_'+row_id);
+        var expiration_date   = $('#label_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_license_sriwijaya_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_license_sriwijaya_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -1459,25 +1469,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_license_sriwijaya_'+row_id).val('');                  
+                        empty_file.hide();
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -1498,22 +1510,23 @@ $(document).ready(function () {
         var max=10;                         
                       
         var file            = $('#file_req_spec_certificate_easa_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_easa_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_easa_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_easa_'+ row_id).val();                                        
+        var code            = $('#code_req_spec_certificate_easa_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_easa_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_easa_'+ row_id);                                        
+        var message         = $('#msg_document_certificate_'+row_id);
 
         var form_data = new FormData();
         form_data.append(
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -1526,8 +1539,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -1544,14 +1557,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -1561,12 +1574,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];
 
-        var code_file       = $('#code_req_spec_certificate_easa_'+ row_id).val();                            
+        var code_file       = $('#code_req_spec_certificate_easa_'+ row_id);                            
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_easa_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_easa_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1579,7 +1594,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
                 loading.hide();
-                $('#date_req_spec_certificate_easa_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1593,22 +1608,10 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_easa_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
 
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_easa_'+row_id).val(response);                 
-            }
-        });        
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_easa', function(e){        
@@ -1621,22 +1624,27 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_easa_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_easa_'+ row_id);
                      
-        var code_file       = $('#code_req_spec_certificate_easa_'+ row_id).val();                     
-        var date_upload     = $('#date_req_spec_certificate_easa_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_easa_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_easa_'+ row_id);                     
+        var date_upload     = $('#date_req_spec_certificate_easa_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_easa_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_easa_'+row_id);
+        var expiration_date   = $('#label_result_expiration_date_req_spec_certificate_easa_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_easa_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_easa_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -1649,25 +1657,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_easa_'+row_id).val('');                  
+                        empty_file.hide(); 
+                        date_training.val('');                        
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -1686,24 +1696,23 @@ $(document).ready(function () {
         var max=10;                         
                       
         var file            = $('#file_req_spec_certificate_special_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_special_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_special_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_special_'+ row_id).val();                                        
+        var code            = $('#code_req_spec_certificate_special_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_special_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_special_'+ row_id);                                        
+        var message         = $('#msg_document_certificate_'+row_id);
 
         var form_data = new FormData();
         form_data.append(
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
-            );
-        if (date_training != '') {
-            form_data.append(
-                'date_training_req_spec_certificate', date_training
-                );
-        }
+            'code_req_spec_certificate', code.val()
+            );       
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+                'date_training_req_spec_certificate', date_training.val()
+            );        
+        form_data.append(
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -1716,8 +1725,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -1734,14 +1743,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -1752,12 +1761,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];
 
-        var code_file       = $('#code_req_spec_certificate_special_'+ row_id).val();                            
+        var code_file       = $('#code_req_spec_certificate_special_'+ row_id);                            
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_special_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_special_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1770,7 +1781,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
                 loading.hide();
-                $('#date_req_spec_certificate_special_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1784,22 +1795,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_special_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_special_'+row_id).val(response);                 
-            }
-        });        
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_special', function(   ){        
@@ -1812,22 +1810,27 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_special_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_special_'+ row_id);
                      
-        var code_file       = $('#code_req_spec_certificate_special_'+ row_id).val();                     
-        var date_upload     = $('#date_req_spec_certificate_special_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_special_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_special_'+ row_id);                     
+        var date_upload     = $('#date_req_spec_certificate_special_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_special_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_special_'+ row_id).val();                     
+        var expiration_date   = $('#label_result_expiration_date_req_spec_certificate_special_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_special_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_special_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -1840,25 +1843,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
                         empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_special_'+row_id).val('');                  
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -1872,9 +1877,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_garuda_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_garuda_'+ row_id);    
         var file            = $('#file_req_spec_certificate_garuda_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_garuda_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_garuda_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_garuda_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_garuda_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_garuda_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_garuda_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -1886,13 +1892,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -1905,8 +1911,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -1923,14 +1929,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -1940,12 +1946,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];      
 
-        var code_file            = $('#code_req_spec_certificate_garuda_'+ row_id).val();                     
+        var code_file            = $('#code_req_spec_certificate_garuda_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_garuda_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_garuda_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -1958,7 +1966,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_garuda_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -1972,22 +1980,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_garuda_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_garuda_'+row_id).val(response);                 
-            }
-        });        
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_garuda', function(e){        
@@ -1999,22 +1994,26 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_garuda_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_garuda_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_garuda_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_garuda_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_garuda_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_garuda_'+ row_id).val().replace(':','').substring(0,2);                                    
-
+        var code_file       = $('#code_req_spec_certificate_garuda_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_garuda_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_garuda_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_garuda_'+ row_id).val();                     
+        var expiration_date     = $('#label_result_expiration_date_req_spec_certificate_garuda_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_garuda_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_garuda_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -2027,25 +2026,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
                         empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_garuda_'+row_id).val('');                  
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
 
@@ -2060,10 +2061,11 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_citilink_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_citilink_'+ row_id);    
         var file            = $('#file_req_spec_certificate_citilink_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_citilink_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_citilink_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_citilink_'+ row_id).val();                                
-        
+        var code            = $('#code_req_spec_certificate_citilink_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_citilink_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_citilink_'+ row_id);                                
+        var expiration_date = $('#msg_document_certificate_'+row_id);
+
         var timerId = 0;
         var ctr=0;
         var max=10;
@@ -2074,13 +2076,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -2093,8 +2095,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    expiration_date.html(response); 
+                    expiration_date.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -2111,14 +2113,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            expiration_date.html(response); 
+                            expiration_date.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                expiration_date.html(response); 
             }
         });                    
     });
@@ -2128,12 +2130,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];      
 
-        var code_file       = $('#code_req_spec_certificate_citilink_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_citilink_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_citilink_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_citilink_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -2146,7 +2150,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_citilink_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -2160,22 +2164,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_citilink_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
-        });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_citilink_'+row_id).val(response);                 
-            }
-        });        
+        });       
     });
     
     $('.body_specification_requirement').on('click', '.empty_file_req_certificate_citilink', function(e){        
@@ -2187,22 +2178,27 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_citilink_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_citilink_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_citilink_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_citilink_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_citilink_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_citilink_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_citilink_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_citilink_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_citilink_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_citilink_'+row_id);
+        var expiration_date = $('#label_result_expiration_date_req_spec_certificate_citilink_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_citilink_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_citilink_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -2215,25 +2211,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_citilink_'+row_id).val('');                  
+                        empty_file.hide();    
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }          
     });
     
@@ -2248,9 +2246,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_req_certificate_sriwijaya_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_sriwijaya_'+ row_id);            
         var file            = $('#file_req_spec_certificate_sriwijaya_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_sriwijaya_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_sriwijaya_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_sriwijaya_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_sriwijaya_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_sriwijaya_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -2262,13 +2261,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -2281,8 +2280,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -2299,14 +2298,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     }); 
@@ -2316,12 +2315,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];      
 
-        var code_file       = $('#code_req_spec_certificate_sriwijaya_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_sriwijaya_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_sriwijaya_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_sriwijaya_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -2334,7 +2335,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_sriwijaya_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -2348,22 +2349,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_sriwijaya_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
         });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val(response);                 
-            }
-        });        
     });
     
 
@@ -2376,22 +2364,27 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_sriwijaya_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_sriwijaya_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_sriwijaya_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_sriwijaya_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_sriwijaya_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_sriwijaya_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_sriwijaya_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_sriwijaya_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_sriwijaya_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_sriwijaya_'+ row_id);                     
+        var expiration_date = $('#label_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_sriwijaya_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_sriwijaya_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -2404,25 +2397,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
                         empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_sriwijaya_'+row_id).val('');                  
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }   
     });  
     
@@ -2437,9 +2432,10 @@ $(document).ready(function () {
         var status_file     = $('#status_file_certificate_cofc_'+ row_id);
         var empty_file      = $('#empty_file_certificate_cofc_'+ row_id);            
         var file            = $('#file_req_spec_certificate_cofc_'+row_id).prop('files')[0];                    
-        var code            = $('#code_req_spec_certificate_cofc_'+ row_id).val();                     
-        var date_training   = $('#date_training_req_spec_certificate_cofc_'+ row_id).val();                     
-        var expirate_date   = $('#save_result_expiration_date_req_spec_certificate_cofc_'+ row_id).val();                                
+        var code            = $('#code_req_spec_certificate_cofc_'+ row_id);                     
+        var date_training   = $('#date_training_req_spec_certificate_cofc_'+ row_id);                     
+        var expiration_date   = $('#save_result_expiration_date_req_spec_certificate_cofc_'+ row_id);                                
+        var message         = $('#msg_document_certificate_'+row_id);
         
         var timerId = 0;
         var ctr=0;
@@ -2451,13 +2447,13 @@ $(document).ready(function () {
             'file_req_spec_certificate', file
             );
         form_data.append(
-            'code_req_spec_certificate', code
+            'code_req_spec_certificate', code.val()
             );
         form_data.append(
-            'date_training_req_spec_certificate', date_training
+            'date_training_req_spec_certificate', date_training.val()
             );
         form_data.append(
-            'save_result_expiration_date_req_spec_certificate', expirate_date
+            'save_result_expiration_date_req_spec_certificate', expiration_date.val()
             );
 
         $.ajax({
@@ -2470,8 +2466,8 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                
                 if (response == 'File type not suport, please atach file pdf.' || response == 'File too large, max 5mb.' || response == 'File is exists.') {
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 } else {
                         timerId = setInterval(function () {    
                             ctr++;
@@ -2488,14 +2484,14 @@ $(document).ready(function () {
                             clearInterval(timerId);
                             status_file.attr('src',image_check);
                             empty_file.attr('src',image_cross_check);
-                            $('#msg_document_certificate_'+row_id).html(response); 
-                            $('#msg_document_certificate_'+row_id).css('color','blue');
+                            message.html(response); 
+                            message.css('color','blue');
                             }            
                         }, 300);                 
                 }
             },
             error: function (response) {                
-                $('#msg_document_certificate_'+row_id).html(response); 
+                message.html(response); 
             }
         });                    
     });
@@ -2505,12 +2501,14 @@ $(document).ready(function () {
         var data_row_id = id.split("_"); 
         var row_id = data_row_id[5];      
 
-        var code_file       = $('#code_req_spec_certificate_cofc_'+ row_id).val();                     
+        var code_file       = $('#code_req_spec_certificate_cofc_'+ row_id);                     
         var loading         = $('#loadingmessage_'+row_id);
+        var date_upload     = $('#date_req_spec_certificate_cofc_'+row_id);
+        var time_upload     = $('#time_req_spec_certificate_cofc_'+row_id);
         loading.show();
         var form_datetime   = new FormData();
             form_datetime.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
 
         $.ajax({
@@ -2523,7 +2521,7 @@ $(document).ready(function () {
             type: 'post',
             success: function (response) {                               
             loading.hide();                
-                $('#date_req_spec_certificate_cofc_'+row_id).val(response);                 
+                date_upload.val(response);                 
             }
         });
 
@@ -2537,22 +2535,9 @@ $(document).ready(function () {
             data: form_datetime,
             type: 'post',
             success: function (response) {                               
-                $('#time_req_spec_certificate_cofc_'+row_id).val(response);                 
+                time_upload.val(response);                 
             }
-        });
-
-        $.ajax({
-            url : cek_expiration_file_current,
-            dataType: 'text',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_datetime,
-            type: 'post',
-            success: function (response) {                               
-                $('#label_result_expiration_date_req_spec_certificate_cofc_'+row_id).val(response);                 
-            }
-        });        
+        });      
     });
     
 
@@ -2565,22 +2550,27 @@ $(document).ready(function () {
         var statustxt       = $('#statustxt_req_certificate_cofc_'+ row_id);                      
         var status_file     = $('#status_file_req_certificate_cofc_'+ row_id);
         var empty_file      = $('#empty_file_req_certificate_cofc_'+ row_id);    
-        var code_file       = $('#code_req_spec_certificate_cofc_'+ row_id).val();                                     
-        var date_upload     = $('#date_req_spec_certificate_cofc_'+ row_id).val().replace(/-/g,'');                            
-        var time_upload     = $('#time_req_spec_certificate_cofc_'+ row_id).val().replace(':','').substring(0,2);                                    
+        var code_file       = $('#code_req_spec_certificate_cofc_'+ row_id);                                     
+        var date_upload     = $('#date_req_spec_certificate_cofc_'+ row_id);                            
+        var time_upload     = $('#time_req_spec_certificate_cofc_'+ row_id);                                    
+        var message         = $('#msg_document_certificate_'+row_id);
+        var date_training   = $('#date_training_req_spec_certificate_cofc_'+ row_id);                     
+        var expiration_date = $('#label_result_expiration_date_req_spec_certificate_cofc_'+row_id);
+        var loading         = $('#loadingmessage_'+row_id);
 
         var yesno = confirm('Are you sure?' + '\nLast update file ' + 
             $('#date_req_spec_certificate_cofc_'+ row_id).val().substring(0,10) + ' '+ $('#time_req_spec_certificate_cofc_'+ row_id).val().substring(0,8));
         if (yesno) {          
             var form_data = new FormData();
+            loading.show();
             form_data.append(
-                'code_req_document_certificate', code_file
+                'code_req_document_certificate', code_file.val()
                 );
             form_data.append(
-                'date_req_document_certificate', date_upload
+                'date_req_document_certificate', date_upload.val().replace(/-/g,'')
                 );
             form_data.append(
-                'time_req_document_certificate', time_upload
+                'time_req_document_certificate', time_upload.val().replace(':','').substring(0,2)
                 );           
 
             $.ajax({
@@ -2593,25 +2583,27 @@ $(document).ready(function () {
                 type: 'post',
                 success: function (response) {                
                     if (response == 'Delete failed, please try again.') {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','red');
+                        message.html(response); 
+                        message.css('color','red');
                     } else {
-                        $('#msg_document_certificate_'+row_id).html(response); 
-                        $('#msg_document_certificate_'+row_id).css('color','blue'); 
+                        message.html(response); 
+                        message.css('color','blue'); 
                         $(progressbar).attr("style","width:0%");
                         progressbar.css('background','white');
                         statustxt.html("0%"); 
                         statustxt.css('color','#000');  
                         status_file.hide(); 
-                        empty_file.hide();                         
-                        $('#label_result_expiration_date_req_spec_certificate_cofc_'+row_id).val('');                  
+                        empty_file.hide(); 
+                        date_training.val('');
+                        expiration_date.val('');                  
                     }
                 },
                 error: function (response) {                
-                    $('#msg_document_certificate_'+row_id).html(response); 
-                    $('#msg_document_certificate_'+row_id).css('color','red');
+                    message.html(response); 
+                    message.css('color','red');
                 }
             }); 
+            loading.hide();
         }   
     });                                                                            
            
@@ -2622,15 +2614,45 @@ $(document).ready(function () {
        var month = ("0" + (date_training.getMonth() + 1)).slice(-2);       
        $('.date_training').val((day)+'-'+(month)+'-'+date_training.getFullYear());            
     };
-        // $('.body_general_requirement').on('.focusout', '.expiration_date_req_general_document', function(e){
-        //     var row_id = this.id;
-        //     if($('.expiration_date_req_general_document').val != ''){        
-        //     $('#file_req_document_general_' + row_id).attr('disabled',false);
-        //     }else{
-        //     $('#file_req_document_general_' + row_id).attr('disabled',true);
-        //     };
+        $('.expiration_date_req_general_document').datepicker().on('change', function(e){        
+            var id = this.id;
+            var data_row_id = id.split("_"); 
+            var row_id = data_row_id[5]; 
+            var code_1 = data_row_id[6]; 
+            var code_2 = data_row_id[7];             
+            if($('#expiration_date_req_general_document_'+row_id+'_'+code_1+'_'+code_2).val().length != 0){
+                var id_thn = $('#expiration_date_req_general_document_' + row_id+'_'+code_1+'_'+code_2).val(); 
+                var data_thn_id = id_thn.split("-");
+                var day = data_thn_id[0];
+                var month = data_thn_id[1]; 
+                var thn = data_thn_id[2];                             
+                var rs_exp_date = day + "-" + month + "-" + thn; 
+                if(rs_exp_date == null){
+                    $('#file_req_document_general_' + row_id+'_'+code_1+'_'+code_2).attr('disabled',false);    
+                } 
+                else{ 
+                var data_thn_exp_id = rs_exp_date.split("-");            
+                var date_exp = data_thn_exp_id[0];
+                var month_exp = data_thn_exp_id[1];
+                var thn_exp = data_thn_exp_id[2]; 
+                var d = new Date();
+                var day_now = d.getDate();
+                var month_date_now = d.getMonth();
+                var thn_date_now = d.getFullYear();                                                                             
+                var date_exp = new Date(data_thn_exp_id[2], parseInt(data_thn_exp_id[1])+2, data_thn_exp_id[0]);
+                var date_now = new Date(thn_date_now, parseInt(month_date_now)+6, day_now);                                                                                                            
+                    if(date_exp > date_now){
+                        $('#file_req_document_general_' + row_id+'_'+code_1+'_'+code_2).attr('disabled',false); 
+                    }else{
+                        $('#warning').modal({ backdrop: 'static', keyboard: false });
+                        $('#file_req_document_general_' + row_id+'_'+code_1+'_'+code_2).attr('disabled',true);                 
+                    };                                                                                
+                }                                  
+            }else{
+                $('#file_req_document_general_' + row_id+'_'+code_1+'_'+code_2).attr('disabled',true);
+            };            
 
-        // }); 
+        }); 
         
         $('.date_training_req_general_certificate').datepicker().on('click', function(e){
             var id = this.id;

@@ -1,3 +1,21 @@
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-left",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
 var cari_personnel = function() {
 $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=mobilephone],[name=businessphone],[name=validitycontract],[name=id_personnel_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').val('');                               
 var typeemp = $('[name=typeemp]:radio:checked').val();
@@ -10,7 +28,7 @@ var jqxhr = $.getJSON( get_data_gmf + personnel_number, function(data) {
     $('[name=email]').val(data.EMAIL);
     $('[name=dateofbirth]').val(data.BORNDATE); 
     $('[name=dateofemployee]').val(data.EMPLODATE);
-    $('[name=formaleducation]').val(data.LASTEDUCDESC);
+    $('[name=formaleducation]').val(data.pendidikan+' '+data.jurusan);
     $('[name=mobilephone]').val(data.mobilephone);
     $('[name=businessphone]').val(data.businessphone); 
     if(data.WORKUNTILDATE == '31-12-9999'){       
@@ -22,6 +40,7 @@ var jqxhr = $.getJSON( get_data_gmf + personnel_number, function(data) {
         var date_work = new Date(y+'-'+m+'-'+d);                       
         if(date_work > now){                
            $('[name=submitpersonnelinformation]').attr('disabled',false);                
+           $('#personnel_expired').html(''); 
         };                                                         
         $('[name=validitycontract]').attr('disabled',true);
         $('[name=submitpersonnelinformation]').attr('disabled',false);
@@ -35,10 +54,11 @@ var jqxhr = $.getJSON( get_data_gmf + personnel_number, function(data) {
         var date_work = new Date(y+'-'+m+'-'+d);            
         if(date_work > now || date_work == '31-12-9999'){                
            $('[name=submitpersonnelinformation]').attr('disabled',false);                
+           $('#personnel_expired').html(''); 
         };                            
         if(date_work < now !== '31-12-9999'){                
            $('[name=submitpersonnelinformation]').attr('disabled',true);
-           alert('You retired'); 
+           $('#personnel_expired').html('You Retired').css('color','red'); 
         };    
         $('[name=validitycontract]').attr('disabled',false);
         $('[name=validitycontract]').val(data.WORKUNTILDATE);                
@@ -46,10 +66,8 @@ var jqxhr = $.getJSON( get_data_gmf + personnel_number, function(data) {
         
         $('[name=personnel_number_superior]').val(data.REPORT_TO);
     }); 
-    jqxhr.complete(function(){
-       console.log("send data complete");
-       $('#msg').hide(); 
-    $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=personnel_number_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').prop("readonly", true);        
+    jqxhr.complete(function(){      
+        $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=personnel_number_superior],[name=name_superior],[name=jobtitle_superior],[name=email_superior]').prop("readonly", true);        
     });                     
 };
 if (typeemp == 2 || typeemp == null) {
@@ -70,8 +88,9 @@ if (typeemp == 2 || typeemp == null) {
         var m = work[1];
         var y = work[2]; 
         var date_work = new Date(y+'-'+m+'-'+d);                       
-        if(date_work > now){                
-           $('[name=submitpersonnelinformation]').attr('disabled',false);                
+        if(date_work > now){     
+            $('#personnel_expired').html('');            
+            $('[name=submitpersonnelinformation]').attr('disabled',false);                
         };                                                         
         $('[name=validitycontract]').attr('disabled',true);
         $('[name=submitpersonnelinformation]').attr('disabled',false);
@@ -84,11 +103,12 @@ if (typeemp == 2 || typeemp == null) {
         var y = work[2]; 
         var date_work = new Date(y+'-'+m+'-'+d);
         if(date_work > now){                
-           $('[name=submitpersonnelinformation]').attr('disabled',false);                
+            $('#personnel_expired').html(''); 
+            $('[name=submitpersonnelinformation]').attr('disabled',false);                
         };                            
         if(date_work < now){                
            $('[name=submitpersonnelinformation]').attr('disabled',true);
-           alert('You retired'); 
+           $('#personnel_expired').html('You Retired').css('color','red'); 
         };    
         $('[name=validitycontract]').attr('disabled',false);
         $('[name=validitycontract]').val(data.WORKUNTILDATE);                
@@ -96,24 +116,20 @@ if (typeemp == 2 || typeemp == null) {
         
         $('[name=personnel_number_superior]').val(data.REPORT_TO);            
     }); 
-    jqxhr.complete(function(){
-       console.log("send data complete");
-       $('#msg').hide();        
-    });
     $('[name=name],[name=presenttitle],[name=departement],[name=email],[name=dateofbirth],[name=dateofemployee],[name=formaleducation],[name=personnel_number_superior]').prop("readonly", false);                
 }; 
     if ($('[name=name]').val()=='' || $('[name=typeemp]').val()=='') {
-        $('#msg').show();
+        toastr.warning('Tipe employee belum dipilih.');
     };  
 };
 $( window ).load(function() {
     cari_personnel();                  
 });
-$('[name=businessphone],[name=mobilephone]').keyup(function()
-    {
+$('[name=businessphone],[name=mobilephone]').keyup(function(){
         this.value = this.value.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, "$1-$2-$3");
     });
-$('#msg,.data-superior').hide();
+
+$('.data-superior').hide();
         
 $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker({
     format : 'dd-mm-yyyy'
@@ -122,13 +138,12 @@ $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker
 $('[name=dateofbirth],[name=dateofemployee],[name=validitycontract]').datepicker().on('changeDate', function(e){        
         $(this).datepicker('hide');
     });
-    
-     
+         
 $('[name=personnel_number]').on('keyup',function() {
     cari_personnel();
 });
 
-$('[name=cari_id]').on('click',function() {
+$('[name=cari_id],[name=typeemp]').on('click',function() {
     cari_personnel();
 });
 
@@ -172,7 +187,7 @@ $('#nongmfemp, #gmfemp').change(function() {
 
 
     $('[name=submitchecklicense]').one('click', function(){
-        var personnel_number = $(this).data('id');        
+        var personnel_number = $('[name=personnel_number]').val();            
         $('#modal-loader').show(); 
         $('#datatables_basic').dataTable({        
         "searching"         : false,
@@ -240,6 +255,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                     $('#status_days_ame').html(selisih).css('color','red');                
                     $('#status_days_ame').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#ame_license_number').html(aData[4]);                                                                        
             }, 
         // Load data for the table's content from an Ajax source
             "ajax": {
@@ -271,7 +287,7 @@ $('#nongmfemp, #gmfemp').change(function() {
         "serverSide"        : true, //Feature control DataTables' server-side processing mode.
         "order"             : [], //Initial no order. 
         "bSort"             : false,   
-        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {                                                            
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {                                                                        
             var d               = new Date();
             var day_now         = d.getDate();
             var month_date_now  = d.getMonth();
@@ -295,6 +311,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                     $('#status_days_cs').html(selisih).css('color','red');                
                     $('#status_cs').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#cs_license_number').html(aData[3]);                                                                        
             }, 
 
 
@@ -350,6 +367,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                 } else if (selisih < 0) {                    
                     $('#status_gmf').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#gmf_license_number').html(aData[3]);                                                                        
             },                                
 
         // Load data for the table's content from an Ajax source
@@ -404,6 +422,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                 } else if (selisih < 0) {                    
                     $('#status_ga').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#ga_license_number').html(aData[3]);                                                                        
             },                
 
         // Load data for the table's content from an Ajax source
@@ -458,6 +477,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                 } else if (selisih < 0) {                    
                     $('#status_citilink').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#citilink_license_number').html(aData[3]);                                                                        
             },                 
 
         // Load data for the table's content from an Ajax source
@@ -512,6 +532,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                 } else if (selisih < 0) {                    
                     $('#status_sriwijaya').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#sriwijaya_license_number').html(aData[3]);                                                                        
             },                 
 
         // Load data for the table's content from an Ajax source
@@ -566,6 +587,7 @@ $('#nongmfemp, #gmfemp').change(function() {
                 } else if (selisih < 0) {                    
                     $('#status_easa').html('&nbsp;Your license expired').css('color','red');                
                 }
+                $('#easa_license_number').html(aData[3]);                                                                        
             },                
 
         // Load data for the table's content from an Ajax source
@@ -643,4 +665,8 @@ $('#nongmfemp, #gmfemp').change(function() {
 
         $('#modal-loader').hide(); 
 
+    });
+    $('[name=close]').on('click', function(){
+        $(this).attr('data-dismiss','modal');
+        window.location.reload();
     });

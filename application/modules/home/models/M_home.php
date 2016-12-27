@@ -248,6 +248,191 @@ class M_home extends CI_Model {
     }
 
     public function count_filtered() {
+        @$personnel_number          = $this->input->post('personnel_number');
+        @$unit                      = $this->input->post('unit');
+        @$presenttitle              = $this->input->post('presenttitle');
+        $request_number_user        = $this->input->post('request_number_user');
+        $date_request               = $this->input->post('date_request');
+        $employee_personnel_number  = $this->input->post('employee_personnel_number');
+        $name_personnel             = $this->input->post('name_personnel');
+        $status                     = $this->input->post('status');
+            if($presenttitle == 'GM') {      
+                $this->db->like('departement',$unit);
+                if($request_number_user!=''){
+                    $this->db->where('t_apply_license.request_number',$request_number_user);
+                };
+                if($date_request!=''){
+                    $this->db->like('(CONVERT(VARCHAR(10), CONVERT(datetime, t_apply_license.date_request,120),105))',$date_request);
+                };
+
+                if($employee_personnel_number!=''){
+                    $this->db->where('TSH.personnel_number',$employee_personnel_number);
+                };                
+                               
+                if($name_personnel!=''){
+                    $this->db->like('TSH.name',$name_personnel);
+                };
+                
+                if($status=='11'){
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='10'){
+                    $this->db->where('t_apply_license.take_authorization','1');
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='9'){
+                    $this->db->where('t_apply_license.referral_authorization','1');  
+                    $this->db->where('t_apply_license.finished',null);             
+                };
+                if($status=='8'){
+                    $this->db->where('t_apply_license.status_issue_authorization','2');
+                    $this->db->where('t_apply_license.referral_authorization',null);            
+                };
+                if($status=='7'){
+                    $this->db->where('t_apply_license.status_assesment','2'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);           
+                };
+                if($status=='6'){
+                    $this->db->where('t_apply_license.status_assesment','1'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);             
+                };
+                if($status=='5'){
+                    $this->db->where('t_apply_license.status_approved_quality','2'); 
+                    $this->db->where('t_apply_license.status_assesment',null);           
+                };
+                if($status=='4'){
+                    $this->db->where('t_apply_license.status_approved_quality','1'); 
+                    $this->db->where('t_apply_license.status_assesment',null);         
+                };
+                if($status=='3'){
+                    $this->db->where('t_apply_license.status_approved_superior','2'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);          
+                };
+                if($status=='2'){
+                    $this->db->where('t_apply_license.status_approved_superior','1'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);           
+                };
+                if($status=='1'){
+                    $this->db->where('t_apply_license.status_approved_superior',null);
+                    $this->db->where('t_apply_license.status_submit','1');                       
+                }; 
+            } else {
+                $this->db->where('CONVERT(VARCHAR(20),TSH.personnel_number)',@$personnel_number);
+                if($request_number_user!=''){
+                    $this->db->where('t_apply_license.request_number',$request_number_user);
+                };
+                if($date_request!='') {
+                    $this->db->like('(CONVERT(VARCHAR(10), CONVERT(datetime, t_apply_license.date_request,120),105))',$date_request);
+                };
+                
+                if($status=='11'){
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='10'){
+                    $this->db->where('t_apply_license.take_authorization','1');
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='9'){
+                    $this->db->where('t_apply_license.referral_authorization','1');  
+                    $this->db->where('t_apply_license.finished',null);             
+                };
+                if($status=='8'){
+                    $this->db->where('t_apply_license.status_issue_authorization','2');
+                    $this->db->where('t_apply_license.referral_authorization',null);            
+                };
+                if($status=='7'){
+                    $this->db->where('t_apply_license.status_assesment','2'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);           
+                };
+                if($status=='6'){
+                    $this->db->where('t_apply_license.status_assesment','1'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);             
+                };
+                if($status=='5'){
+                    $this->db->where('t_apply_license.status_approved_quality','2'); 
+                    $this->db->where('t_apply_license.status_assesment',null);           
+                };
+                if($status=='4'){
+                    $this->db->where('t_apply_license.status_approved_quality','1'); 
+                    $this->db->where('t_apply_license.status_assesment',null);         
+                };
+                if($status=='3'){
+                    $this->db->where('t_apply_license.status_approved_superior','2'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);          
+                };
+                if($status=='2'){
+                    $this->db->where('t_apply_license.status_approved_superior','1'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);           
+                };
+                if($status=='1'){
+                    $this->db->where('t_apply_license.status_approved_superior',null);
+                    $this->db->where('t_apply_license.status_submit','1');                       
+                };
+                
+                $this->db->or_where('CONVERT(VARCHAR(20),TSH.report_to)',@$personnel_number); 
+                if($request_number_user!=''){
+                    $this->db->where('t_apply_license.request_number',$request_number_user);
+                };              
+                
+                if($date_request!=''){
+                    $this->db->like('(CONVERT(VARCHAR(10), CONVERT(datetime, t_apply_license.date_request,120),105))',$date_request);
+                };  
+                if($employee_personnel_number!=''){
+                    $this->db->where('TSH.personnel_number',$employee_personnel_number);
+                };                
+                               
+                if($name_personnel!=''){
+                    $this->db->like('TSH.name',$name_personnel);
+                };
+                
+                if($status=='11'){
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='10'){
+                    $this->db->where('t_apply_license.take_authorization','1');
+                    $this->db->where('t_apply_license.finished','1');            
+                };
+                if($status=='9'){
+                    $this->db->where('t_apply_license.referral_authorization','1');  
+                    $this->db->where('t_apply_license.finished',null);             
+                };
+                if($status=='8'){
+                    $this->db->where('t_apply_license.status_issue_authorization','2');
+                    $this->db->where('t_apply_license.referral_authorization',null);            
+                };
+                if($status=='7'){
+                    $this->db->where('t_apply_license.status_assesment','2'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);           
+                };
+                if($status=='6'){
+                    $this->db->where('t_apply_license.status_assesment','1'); 
+                    $this->db->where('t_apply_license.status_issue_authorization',null);             
+                };
+                if($status=='5'){
+                    $this->db->where('t_apply_license.status_approved_quality','2'); 
+                    $this->db->where('t_apply_license.status_assesment',null);           
+                };
+                if($status=='4'){
+                    $this->db->where('t_apply_license.status_approved_quality','1'); 
+                    $this->db->where('t_apply_license.status_assesment',null);         
+                };
+                if($status=='3'){
+                    $this->db->where('t_apply_license.status_approved_superior','2'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);          
+                };
+                if($status=='2'){
+                    $this->db->where('t_apply_license.status_approved_superior','1'); 
+                    $this->db->where('t_apply_license.status_approved_quality',null);           
+                };
+                if($status=='1'){
+                    $this->db->where('t_apply_license.status_approved_superior',null);
+                    $this->db->where('t_apply_license.status_submit','1');                       
+                };
+            
+            }
+            
+        // SELECT * FROM UNION_EMP WHERE presenttitle LIKE 'GM%' AND departement = 'TQD';
+            
         $this->_get_query();
         $query = $this->db->get();
         return $query->num_rows();
@@ -263,6 +448,11 @@ class M_home extends CI_Model {
         $query = "SELECT TOP 1 * FROM UNION_EMP AS TSH 
                 WHERE TSH.report_to = '$personnel_number'";
         return $this->db->query($query)->num_rows();                  
+    }
+
+    public function get_banners(){
+        $query = "SELECT * FROM slider WHERE flag = '1'";
+        return $this->db->query($query)->result_array(); 
     }
     
     

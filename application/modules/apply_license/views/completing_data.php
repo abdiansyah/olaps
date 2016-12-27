@@ -59,44 +59,56 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                             <td align="center"><?php echo $i;?></td>                                               
                             <td><?php echo $row->name_t;?></td>
                             <?php 
-                            if($row->category_continous == '-' || $row->category_continous =='New') { ?>
-                                <td><input type="hidden" class="type_continous_document_general" value="<?php echo $row->category_continous; ?>" /></td>
+                            if($row->category_continous == '-') { ?>
+                                <td>
+                                <input type="hidden" class="type_continous_document_general" value="<?php echo $row->category_continous; ?>" />
+                                <input type="hidden" class="expiration_date_req_general_document" id="expiration_date_req_general_document_<?php echo $i;?>_<?php echo $row->code_t;?>" value=""/>
                                 <td>
                                 <input type="hidden" id="code_req_document_general_<?php echo $i;?>" value="<?php echo $row->code_t; ?>" />
-                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general""/>
+                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general"/>
+                                <b id="msg_<?php echo $i;?>"></b>
+                                </td>                                   
+                            <?php 
+                                }                          
+                            if($row->category_continous =='New') { ?>
+                                <td>
+                                <input type="text" class="expiration_date_req_general_document" id="expiration_date_req_general_document_<?php echo $i;?>_<?php echo $row->code_t;?>" value="<?php echo @$row->expiration_date;?>"/>
+                                </td>
+                                <td>
+                                <input type="hidden" id="code_req_document_general_<?php echo $i;?>" value="<?php echo $row->code_t; ?>" />
+                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general" disabled/>
                                 <b id="msg_<?php echo $i;?>"></b>
                                 </td>                                   
                             <?php 
                                 }                             
-                            ?> 
-                            
-                                <?php if (!empty($row->code_file)) { ?>
-                                <td width="20%">
-                                    <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress" style="background:blue"></div>
-                                    <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
-                                    <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
-                                    <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
-                                    <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="<?php echo $i;?>" />
-                                </td>
-                                    <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/>
-                                    <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
-                                    </td> 
-                                <?php 
-                                } else {
-                                ?>
-                                <td width="20%">
-                                    <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
-                                    <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>
-                                    <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
-                                    <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
-                                </td>
-                                <td>
-                                    <img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
-                                    <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="" />
-                                    <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
-                                    </td> 
+                            ?>                              
+                            <?php if (!empty($row->code_file)) { ?>
+                            <td width="20%">
+                                <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress" style="background:blue"></div>
+                                <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
+                                <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="<?php echo $i;?>" />
+                            </td>
+                                <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/>
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
+                                </td> 
+                            <?php 
+                            } else {
+                            ?>
+                            <td width="20%">
+                                <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
+                                <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>
+                                <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
+                            </td>
+                            <td>
+                                <img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
+                                <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="" />
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
+                                </td> 
                                 <?php 
                                     }
                                 ?>                        
@@ -105,6 +117,75 @@ if(!isset($data_authorization_request['submitauthorizationrequest'])) {
                             $i++;                     
                             endforeach;
                         }
+                        // Document certificate (New & -)
+                        if (is_array(@$data_req_specific_document) || is_object(@$data_req_specific_document))
+                        {
+                             foreach($data_req_specific_document as $row): 
+                            ?>
+                            <tr>                                        
+                            <td align="center"><?php echo $i;?></td>                                               
+                            <td><?php echo $row->name_t;?></td>
+                            <?php 
+                            if($row->category_continous == '-') { ?>
+                                <td>
+                                <input type="hidden" class="type_continous_document_general" value="<?php echo $row->category_continous; ?>" />
+                                <input type="text" class="expiration_date_req_general_document" id="expiration_date_req_general_document_<?php echo $i;?>_<?php echo $row->code_t;?>"  value=""/>
+                                </td>
+                                <td>
+                                <input type="hidden" id="code_req_document_general_<?php echo $i;?>" value="<?php echo $row->code_t; ?>" />
+                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general"/>
+                                <b id="msg_<?php echo $i;?>"></b>
+                                </td>                                   
+                            <?php 
+                                }                          
+                            if($row->category_continous =='New') { ?>
+                                <td>
+                                <input type="text" class="expiration_date_req_general_document" id="expiration_date_req_general_document_<?php echo $i;?>_<?php echo $row->code_t;?>"  value="<?php echo @$row->expiration_date;?>"/>
+                                </td>
+                                <td>
+                                <input type="hidden" id="code_req_document_general_<?php echo $i;?>" value="<?php echo $row->code_t; ?>" />
+                                <input type="file" id="file_req_document_general_<?php echo $i;?>_<?php echo $row->code_t;?>" class="file_req_document_general" disabled/>
+                                <b id="msg_<?php echo $i;?>"></b>
+                                </td>                                   
+                            <?php 
+                                }                             
+                            ?>                             
+                            <?php if (!empty($row->code_file)) { ?>
+                            <td width="20%">
+                                <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress" style="background:blue"></div>
+                                <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">100%</div ></div>    
+                                <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="<?php echo $i;?>" />
+                            </td>
+                                <td><img src = "<?php echo base_url('/assets/images/property/check.png'); ?>" class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30" /> &nbsp; <img src = "<?php echo base_url('/assets/images/property/cross_check.png'); ?>" class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/>
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
+                                </td> 
+                            <?php 
+                            } else {
+                            ?>
+                            <td width="20%">
+                                <div class="progressbox"><div id="progressbar_document_general_<?php echo $i;?>" class="progress"></div>
+                                <div id="statustxt_document_general_<?php echo $i;?>" class="statustxt_document_general">0%</div ></div>
+                                <input type="hidden" id="date_req_document_general_<?php echo $i;?>" />
+                                <input type="hidden" id="time_req_document_general_<?php echo $i;?>" />
+                            </td>
+                            <td>
+                                <img class="status_file_document_general" id="status_file_document_general_<?php echo $i;?>" height="30"/> &nbsp; <img class="empty_file_document_general" id="empty_file_document_general_<?php echo $i;?>_<?php echo $row->code_t; ?>" height="30"/> 
+                                <input type="hidden" id="status_upload_document_general_<?php echo $i;?>" class="status_upload_document_general" value="" />
+                                <br/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img style="display:none" id="loading_document_general_<?php echo $i;?>" src="<?php echo base_url('/assets/images/property/squares.gif'); ?>"/> 
+                                </td> 
+                                <?php 
+                                    }
+                                ?>                        
+                            </tr>
+                        <?php
+                            $i++;                     
+                            endforeach; 
+                        }
+
                     ?>                                     
                     </tbody>                    
                     </table>

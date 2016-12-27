@@ -157,8 +157,8 @@ if(!isset($data_completing_data['submitcompletingdata'])){
                             ?>
                             <label>Reason of Requested : <?php echo @$reason_apply_license;?> </label>                            
                             </div>
-                            <div class="col-md-12">
-                               <table class="table table-bordered" id="tb-summary">
+                            <div class="col-md-12 table-responsive">
+                               <table class="table table-bordered table-responsive" id="tb-summary">
                                     <thead>
                                         <tr>
                                             <th align="center"><label>No</label></th>

@@ -27,6 +27,14 @@ class Home extends CI_Controller
         $data['status']                     = $this->input->post('status');
         $data['unit']                       = $this->input->post($unit);
         $data['presenttitle']               = $this->input->post($presenttitle);
+        $banners = $this->m_home->get_banners();        
+        foreach ($banners AS $banner){
+            $data['banner'][] = array(
+                'src'       => base_url().'assets/images/slide/'.$banner['images'],
+                'title'     => $banner['title'],
+                );            
+        }
+        $data['banner'] = $data['banner'];
         $this->page->view('home/home_index',$data);
     }
     

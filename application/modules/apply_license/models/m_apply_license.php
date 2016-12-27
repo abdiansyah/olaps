@@ -63,7 +63,7 @@ class M_apply_license extends CI_Model {
         $email_superior = $this->db->select('TSHS.EMAIL')->from('db_hrm.dbo.TBL_SOE_HEAD AS TSHS')->
                         where('TSH.REPORT_TO = TSHS.PERNR')->get_compiled_select();                                                            
                                     
-        $querydataemp = "SELECT TSH.PERNR, TSH.EMPLNAME, TSH.EMAIL, TSH.JOBTITLE, TSH.UNIT, TSH.LASTEDUCDESC,
+        $querydataemp = "SELECT TSH.PERNR, TSH.EMPLNAME, TSH.EMAIL, TSH.JOBTITLE, TSH.UNIT, te.pendidikan, te.jurusan,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.WORKUNTILDATE,120),105)) AS WORKUNTILDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.BORNDATE,120),105)) AS BORNDATE,
                         (CONVERT(varchar(10), CONVERT(datetime, TSH.EMPLODATE,120),105)) AS EMPLODATE,
@@ -71,6 +71,7 @@ class M_apply_license extends CI_Model {
                         mce.mobilephone, mce.businessphone
                         FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
                         LEFT JOIN m_contact_employee AS mce ON mce.personnel_number_fk = TSH.PERNR                        
+                        LEFT JOIN db_hrm.dbo.tbl_employee AS te ON TSH.PERNR = te.nopeg
                         WHERE TSH.PERNR = '$personnel_number'"; 
         $data_personnel = $this->db->query($querydataemp)->row();        
         $data_personnel_json = json_encode($data_personnel);                
@@ -160,12 +161,6 @@ class M_apply_license extends CI_Model {
         return $this->db->query($queryreqapplyemp)->row_array();  
     }    
     
-    public function get_data_superior_by($personnel_number_superior){       
-        $querydataapplysup = "SELECT tal.request_number, (CASE tal.status_approved_superior WHEN '1' THEN 'APPROVED' WHEN '2' THEN 'REJECTED' ELSE 'WAITING' END) AS status_approved_superior FROM t_apply_license AS tal                            
-                            WHERE tal.personnel_number_superior = '$personnel_number_superior'";                               
-        return $this->db->query($querydataapplysup)->row_array();                             
-    }
-    
     public function get_emp_data_superior_by($personnel_number_superior){
         $querydataapplyemp = "SELECT (TSH.PERNR) AS personnel_number, (TSH.EMPLNAME) AS name , (TSH.EMAIL) AS email, (TSH.JOBTITLE) AS presenttitle, (TSH.UNIT) AS departement  FROM db_hrm.dbo.TBL_SOE_HEAD AS TSH
                             WHERE TSH.PERNR = '$personnel_number_superior'"; 
@@ -213,7 +208,7 @@ class M_apply_license extends CI_Model {
     public function query_general_document($personnel_number, $license='',$type='',$type_check_23='',$type_check_24='',$type_check_25='',$check_easa='',$type_easa='',$check_special=''){        
     $cek_file_general_document = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = '-' OR mglrg.category_continous = 'New')";    
     $query_general_document = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous, 
-                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file FROM m_group_license_req_general AS mglrg 
+                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file, tfr.expiration_date FROM m_group_license_req_general AS mglrg 
                         LEFT JOIN m_auth_additional_req_general AS maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license AS mal ON mglrg.id_auth_license_fk = mal.id 
                         LEFT JOIN m_auth_type AS mat ON mglrg.id_auth_type_fk = mat.id
@@ -228,7 +223,7 @@ class M_apply_license extends CI_Model {
         $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
                 time_upload  FROM t_file_requirement AS tfr
                 WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-                ORDER BY tfr.id DESC";
+                ORDER BY tfr.date_upload DESC";
         return $this->db->query($query)->row_array();
     }
 
@@ -236,7 +231,7 @@ class M_apply_license extends CI_Model {
         $query  = "SELECT TOP 1 tfr.id, REPLACE(tfr.date_upload,'-','') AS date_upload, SUBSTRING(REPLACE(tfr.time_upload,':',''),1,2) AS 
                 time_upload  FROM t_file_requirement AS tfr
                 WHERE tfr.personnel_number_fk = '$personnel_number' AND tfr.code_file = '$code_current'
-                ORDER BY tfr.id DESC";
+                ORDER BY tfr.date_upload DESC";
         return $this->db->query($query)->row_array();
     }
 
@@ -250,7 +245,7 @@ class M_apply_license extends CI_Model {
     public function query_general_certificate($personnel_number, $license='',$type='',$type_check_23='',$type_check_24='',$type_check_25='',$check_easa='',$type_easa='',$check_special=''){
     $cek_file_general_certificate = "AND mglrg.category_admin = 'User' AND (mglrg.category_continous = 'Non Recurrent' OR mglrg.category_continous = 'Recurrent')";    
     $query_general_certificate = "SELECT DISTINCT maarg.name_t, maarg.code_t, mglrg.category_continous,
-                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date
+                        mglrg.category_admin,mglrg.age_requirement, tfr.code_file, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.date_training,120),105))) AS date_training, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date
                         FROM m_group_license_req_general mglrg 
                         LEFT JOIN m_auth_additional_req_general maarg ON mglrg.id_auth_additional_req_general_fk = maarg.id
                         LEFT JOIN m_auth_license mal ON mglrg.id_auth_license_fk = mal.id 
@@ -264,10 +259,9 @@ class M_apply_license extends CI_Model {
     return $this->db->query($query_general_certificate); 
     }
     
-      
-    public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){    
+    public function query_specification_document($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){    
     $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
-                            mgsc.category_admin, mgsc.age_requirement, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date FROM m_group_scope_category mgsc
+                            mgsc.category_admin, mgsc.age_requirement,  MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.date_training,120),105))) AS date_training, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date FROM m_group_scope_category mgsc
                             LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
                             LEFT JOIN  m_auth_license mal ON mgsc.id_auth_license_fk = mal.id
                             LEFT JOIN t_file_requirement AS tfr ON maars.code_t = tfr.code_file AND tfr.personnel_number_fk = '$personnel_number'
@@ -276,7 +270,26 @@ class M_apply_license extends CI_Model {
                             AND mgsc.id_auth_spect_fk = '$tab_spec'
                             AND mgsc.id_auth_category_fk = '$tab_category'
                             AND mgsc.id_auth_scope_fk = '$tab_scope'
-                            AND mgsc.category_admin = 'User'                            
+                            AND mgsc.category_admin = 'User'
+                            AND (mgsc.category_continous = '-' OR  mgsc.category_continous = 'New')                            
+                            GROUP BY maars.name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
+                            mgsc.category_admin, mgsc.age_requirement";
+    return $this->db->query($query_specification);
+    }
+      
+    public function query_specification($personnel_number, $license='',$type='',$tab_spec='',$tab_category='',$tab_scope='',$field=''){    
+    $query_specification = "SELECT DISTINCT maars.name_t AS name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
+                            mgsc.category_admin, mgsc.age_requirement,  MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.date_training,120),105))) AS date_training, MAX((CONVERT(varchar(10), CONVERT(datetime, tfr.expiration_date,120),105))) AS expiration_date FROM m_group_scope_category mgsc
+                            LEFT JOIN m_auth_additional_req_spec maars ON mgsc.id_auth_additional_req_spec_fk = maars.id
+                            LEFT JOIN  m_auth_license mal ON mgsc.id_auth_license_fk = mal.id
+                            LEFT JOIN t_file_requirement AS tfr ON maars.code_t = tfr.code_file AND tfr.personnel_number_fk = '$personnel_number'
+                            WHERE mgsc.id_auth_license_fk = '$license'                    
+                            AND mgsc.id_auth_type_fk = '$type'                    
+                            AND mgsc.id_auth_spect_fk = '$tab_spec'
+                            AND mgsc.id_auth_category_fk = '$tab_category'
+                            AND mgsc.id_auth_scope_fk = '$tab_scope'
+                            AND mgsc.category_admin = 'User'
+                            AND (mgsc.category_continous = 'Recurrent' OR  mgsc.category_continous = 'Non Recurrent')                            
                             GROUP BY maars.name_t, maars.code_t, mgsc.category_continous, tfr.code_file, 
                             mgsc.category_admin, mgsc.age_requirement";
     return $this->db->query($query_specification);
@@ -444,7 +457,7 @@ class M_apply_license extends CI_Model {
     public function get_data_citilink_license() {        
         $personnel_number = $this->input->post('personnel_number');
         $this->db->where('empl_id',$personnel_number);
-        $this->_get_query_ga();        
+        $this->_get_query_citilink();        
         $query = $this->db->get();        
         return $query->result();
     }

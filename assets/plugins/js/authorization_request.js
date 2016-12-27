@@ -1,3 +1,20 @@
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
     $('.hidden-page, #etops, #etops_license_garuda, #etops_license_citilink, #etops_license_sriwijaya, #etops_easa, #etops_special,#etops_garuda, #etops_citilink, #etops_sriwijaya').hide();
     $('div[name=tab-type]').hide();    
         $('div[name=tab-authorization]').hide();
@@ -184,7 +201,19 @@
             $('[name=tab_4]').show('slow'); 
         };        
     });           
-         
+        $('[name=submitauthorizationrequest]').on('mouseover', function(){
+
+            var tab_scope = $("input[name^= 'tab-scope']").length;            
+            if (tab_scope == 0) {
+                $('[name=submitauthorizationrequest]').attr('disabled', true);
+                toastr.warning('Scope belum dipilih.');
+            };
+            if (tab_scope != 0) 
+            {   
+                $('[name=submitauthorizationrequest]').attr('disabled', false);                                
+            };
+
+        });
         $('.tab-authorization .add-box').click(function(){             
             var n_authorization     = $('.box-number-data-authorization').length + 1; 
             var tab_spec            = $('#tab-spec :selected').val();
@@ -194,6 +223,10 @@
             var tab_scope           = $('#tab-scope :selected').val();
             var tab_scope_text      = $('#tab-scope :selected').text();
             var tab_scope_assesment = $('input#tab-scope-assesment').val();
+            if (tab_scope == null) {
+                toastr.warning('Scope belum dipilih.');
+            };
+            if (tab_scope != null) {
                 if($('#etops').is(':checked')){
                         var etops  = '1';
                         var check_etops = 'checked';
@@ -219,7 +252,7 @@
                 box_html_authorization.fadeIn('slow');
                 $('#etops').attr('checked',false);
                 return true; 
-
+                }
             });
             $('.tab-authorization').on('click', '.remove-box', function(){
                 $(this).parent().parent().css( 'background-color', '#FF6C6C' );

@@ -8,10 +8,7 @@
 </div>    
 	<div class="box-header with-border">
 		<h3 class="box-title">PERSONEL INFORMATION</h3>
-	</div>
-    <div id="msg"> 
-    <div class="col-xs-12 col-center-block"><div class="box box-info box-solid"><div class="box-header with-border text-center"><h3 class="box-title"><b>Record not found</b></h3><div class="box-tools pull-right"><button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button></div></div></div></div>   
-    </div>    
+	</div>   
         <form method="POST" action="<?php echo site_url('apply_license/index');?>" enctype="multipart/form-data" name="form_personnel_information">	
 		<div class="box-body">
             <?php if(validation_errors()!=''){echo '<div class="alert alert-danger"><b>'.validation_errors().'</b></div>';}?>
@@ -42,7 +39,8 @@
 					<div class="form-group">
 						<label class="col-sm-2 col-md-offset-2 control-label">Personnel Number :</label>
 						<div class="col-sm-4">
-							<input class="form-control input-sm" name="personnel_number" type="text" maxlength="50" value="<?php echo stripslashes(strip_tags(htmlspecialchars ($user_data->PERNR,ENT_QUOTES)));?>" />														
+							<input class="form-control input-sm" name="personnel_number" type="text" maxlength="50" value="<?php echo stripslashes(strip_tags(htmlspecialchars ($user_data->PERNR,ENT_QUOTES)));?>" />								
+                            <b id="personnel_expired"></b>      		
 						</div>
                         <?php if(@$sess_employee_group == '1'){ ?>
                         <div class="col-sm-2">
@@ -151,8 +149,8 @@
 				</div>
 				<div class="form-group">
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label  class="col-sm-2 col-md-offset-2 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Authorization Details :</label>			
-					<button type="submit" class="btn btn-success btn-md col-sm-4" name="submitchecklicense" data-toggle="modal" data-target="#view-modal" onClick="return false;" data-id="<?php echo @$sess_personnel_number; ?>">
+					<label  class="col-sm-2 col-md-offset-2 control-label">&nbsp;&nbsp;&nbsp;Authorization Details :</label>			
+					<button type="submit" class="btn btn-success btn-md col-sm-4" name="submitchecklicense" data-toggle="modal" data-target="#view-modal" onClick="return false;">
 					<b>View</b>
 					</button>									
 				</div>
@@ -166,11 +164,10 @@
 </div> 
 </div> 
  <!-- Modal License History-->
-<div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div id="view-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog"> 
      <div class="modal-content">         
-        <div class="modal-header"> 
-           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
+        <div class="modal-header">            
            <h4 class="modal-title">
            <i class="glyphicon glyphicon-user"></i> License history
            </h4> 
@@ -191,7 +188,24 @@
                         </thead>                                         
                     </table> 
                     <h4><b>AME License</b></h4>
-                    <b><font size="3">Date Validity :</font></b>&nbsp;<font size="3"><b id="validity_ame"></b></font><font size="3"><b id="status_ame" class="pull-right"></b></font><font size="3"> <b id="status_days_ame" class="pull-right"></b></font>                      
+                    <b>
+                    <font size="3">AME License Number :</font></b>&nbsp;
+                    <font size="3">
+                        <b id="ame_license_number"></b>
+                    </font>  
+                    <br/>
+                    <b>
+                    <font size="3">Date Validity :</font></b>&nbsp;
+                    <font size="3">
+                        <b id="validity_ame"></b>
+                    </font>
+                    <font size="3">
+                        <b id="status_ame" class="pull-right"></b>
+                    </font>
+                    <font size="3"> 
+                        <b id="status_days_ame" class="pull-right">                        
+                    </b>
+                    </font>                                    
                     <table class="table table-bordered table-responsive" id="datatables_ame">                    
                         <thead>
                         <tr>                        
@@ -281,7 +295,8 @@
         </div> 
                     
         <div class="modal-footer">             
-            <button type="button" class="btn btn-default" data-dismiss="modal" name="close">Close</button>  
+            <button type="button" class="btn btn-default" name="close">Close</button>  
+            <!-- data-dismiss="modal" -->
         </div> 
                         
     </div> 
@@ -302,5 +317,8 @@ echo bootstrap_datepicker();
         get_data_sriwijaya_license  = "<?php echo site_url().'/apply_license/get_data_sriwijaya_license/'; ?>",
         get_data_easa_license       = "<?php echo site_url().'/apply_license/get_data_easa_license/'; ?>",
         get_data_cofc_license       = "<?php echo site_url().'/apply_license/get_data_cofc_license/'; ?>";
+        $(document).keyup(function(e) {          
+          if (e.keyCode === 27) window.location.reload();   // esc
+        });
 </script>
 <script src="<?php echo base_url('assets/plugins/js/personnel_information.js');?>" type="text/javascript"></script>     

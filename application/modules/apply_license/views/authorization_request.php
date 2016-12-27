@@ -49,8 +49,8 @@
                 
                 </div>
             </div>            
-            <div class="panel panel-body panel-info tab-authorization" name="tab-authorization" id="tab-authorization">                                
-                <table class="table table-bordered">
+            <div class="panel panel-body panel-info tab-authorization table-responsive" name="tab-authorization" id="tab-authorization">                                
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -91,11 +91,11 @@
                     <a class="btn btn-info pull-right add-box" class=""><i class="fa fa-plus"></i></a>                                                             
             </div>
             <!--  -->
-            <div class="panel panel-body panel-info tab-customer-authorization" name="tab-customer-authorization"> 
-            <div class="panel panel-body tab-authorization-garuda" name="tab-authorization-garuda">                         
+            <div class="panel panel-body panel-info tab-customer-authorization table-responsive" name="tab-customer-authorization"> 
+            <div class="panel panel-body tab-authorization-garuda table-responsive" name="tab-authorization-garuda">                         
                 <label>Garuda Indonesia Authorization</label>   
                 <hr/>                   
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -136,10 +136,10 @@
                 </table>                    
                     <a class="btn btn-info pull-right add-license-garuda-box" class=""><i class="fa fa-plus"></i></a>                                                  
             </div>             
-            <div class="panel panel-body tab-authorization-citilink" name="tab-authorization-citilink">             
+            <div class="panel panel-body tab-authorization-citilink table-responsive" name="tab-authorization-citilink">             
             <label>Citilink Indonesia Authorization</label>       
             <hr/>            
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -180,10 +180,10 @@
                 </table>                    
                     <a class="btn btn-info pull-right add-license-citilink-box" class=""><i class="fa fa-plus"></i></a>                                                  
             </div>  
-            <div class="panel panel-body tab-authorization-sriwijaya" name="tab-authorization-sriwijaya"> 
+            <div class="panel panel-body tab-authorization-sriwijaya table-responsive" name="tab-authorization-sriwijaya"> 
             <label>Sriwijaya Authorization</label>            
             <hr/>                
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -257,8 +257,8 @@
                     
                     </div>
                 </div>             
-                <div class="panel panel-body panel-info tab-add-easa-authorization" name="tab-add-easa-authorization" id="tab-add-easa-authorization">                              
-                    <table class="table table-bordered">
+                <div class="panel panel-body panel-info tab-add-easa-authorization table-responsive" name="tab-add-easa-authorization" id="tab-add-easa-authorization">                              
+                    <table class="table table-bordered table-responsive">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -301,8 +301,8 @@
                 </div>  
             </div> 
             <div class="tab-pane" id="tab_2">
-            <div class="panel panel-body panel-info tab-add-special-authorization" name="tab-add-special-authorization">                                
-                <table class="table table-bordered">
+            <div class="panel panel-body panel-info tab-add-special-authorization table-responsive" name="tab-add-special-authorization">                                
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -350,11 +350,11 @@
                 
                 </div>
             </div>             
-            <div class="panel panel-body panel-info tab-add-customer-authorization" name="tab-add-customer-authorization"> 
-            <div class="panel panel-body tab-add-garuda-authorization" name="tab-add-garuda-authorization">                         
+            <div class="panel panel-body panel-info tab-add-customer-authorization table-responsive" name="tab-add-customer-authorization"> 
+            <div class="panel panel-body tab-add-garuda-authorization table-responsive" name="tab-add-garuda-authorization">                         
                 <label>Garuda Indonesia Authorization</label>   
                 <hr/>                   
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -395,10 +395,10 @@
                 </table>                    
                     <a class="btn btn-info pull-right add-garuda-box" class=""><i class="fa fa-plus"></i></a>                                                  
             </div>             
-            <div class="panel panel-body tab-add-citilink-authorization" name="tab-add-citilink-authorization">             
+            <div class="panel panel-body tab-add-citilink-authorization table-responsive" name="tab-add-citilink-authorization">             
             <label>Citilink Indonesia Authorization</label>       
             <hr/>            
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -439,10 +439,10 @@
                 </table>                    
                     <a class="btn btn-info pull-right add-citilink-box" class=""><i class="fa fa-plus"></i></a>                                                  
             </div>  
-            <div class="panel panel-body tab-add-sriwijaya-authorization" name="tab-add-sriwijaya-authorization"> 
+            <div class="panel panel-body tab-add-sriwijaya-authorization table-responsive" name="tab-add-sriwijaya-authorization"> 
             <label>Sriwijaya Authorization</label>            
             <hr/>                
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:250px"><label class="col-md-9">Rating/ Spec</label></th>
@@ -492,8 +492,8 @@
                 
                 </div>
             </div>             
-            <div class="panel panel-body panel-info tab-add-cofc-authorization" name="tab-add-cofc-authorization">                              
-                <table class="table table-bordered">
+            <div class="panel panel-body panel-info tab-add-cofc-authorization table-responsive" name="tab-add-cofc-authorization">                              
+                <table class="table table-bordered table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;width:300px"><label class="col-md-9">Rating/ Spec</label></th>

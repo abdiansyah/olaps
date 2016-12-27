@@ -33,7 +33,7 @@
         $report_gm              = $sess_data_gm['personnel_number'];
         
             if ($sess_personnel == $personnel_number || $sess_personnel == $report_to || $sess_personnel == $report_gm) {
-
+                
                 $data['get_data_apply_personnel_by']    = $this->m_assesment->get_emp_assesment($request_number_approved);
                 $data['get_data_emp_personnel_by']      = $this->m_assesment->get_emp_for_assesment($personnel_number);            
                 $data['data_assesment']                 = $this->m_assesment->get_data_assesment($personnel_number,$request_number_approved);            
